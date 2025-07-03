@@ -2,10 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Your Name</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name - Academic Portfolio</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
       max-width: 800px;
       margin: 0 auto;
       padding: 40px 20px;
@@ -13,6 +20,7 @@
       background-color: #fff;
       color: #222;
     }
+    
     img {
       width: 180px;
       height: 180px;
@@ -25,10 +33,12 @@
       text-align: center;
       font-size: 28px;
       margin-top: 20px;
+      font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
     }
     h2 {
       font-size: 22px;
       margin-top: 40px;
+      font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
     }
     p, li {
       font-size: 16px;
@@ -47,48 +57,43 @@
   </style>
 </head>
 <body>
-
   <img src="your_photo.jpg" alt="Profile Photo">
-
-  <h1>Jiarui Wang</h1>
-  <p class="center"><em>PhD candidate in Economics at Boston University</em></p>
-
+  <h1>Your Name</h1>
+  <p class="center"><em>PhD candidate in Economics at Your University</em></p>
   <div class="center links">
-    <a href="mailto:your.email@example.com">Email</a>
-    <a href="CV.pdf">Curriculum Vitae</a>
-    <a href="https://github.com/yourusername">Github</a>
+    <span style="color: #0044cc;">Email: email@gmail.com</span> | <a href="CV.pdf">Curriculum Vitae</a>
   </div>
-
-  <p>
+  <p style="margin-top: 30px;">
     My research interests include international trade, macro-finance, and political economy.
     I am currently on the 2024–25 academic job market.
   </p>
-
   <h2>Job Market Paper</h2>
-  <p><strong>Title of Your Job Market Paper</strong> (with Coauthor Name)<br>
+  <p><span style="font-weight: normal;">Title of Your Job Market Paper</span> (with Coauthor Name)<br>
     <a href="#">Abstract</a> |
     <a href="#">Paper</a> |
-    <a href="#">Appendix</a> |
-    <a href="#">Slides</a>
+    <a href="#">Protocol</a> |
+    <a href="#">oTree</a>
   </p>
-
   <h2>Working Papers</h2>
-  <ul>
-    <li><strong>Title of Working Paper</strong> (with Coauthor)<br>
+  <div>
+    <p><span style="font-weight: normal;">Title of Working Paper</span> (with Coauthor)<br>
       <a href="#">Abstract</a> |
       <a href="#">Paper</a>
-    </li>
-    <li><strong>Another Working Paper Title</strong><br>
+    </p>
+    <p><span style="font-weight: normal;">Another Working Paper Title</span><br>
       <a href="#">Abstract</a> |
       <a href="#">Paper</a>
-    </li>
-  </ul>
-
+    </p>
+    <p><span style="font-weight: normal;">Third Working Paper Title</span><br>
+      <a href="#">Abstract</a> |
+      <a href="#">Paper</a>
+    </p>
+  </div>
   <h2>Work in Progress</h2>
-  <ul>
-    <li>The portfolio theory of currency invoicing in trade networks</li>
-    <li>Bank branching competition (with Mark Egan and Alexander MacKay)</li>
-  </ul>
-
+  <div>
+    <p>The portfolio theory of currency invoicing in trade networks</p>
+    <p>Bank branching competition (with Mark Egan and Alexander MacKay)</p>
+    <p>Third work in progress project</p>
+  </div>
 </body>
 </html>
