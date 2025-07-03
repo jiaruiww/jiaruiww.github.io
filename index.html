@@ -1,81 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Name</title>
+  <title>Your Name</title>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #f4f4f4;
+      font-family: Georgia, serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      line-height: 1.6;
+      background-color: #fff;
       color: #222;
-      margin: 40px;
-      display: flex;
-      flex-direction: row;
-    }
-    .sidebar {
-      width: 250px;
-      margin-right: 40px;
-    }
-    .main {
-      max-width: 700px;
     }
     img {
-      width: 100%;
-      border: 5px solid black;
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto;
     }
-    h1, h2 {
-      margin-bottom: 0;
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-top: 20px;
     }
-    .section {
-      margin-top: 30px;
+    h2 {
+      font-size: 22px;
+      margin-top: 40px;
+    }
+    p, li {
+      font-size: 16px;
+    }
+    .center {
+      text-align: center;
+    }
+    .links a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #0044cc;
     }
     a {
-      color: blue;
-      text-decoration: none;
-    }
-    .gray-link {
-      color: gray;
-      font-size: 0.9em;
-      margin-right: 10px;
+      color: #0044cc;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <img src="your_photo.jpg" alt="Your Photo">
-    <h1>你的名字</h1>
-    <p><strong>On the 2024-25 job market</strong><br>
-       Business Economics<br>
-       Harvard University</p>
-    <p>your.email@example.com</p>
+
+  <img src="your_photo.jpg" alt="Profile Photo">
+
+  <h1>Your Name</h1>
+  <p class="center"><em>PhD candidate in Economics at Your University</em></p>
+
+  <div class="center links">
+    <a href="mailto:your.email@example.com">Email</a>
+    <a href="CV.pdf">Curriculum Vitae</a>
+    <a href="https://github.com/yourusername">Github</a>
   </div>
 
-  <div class="main">
-    <p>I do research in international trade. Secondary interests include macro-finance, IO, and networks. I am on the 2024–25 academic job market. <a href="CV.pdf">[CV]</a></p>
+  <p>
+    My research interests include international trade, macro-finance, and political economy.
+    I am currently on the 2024–25 academic job market.
+  </p>
 
-    <div class="section">
-      <h2>Job Market Paper</h2>
-      <p>Trade policy in the shadow of conflict... (with Xinyue Lin)<br>
-        <a class="gray-link" href="#">abstract</a>
-        <a class="gray-link" href="#">paper</a>
-        <a class="gray-link" href="#">appendix</a>
-        <a class="gray-link" href="#">slides</a>
-      </p>
-    </div>
+  <h2>Job Market Paper</h2>
+  <p><strong>Title of Your Job Market Paper</strong> (with Coauthor Name)<br>
+    <a href="#">Abstract</a> |
+    <a href="#">Paper</a> |
+    <a href="#">Appendix</a> |
+    <a href="#">Slides</a>
+  </p>
 
-    <div class="section">
-      <h2>Working Papers</h2>
-      <p>Capital market integration... (with Leonardo D’Amico)<br>
-        <a class="gray-link" href="#">abstract</a>
-        <a class="gray-link" href="#">paper</a>
-      </p>
-    </div>
+  <h2>Working Papers</h2>
+  <ul>
+    <li><strong>Title of Working Paper</strong> (with Coauthor)<br>
+      <a href="#">Abstract</a> |
+      <a href="#">Paper</a>
+    </li>
+    <li><strong>Another Working Paper Title</strong><br>
+      <a href="#">Abstract</a> |
+      <a href="#">Paper</a>
+    </li>
+  </ul>
 
-    <div class="section">
-      <h2>Work in Progress</h2>
-      <p>The portfolio theory of currency invoicing...<br>
-         Bank branching competition (with Mark Egan and Alexander MacKay)</p>
-    </div>
-  </div>
+  <h2>Work in Progress</h2>
+  <ul>
+    <li>The portfolio theory of currency invoicing in trade networks</li>
+    <li>Bank branching competition (with Mark Egan and Alexander MacKay)</li>
+  </ul>
+
 </body>
 </html>
