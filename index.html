@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Name</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      color: #222;
+      margin: 40px;
+      display: flex;
+      flex-direction: row;
+    }
+    .sidebar {
+      width: 250px;
+      margin-right: 40px;
+    }
+    .main {
+      max-width: 700px;
+    }
+    img {
+      width: 100%;
+      border: 5px solid black;
+    }
+    h1, h2 {
+      margin-bottom: 0;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    a {
+      color: blue;
+      text-decoration: none;
+    }
+    .gray-link {
+      color: gray;
+      font-size: 0.9em;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <img src="your_photo.jpg" alt="Your Photo">
+    <h1>你的名字</h1>
+    <p><strong>On the 2024-25 job market</strong><br>
+       Business Economics<br>
+       Harvard University</p>
+    <p>your.email@example.com</p>
+  </div>
 
+  <div class="main">
+    <p>I do research in international trade. Secondary interests include macro-finance, IO, and networks. I am on the 2024–25 academic job market. <a href="CV.pdf">[CV]</a></p>
+
+    <div class="section">
+      <h2>Job Market Paper</h2>
+      <p>Trade policy in the shadow of conflict... (with Xinyue Lin)<br>
+        <a class="gray-link" href="#">abstract</a>
+        <a class="gray-link" href="#">paper</a>
+        <a class="gray-link" href="#">appendix</a>
+        <a class="gray-link" href="#">slides</a>
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Working Papers</h2>
+      <p>Capital market integration... (with Leonardo D’Amico)<br>
+        <a class="gray-link" href="#">abstract</a>
+        <a class="gray-link" href="#">paper</a>
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Work in Progress</h2>
+      <p>The portfolio theory of currency invoicing...<br>
+         Bank branching competition (with Mark Egan and Alexander MacKay)</p>
+    </div>
+  </div>
+</body>
+</html>
