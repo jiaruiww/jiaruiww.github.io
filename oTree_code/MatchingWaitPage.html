@@ -1,0 +1,9 @@
+{{ extends 'otree/WaitPage.html' }} {{ block title }} {% if timeout_happened %} Thank you for your time! {% else %} Please Wait {% endif %} {{ endblock }} {{ block content }} {% if timeout_happened %}
+Unfortunately, we were not able to match you with another participant within 5 minutes.
+You will be automatically redirected to Prolific in a few seconds. If you are not redirected, please use the following code to return your submission and get your $0.50 bonus: {{ return_code }}
+
+{% else %}
+The system is matching you with a random participant. If matched, the quiz will start immediately. If not matched within 5 minutes, you'll receive a $0.50 bonus as compensation.
+
+Waiting: 5:00
+{% endif %} {{ endblock }}
