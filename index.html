@@ -63,7 +63,17 @@
     .paper-links a:hover {
       color: #2855a3;
     }
+
+  .abstract {
+    display: none;           
+    margin-top: 8px;         
+  }
+  .abstract.open {
+    display: block;           
+  }
   </style>
+
+  
 </head>
 <body>
   <img src="your_photo.jpg" alt="Profile Photo">
@@ -79,12 +89,7 @@
   <h2>Job Market Paper</h2>
   <p><a href="#">Welfare and the Act of Competing</a><br>
     <span class="paper-links">
-      <details class="abstract">
-      <summary>Abstract</summary>
-      <div>
-        Abstract
-      </div>
-    </details>
+      <a href="#" class="abstract-toggle" data-target="abs-jmp" aria-expanded="false">Abstract</a> |
       <a href="Test.pdf">Paper</a> |
       <a href="#">Protocol</a> |
       <a href="#">oTree</a>
