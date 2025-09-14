@@ -1,0 +1,532 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    <div class="text-center">IQ Quiz Competition - Question <span style="color: #000000; font-weight: bold;">{{ question_number }}</span></div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Enhanced timer styling -->
+    <style>
+        /* Timer styling - positioned in right corner as a small box */
+        .otree-timer {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: white;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            padding: 8px 15px;
+            z-index: 1000;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .otree-timer p {
+            font-size: 0;  /* Hide all text */
+            margin: 0;
+        }
+
+        .otree-timer p::before {
+            content: "Time Left: ";
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: black;
+        }
+
+        .otree-timer__time-left {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-left: 2px;
+            color: black;
+        }
+
+        /* Custom timer container for manual timer */
+        #custom-timer-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: transparent;  /* Changed from white to transparent */
+            padding: 8px 15px;
+            z-index: 1000;
+            min-width: 160px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #custom-timer-label {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: black;
+        }
+
+        #custom-timer {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-left: 5px;
+            color: black;
+        }
+
+        /* Comparison bar - UPDATED TO REMOVE GRAY BACKGROUND */
+        .comparison-container {
+            width: 100%;
+            max-width: 900px; /* Increased from 800px to make more room */
+            margin: 30px auto;
+            text-align: left;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .comparison-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #111;
+        }
+
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .comparison-label {
+            width: 300px;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: right;
+            margin-right: 20px;
+            color: #000000;
+        }
+
+        .comparison-bar-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .comparison-bar-wrapper {
+            flex-grow: 1;
+            height: 36px;
+            background: transparent; /* Removed the gray background */
+            border-radius: 8px;
+            position: relative;
+            overflow: visible; /* Allow the score to move outside the bar */
+            max-width: 600px; /* Makes the bar longer but with a maximum width */
+            width: 100%;      /* Ensures the bar uses available space */
+        }
+
+        .comparison-bar {
+            height: 100%;
+            border-radius: 8px;
+            /* Anti-flicker fix: Don't set transition animation initially */
+            position: relative; /* Added for positioning the value */
+            /* Anti-flicker fix: Initial width will be set directly in HTML */
+            width: 0%;
+        }
+
+        .comparison-value {
+            font-size: 40px;
+            font-weight: bold;
+            color: #000000;
+            position: absolute; /* Position absolute to move with the bar */
+            left: 100%; /* Position at the end of the bar */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Center vertically */
+            margin-left: 10px; /* Space from the bar */
+            white-space: nowrap; /* Prevent wrapping */
+            /* Anti-flicker fix: Always display numbers, no fade effects */
+            opacity: 1;
+        }
+
+        .competitor-bar {
+            background: #003366;
+            /* Anti-flicker fix: Initial width will be set directly in HTML */
+            width: 0%;
+        }
+
+        /* Anti-flicker fix: Only enable animation after initialization */
+        .comparison-bar.initialized {
+            /* Only enable transition effect after initialization */
+            transition: width 0.8s ease-in-out;
+        }
+
+        /* Basic layout adjustments */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Image sizing and alignment */
+        img.img-fluid {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Question section styling */
+        .question-section {
+            padding: 15px 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Question styling */
+        .question-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 25px;
+        }
+
+        /* Answer options styling */
+        .answer-options {
+            margin-left: 15px;
+            color: #000;
+        }
+
+        .form-check {
+            margin-bottom: 18px;
+        }
+
+        /* Make radio buttons more visible */
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-check-label {
+            font-size: 24px;
+            font-weight: 500;
+            margin-left: 10px;
+            color: #000;
+        }
+
+        /* Aligns the button at the bottom right */
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* Moves button to the right */
+            margin-top: 30px; /* Adds space above the button */
+        }
+
+        /* Make oTree's next button larger while keeping its original color */
+        .otree-btn-next {
+            font-size: 20px;
+            padding: 9px 25px;
+        }
+
+        /* Remove the default label from oTree */
+        .form-group > label.col-form-label {
+            display: none;
+        }
+
+        /* Make all text black by default */
+        body, p, div, span, h1, h2, h3, h4, h5, h6, label {
+            color: #000;
+        }
+
+        /* Style for oTree's error message */
+        .invalid-feedback {
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            color: #dc3545;
+            margin-top: 15px;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+<br>
+
+    <!-- Custom Timer Display -->
+    <div id="custom-timer-container">
+        <span id="custom-timer-label">Time Left:</span>
+        <span id="custom-timer">{{ remaining_time }}</span>
+    </div>
+
+<div style="text-align: center; margin: 25px auto 35px; max-width: 700px; font-size: 20px; font-weight: bold; color: #1e3a5f; padding: 20px; background-color: #e3f2fd; border-left: 5px solid #1976d2; border-right: 5px solid #1976d2;">
+    Only one of you receives the $4 bonus.
+</div>
+
+<!--   Reward Information-->
+    <div class="text-center" style="margin-top: 5px; margin-bottom: 30px; padding: 12px; font-size: 22px; font-weight: 500; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <span style="color: #d30000; font-weight: bold;">Top Performer: earn $4</span>
+        <span style="color: #2c3e50; margin: 0 15px;">|</span>
+        <span style="color: #080809; font-weight: bold;">Bottom Performer: earn $0 </span>
+    </div>
+
+    <!-- Updated Competition score display -->
+    <div class="comparison-container">
+        <div class="comparison-row">
+            <div class="comparison-label">Opponent's Raw Score:</div>
+            <div class="comparison-bar-container">
+                <div class="comparison-bar-wrapper">
+                    <!-- Key fix: Use conditional judgment instead of default filter -->
+                    <div id="competitor-bar" class="comparison-bar competitor-bar"
+                         style="width: {% if teammate_bar_width %}{{ teammate_bar_width }}{% else %}0{% endif %}%;">
+                        <!-- Key fix: Set initial value to actual teammate score -->
+                        <div id="competitor-value" class="comparison-value">{% if teammate_correct_count %}{{ teammate_correct_count }}{% else %}0{% endif %}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Main content -->
+    <div class="row">
+        <!-- Left side: Images -->
+        <div class="col-md-7">
+            <!-- Display the main pattern image -->
+            <img src="{% static question_image %}" class="img-fluid mb-4" alt="Pattern Matrix" style="max-width: 60%; object-fit: contain;">
+
+            <!-- Display the choices image -->
+            <img src="{% static choice_image %}" class="img-fluid mb-4" alt="Choice Options" style="max-width: 55%; object-fit: contain;">
+        </div>
+
+        <!-- Right side: Question and answers -->
+        <div class="col-md-5 d-flex flex-column justify-content-center">
+            <div class="question-section">
+                <h5 class="question-title">Which piece is the correct complement?</h5>
+                <div class="answer-options">
+                    {% formfield player.user_answer label="" %}
+                </div>
+                <!-- Container for time's up message - kept for structure but won't be used -->
+                <div id="time-up-container"></div>
+            </div>
+
+            <div class="button-container">
+                {% next_button %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global variables
+    let remainingTime = {{ remaining_time }};
+    let timerInterval;
+    const initialScore = {{ initial_score }};  // Get initial score from template
+    window.lastTeammateScore = {{ teammate_score }}; // Store initial teammate score to prevent flicker
+    window.lastTeammateCorrectCount = {% if teammate_correct_count %}{{ teammate_correct_count }}{% else %}0{% endif %}; // Anti-flicker fix: Use correct initial value
+
+    // Anti-flicker fix: Track initialization state
+    window.barInitialized = false;
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return mins + ':' + (secs < 10 ? '0' : '') + secs;
+    }
+
+    function updateTimer() {
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            remainingTime = 0;
+            document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+
+            // Instead of just disabling the form, also submit it to move to next page
+            disableFormAndShowMessage();
+            return;
+        }
+
+        document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+        remainingTime--;
+    }
+
+    function disableFormAndShowMessage() {
+        // Only log timeout information in development environment
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log("Time's up!");
+        }
+
+        // Disable radio buttons
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(radio => {
+            radio.disabled = true;
+        });
+
+        // Disable the next button
+        const nextButton = document.querySelector('.otree-btn-next');
+        if (nextButton) {
+            nextButton.disabled = true;
+        }
+
+        // Add a short delay then submit the form to proceed to results
+        setTimeout(function() {
+            // Force form submission to go to the next page
+            document.querySelector('form').submit();
+        }, 1500); // 1.5 second delay - kept the same as original
+    }
+
+    // Called every 1 second to fetch new data (changed from 0.5s to reduce flicker)
+    function fetchScoreUpdates() {
+        liveSend({});
+    }
+
+    // Anti-flicker fix: Improved progress bar update function
+    function updateComparisonBars(competitorScore) {
+        const visualMaxScore = 25;
+        const valueElement = document.getElementById("competitor-value");
+        const bar = document.getElementById("competitor-bar");
+        const barWrapper = document.querySelector(".comparison-bar-wrapper");
+
+        // Anti-flicker fix: Only update when score actually changes
+        if (window.lastTeammateCorrectCount === competitorScore && window.barInitialized) {
+            return; // No change, no need to update
+        }
+
+        // Update the score text
+        valueElement.textContent = competitorScore;
+
+        // Calculate bar width
+        let barWidth;
+        if (competitorScore > visualMaxScore) {
+            const scaleFactorContainer = 1 + ((competitorScore - visualMaxScore) / visualMaxScore) * 0.5;
+            barWrapper.style.maxWidth = (600 * scaleFactorContainer) + "px";
+            barWidth = 100;
+        } else {
+            barWrapper.style.maxWidth = "600px";
+            barWidth = Math.max(0, Math.min(100, (competitorScore / visualMaxScore) * 100));
+        }
+
+        // Anti-flicker fix: Set bar width
+        bar.style.width = barWidth + "%";
+
+        // Anti-flicker fix: Enable animation after first initialization
+        if (!window.barInitialized) {
+            setTimeout(function() {
+                bar.classList.add('initialized');
+                window.barInitialized = true;
+            }, 100);
+        }
+
+        // Update last known teammate score
+        window.lastTeammateCorrectCount = competitorScore;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Hide the default oTree timer if it exists
+        const defaultTimer = document.querySelector('.otree-timer');
+        if (defaultTimer) {
+            defaultTimer.style.display = 'none';
+        }
+
+        // Initialize custom timer
+        document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+
+        // Start countdown
+        timerInterval = setInterval(updateTimer, 1000);
+
+        // ====================== Image Retry Mechanism ======================
+        function setupImageRetry() {
+            const images = document.querySelectorAll('img');
+
+            images.forEach(img => {
+                let retryCount = 0;
+                const maxRetries = 3;
+                const originalSrc = img.src;
+
+                function attemptRetry() {
+                    if (retryCount >= maxRetries) {
+                        // Only log detailed errors in development mode
+                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                            console.error('Image loading failed:', originalSrc);
+                        }
+                        // Display error message
+                        img.insertAdjacentHTML('afterend',
+                            '<div style="color: red; font-weight: bold; text-align: center; padding: 10px; border: 1px solid red; margin: 10px;">' +
+                            'Unable to load image. Please refresh the page.</div>'
+                        );
+                        return;
+                    }
+
+                    retryCount++;
+                    // Only log retry information in development mode
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        console.log(`Image retry attempt ${retryCount}:`, originalSrc);
+                    }
+
+                    // Add timestamp to prevent browser caching
+                    const separator = originalSrc.includes('?') ? '&' : '?';
+                    img.src = originalSrc + separator + 'retry=' + retryCount + '&t=' + Date.now();
+                }
+
+                // Listen for loading errors
+                img.addEventListener('error', attemptRetry);
+
+                // Listen for successful loading (reduce production environment logs)
+                img.addEventListener('load', function() {
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        console.log('Image loaded successfully:', this.src);
+                    }
+                });
+            });
+        }
+
+        // Initialize retry setup
+        setupImageRetry();
+        // ====================== End of Image Retry Code ======================
+
+        // Anti-flicker fix: Delay enabling animation since initial width is already correctly set in HTML
+        setTimeout(function() {
+            document.getElementById("competitor-bar").classList.add('initialized');
+            window.barInitialized = true;
+        }, 100);
+
+        // Fetch new data every 1 second (changed from 0.5s to reduce flicker)
+        setInterval(fetchScoreUpdates, 1000);
+
+        // If time runs out, handle it properly
+        if (remainingTime <= 0) {
+            disableFormAndShowMessage();
+        }
+    });
+
+    // Anti-flicker fix: Improved live data reception function
+    function liveRecv(data) {
+        // Only log received data in development environment
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log("Received data:", data);
+        }
+
+        // Check if we received a time_expired signal specifically for this player
+        if (data.time_expired) {
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log("Time expired signal received from server!");
+            }
+            disableFormAndShowMessage();
+            return;
+        }
+
+        // Anti-flicker fix: Debounce logic
+        clearTimeout(window.scoreUpdateTimeout);
+        window.scoreUpdateTimeout = setTimeout(function() {
+            // Update teammate correct count with anti-flicker check
+            if (data.teammate_correct_count !== undefined) {
+                // Anti-flicker fix: Only update when score actually changes
+                if (window.lastTeammateCorrectCount !== data.teammate_correct_count) {
+                    updateComparisonBars(data.teammate_correct_count);
+                }
+            }
+
+            // Update remaining time
+            if (data.remaining_time !== undefined) {
+                // Only update if server time is less than client time to prevent jumps
+                if (data.remaining_time < remainingTime) {
+                    remainingTime = data.remaining_time;
+                    document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+
+                    // If time has run out, handle it properly
+                    if (remainingTime <= 0) {
+                        disableFormAndShowMessage();
+                    }
+                }
+            }
+        }, 150); // Anti-flicker fix: Increase debounce delay
+    }
+</script>
+{% endblock %}
