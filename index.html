@@ -63,17 +63,25 @@
     .paper-links a:hover {
       color: #2855a3;
     }
-
-  .abstract {
-    display: none;           
-    margin-top: 8px;         
-  }
-  .abstract.open {
-    display: block;           
-  }
+    .abstract {
+      display: none;           
+      margin-top: 8px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-left: 3px solid #2855a3;
+      font-style: italic;
+      color: #555;
+    }
+    .abstract.open {
+      display: block;           
+    }
+    .abstract-toggle {
+      cursor: pointer;
+    }
+    .abstract-toggle:hover {
+      color: #2855a3 !important;
+    }
   </style>
-
-  
 </head>
 <body>
   <img src="your_photo.jpg" alt="Profile Photo">
@@ -86,62 +94,92 @@
     Hi, I'am Jiarui! My research interests are behavioral and experimental economics, and development economics. 
     I am currently on the 2025–26 academic job market.
   </p>
+  
   <h2>Job Market Paper</h2>
   <p><a href="#">Welfare and the Act of Competing</a><br>
     <span class="paper-links">
-      <a href="#" class="abstract-toggle" data-target="abs-jmp" aria-expanded="false">Abstract</a> |
+      <a href="#" class="abstract-toggle" data-target="abs-jmp">Abstract</a> |
       <a href="Test.pdf">Paper</a> |
       <a href="#">Protocol</a> |
       <a href="#">oTree</a>
     </span>
   </p>
-
-  <div id="abs-jmp" class="abstract" aria-hidden="true">
-  This paper studies how the act of competing affects individual welfare beyond material payoffs...
- </div>
+  <div id="abs-jmp" class="abstract">
+    This paper studies how the act of competing affects individual welfare beyond material payoffs. Using a novel experimental design, I examine whether individuals derive utility or disutility from the competitive process itself, independent of outcomes. Results suggest that competition has intrinsic value that varies significantly across individuals and contexts, with important implications for understanding labor market participation and tournament design.
+  </div>
   
   <h2>Working Papers</h2>
   <div>  
     <p><a href="#">Political Power and Collectivism: The Persistent Impact of Historical Political Regime</a><br>
       <em>with Yuting Chen and Liqiang Liu</em><br>
       <span class="paper-links">
-        <a href="#">Abstract</a> |
+        <a href="#" class="abstract-toggle" data-target="abs-wp1">Abstract</a> |
         <a href="Test.pdf">Paper</a>
       </span>
     </p>
+    <div id="abs-wp1" class="abstract">
+      This study investigates how historical political regimes shape contemporary collectivist values and behaviors. Using variation in historical governance structures across Chinese regions, we find that areas with stronger traditional collective institutions exhibit higher levels of cooperation and group-oriented decision making today, suggesting deep cultural persistence of institutional arrangements.
+    </div>
+    
     <p><a href="#">Risk Aversion and Costly Information Acquisition</a><br>
       <em>with Jiaqi Yang</em><br>
       <span class="paper-links">
-        <a href="#">Abstract</a> |
+        <a href="#" class="abstract-toggle" data-target="abs-wp2">Abstract</a> |
         <a href="Test.pdf">Paper</a>
       </span>
     </p>
+    <div id="abs-wp2" class="abstract">
+      We examine how risk preferences affect individuals' willingness to acquire costly information before making decisions under uncertainty. Through a series of laboratory experiments, we demonstrate that more risk-averse individuals are willing to pay higher costs for information, but this relationship is moderated by the precision and relevance of available information.
+    </div>
   </div>
+  
   <h2>Works in Progress</h2>
   <div>
-    <p style="margin-bottom: 5px;">Generative AI and Incompetence Bias (<em>with Ray Fisman</em>)<br>
-       
-      
-    </p>
-    <p style="margin-bottom: 5px;">Polarization, Corruption, and Redistribution Preferences (<em>with Matteo Ferroni, Ray Fisman, and Miriam Golden</em>)<br>
-        
-       
-    </p>
-    <p style="margin-bottom: 5px;">Public Speech on Local Policy (<em>with Jesse Bruhn, and Thea How Choon</em>)<br>
-       <br>
+    <p style="margin-bottom: 5px;">Generative AI and Incompetence Bias (<em>with Ray Fisman</em>)</p>
+    <p style="margin-bottom: 5px;">Polarization, Corruption, and Redistribution Preferences (<em>with Matteo Ferroni, Ray Fisman, and Miriam Golden</em>)</p>
+    <p style="margin-bottom: 5px;">Public Speech on Local Policy (<em>with Jesse Bruhn, and Thea How Choon</em>)</p>
   </div>
-
+  
   <h2>Pre-doc Research</h2>
   <div>
    <p><a href="#">Do Markets Erode Trust? An Experimental Study</a>, <em>with Yefeng Chen, Yuli Ding, Yiwen Pan, Xianghua Wu</em> <br>
-      
       <span class="paper-links">
-        <a href="#">Abstract</a> |
+        <a href="#" class="abstract-toggle" data-target="abs-predoc">Abstract</a> |
         <a href="Test.pdf">Paper</a>
       </span>
-    </p> 
+    </p>
+    <div id="abs-predoc" class="abstract">
+      This experimental study investigates whether market interactions undermine interpersonal trust. Through a series of trust games embedded within market contexts, we find that while market participation can reduce trust in some settings, the effect depends critically on the transparency of market mechanisms and the presence of reputation systems.
+    </div>
   </div>
- 
-  
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all abstract toggle links
+      const toggles = document.querySelectorAll('.abstract-toggle');
+      
+      toggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the target abstract div
+          const targetId = this.getAttribute('data-target');
+          const targetDiv = document.getElementById(targetId);
+          
+          if (targetDiv) {
+            // Toggle the 'open' class
+            targetDiv.classList.toggle('open');
+            
+            // Update the link text
+            if (targetDiv.classList.contains('open')) {
+              this.textContent = 'Hide Abstract';
+            } else {
+              this.textContent = 'Abstract';
+            }
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
