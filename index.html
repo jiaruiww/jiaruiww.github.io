@@ -11,8 +11,9 @@
       box-sizing: border-box;
     }
     
-    html, body {
+    html {
       height: 100%;
+      overflow-y: auto;
     }
     
     body {
@@ -23,17 +24,13 @@
       line-height: 1.6;
       background-color: #fff;
       color: #222;
-      height: auto; /* 移除min-height限制，让body只有内容高度 */
-      display: block; /* 改用block布局而非flex */
+      position: relative;
     }
     
     .container {
       display: flex;
       gap: 150px;
       align-items: flex-start;
-      height: auto; /* 让容器高度自适应内容 */
-      margin-bottom: 0; /* 确保容器底部没有额外边距 */
-      padding-bottom: 0; /* 确保容器底部没有额外内边距 */
     }
     
     .left-panel {
@@ -139,26 +136,42 @@
     }
     
     .right-panel > div:last-child {
-      margin-bottom: 0; /* 移除最后一个div的底部边距 */
+      margin-bottom: 0;
     }
     
     .right-panel > div:last-child p:last-child {
-      margin-bottom: 0; /* 确保最后一个段落没有底部边距 */
+      margin-bottom: 0;
     }
     
     .right-panel h2:last-of-type + div {
       margin-bottom: 0;
     }
-    
+
     .subtitle-second {
       margin-top: -15px;  
     }
     
-    /* 添加一个小的页脚，防止内容看起来悬空 */
-    .footer {
-      height: 1px; /* 几乎不可见的高度 */
-      width: 100%;
-      margin-top: 20px; /* 与内容的距离 */
+    /* 底部修复 */
+    .footer-fix {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+    }
+    
+    /* 强制底部处理 */
+    html::after {
+      content: '';
+      display: block;
+      height: 0;
+    }
+    
+    /* 页面级强制限制 */
+    body {
+      min-height: auto !important;
+      overflow-y: hidden;
     }
     
     @media (max-width: 768px) {
@@ -274,8 +287,11 @@
       </div>
     </div>
   </div>
-  <!-- 添加一个隐形的页脚来阻止底部空白 -->
-  <div class="footer"></div>
+
+  <!-- 添加实际底部内容 -->
+  <div class="footer-fix">
+    © 2025 Jiarui Wang | Last updated: September 2025
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -303,6 +319,10 @@
           }
         });
       });
+
+      // 强制控制页面高度
+      document.body.style.height = document.documentElement.clientHeight + 'px';
+      document.body.style.overflowY = 'auto';
     });
   </script>
 </body>
