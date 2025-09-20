@@ -12,7 +12,9 @@
     }
     
     html, body {
-      height: 100%;
+      /* 移除固定高度，让内容决定页面高度 */
+      height: auto;
+      min-height: 100vh;
     }
     
     body {
@@ -22,8 +24,8 @@
       color: #222;
       display: flex;
       justify-content: center;
-      align-items: flex-start;   
-      padding: 30px;
+      /* 大幅减少padding */
+      padding: 30px 30px 10px 30px;
     }
     
     .container {
@@ -42,10 +44,41 @@
       text-align: center;
     }
     
+    /* 完全移除底部间距的关键CSS */
     .right-panel {
       flex: 1;
       min-width: 0;
       max-width: 600px;
+      /* 确保右侧面板没有额外底部间距 */
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    /* 移除所有可能的底部间距 */
+    .right-panel > *:last-child {
+      margin-bottom: 0 !important;
+    }
+    
+    .right-panel > div:last-child {
+      margin-bottom: 0 !important;
+      padding-bottom: 0;
+    }
+    
+    .right-panel > div:last-child > *:last-child {
+      margin-bottom: 0 !important;
+    }
+    
+    /* 特别针对最后一个section */
+    .right-panel h2:last-of-type + div {
+      margin-bottom: 0 !important;
+    }
+    
+    .right-panel h2:last-of-type + div p:last-child {
+      margin-bottom: 0 !important;
+    }
+    
+    .right-panel h2:last-of-type + div div:last-child {
+      margin-bottom: 0 !important;
     }
     
     img {
@@ -73,7 +106,7 @@
     .contact-info {
       text-align: center;
       margin-bottom: 30px;
-      margin-top: 20px;
+      margin-top: 25px;
     }
     
     .intro-text {
@@ -140,6 +173,7 @@
       color: #2855a3 !important;
     }
     
+    /* 优化底部间距的关键CSS */
     .right-panel > div:last-child {
       margin-bottom: 0;
     }
@@ -152,10 +186,12 @@
       margin-bottom: 0;
     }
     
+    /* 确保最后一个section没有额外间距 */
     .right-panel > h2:last-of-type {
       margin-bottom: 20px;
     }
     
+    /* 减少"Pre-doc Research"部分的底部间距 */
     .right-panel > div:last-of-type p:last-child {
       margin-bottom: 0;
     }
@@ -166,8 +202,7 @@
       
     @media (max-width: 768px) {
       body {
-        padding: 20px;
-        padding-bottom: 15px;
+        padding: 20px 20px 5px 20px;
         align-items: flex-start;
       }
       
