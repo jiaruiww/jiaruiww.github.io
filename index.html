@@ -12,27 +12,27 @@
     }
     
     html, body {
-      height: auto; /* 改为auto */
+      height: 100%;
     }
     
     body {
       font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 20px 40px 20px;  
+      padding: 40px 20px 20px 20px;  
       line-height: 1.6;
       background-color: #fff;
       color: #222;
-      /* 移除 min-height: 100vh; */
-      /* 移除 display: flex; */
-      /* 移除 flex-direction: column; */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
     .container {
       display: flex;
       gap: 150px;
       align-items: flex-start;
-      /* 移除 flex: 1; */
+      flex: 1;
     }
     
     .left-panel {
@@ -69,7 +69,8 @@
     
     .contact-info {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      margin-top: 25px;
     }
     
     .intro-text {
@@ -116,7 +117,7 @@
     .abstract {
       display: none;           
       margin-top: 8px;
-      margin-bottom: 15px;
+      margin-bottom: 15px; /* 减少底部边距 */
       padding: 15px;
       background-color: #f8f9fa;
       border-left: 3px solid #2855a3;
@@ -136,6 +137,7 @@
       color: #2855a3 !important;
     }
     
+   
     .right-panel > div:last-child {
       margin-bottom: 0;
     }
@@ -144,17 +146,20 @@
       margin-bottom: 0;
     }
     
+    
     .right-panel h2:last-of-type + div {
       margin-bottom: 0;
     }
 
-    .subtitle-second {
-      margin-top: -7px;  
-    }
+    
+      .subtitle-second {
+     margin-top: -15px;  
+     }
       
+    
     @media (max-width: 768px) {
       body {
-        padding: 20px 15px 20px 15px; /* 调整移动端底部padding */
+        padding: 20px 15px 15px 15px;
       }
       
       .container {
@@ -171,6 +176,7 @@
         width: 200px;
         height: 150px;
       }
+
     }
   </style>
 </head>
@@ -188,7 +194,7 @@
       </p>
       
        <div class="contact-info">
-        <span style="color: #2855a3;">jiaruiw@bu.edu</span> | <a href="Test.pdf" style="color: #2855a3;">CV</a>
+         <a href="Test.pdf" style="color: #2855a3;">CV</a> | <span style="color: #2855a3;">jiaruiw@bu.edu</span>
       </div>
       
     </div>
