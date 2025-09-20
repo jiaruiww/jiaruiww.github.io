@@ -151,7 +151,6 @@
       margin-top: -15px;  
     }
     
-    /* 底部修复 */
     .footer-fix {
       margin-top: 20px;
       border-top: 1px solid #eee;
@@ -159,19 +158,6 @@
       font-size: 12px;
       color: #999;
       text-align: center;
-    }
-    
-    /* 强制底部处理 */
-    html::after {
-      content: '';
-      display: block;
-      height: 0;
-    }
-    
-    /* 页面级强制限制 */
-    body {
-      min-height: auto !important;
-      overflow-y: hidden;
     }
     
     @media (max-width: 768px) {
@@ -288,7 +274,6 @@
     </div>
   </div>
 
-  <!-- 添加实际底部内容 -->
   <div class="footer-fix">
     © 2025 Jiarui Wang | Last updated: September 2025
   </div>
@@ -319,10 +304,6 @@
           }
         });
       });
-
-      // 强制控制页面高度
-      document.body.style.height = document.documentElement.clientHeight + 'px';
-      document.body.style.overflowY = 'auto';
     });
   </script>
 </body>
