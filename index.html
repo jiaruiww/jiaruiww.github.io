@@ -11,271 +11,175 @@
       box-sizing: border-box;
     }
     
-    html, body {
-      height: 100%;
-    }
-    
     body {
       font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
-      max-width: 1200px;
+      max-width: 890px;
       margin: 0 auto;
-      padding: 40px 20px 40px 20px; 
+      padding: 40px 20px;
       line-height: 1.6;
       background-color: #fff;
       color: #222;
     }
     
-    .container {
-      display: flex;
-      gap: 120px;
-      align-items: flex-start;
-      
-    }
-    
-    .left-panel {
-      flex: 0 0 300px;
-      text-align: center;
-    }
-    
-    .right-panel {
-      flex: 0 0 800px;
-      min-width: 0;
-    }
-    
-    img {
-      width: 260px;
-      height: 200px;
+/*     img {
+      width: 320px;
+      height: 240px;
       object-fit: cover;
       border-radius: 10px;
       display: block;
-      margin: 0 auto 20px auto;
+      margin: 0 auto;
+    } */
+
+    img {
+      width: 240px;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto;
+      object-position: 40% center;
     }
     
     h1 {
       text-align: center;
       font-size: 28px;
-      margin-bottom: 10px;
+      margin-top: 20px;
       font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
     }
-    
-    .subtitle {
-      text-align: center;
-      font-style: italic;
-      margin-bottom: 15px;
-    }
-    
-    .contact-info {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    
-    .intro-text {
-      text-align: left;
-      margin-top: 20px;
-    }
-    
     h2 {
       font-size: 22px;
       margin-top: 40px;
-      margin-bottom: 20px;
       font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
     }
-    
-    h2:first-child {
-      margin-top: 0;
-    }
-    
     p, li {
       font-size: 16px;
       margin-bottom: 15px;
     }
-    
+    .center {
+      text-align: center;
+    }
     .links a {
       margin: 0 10px;
       text-decoration: none;
       color: #0044cc;
     }
-    
     a {
       color: #2855a3;
       text-decoration: none;
     }
-    
     .paper-links a {
       color: #666;
       text-decoration: none;
     }
-    
     .paper-links a:hover {
       color: #2855a3;
     }
-    
     .abstract {
       display: none;           
       margin-top: 8px;
-      margin-bottom: 15px; /* 减少底部边距 */
+      margin-bottom: 20px;
       padding: 15px;
       background-color: #f8f9fa;
       border-left: 3px solid #2855a3;
       font-style: italic;
       color: #555;
     }
-    
     .abstract.open {
       display: block;           
     }
-    
     .abstract-toggle {
       cursor: pointer;
     }
-    
     .abstract-toggle:hover {
       color: #2855a3 !important;
-    }
-    
-   
-    .right-panel > div:last-child {
-      margin-bottom: 0;
-    }
-    
-    .right-panel > div:last-child p:last-child {
-      margin-bottom: 0;
-    }
-    
-    
-    .right-panel h2:last-of-type + div {
-      margin-bottom: 0;
-    }
-
-    
-      .subtitle-second {
-     margin-top: -15px;  
-     }
-      
-    
-    @media (max-width: 768px) {
-      body {
-        padding: 20px 15px 15px 15px;
-      }
-      
-      .container {
-        flex-direction: column;
-        gap: 20px;
-      }
-      
-      .left-panel {
-        flex: none;
-        width: 100%;
-      }
-      
-      img {
-        width: 200px;
-        height: 150px;
-      }
-
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="left-panel">
-      <img src="myphoto.jpg" alt="Jiarui Wang's Profile Photo">
-      <h1>Jiarui Wang</h1>
-      <p class="subtitle"><em>PhD candidate in Economics</em></p>
-      <p class="subtitle subtitle-second"><em>at Boston University</em></p>
-     
-      <p class="intro-text">
-        Hi, I'am Jiarui, interested in behavioral and experimental economics, and development economics. 
-        I am currently on the 2025—2026 academic job market.
-      </p>
-      
-       <div class="contact-info">
-        <span style="color: #2855a3;">jiaruiw@bu.edu</span> | <a href="Test.pdf" style="color: #2855a3;">CV</a>
-      </div>
-      
+  <img src="myphoto.jpg" alt="Jiarui Wang's Profile Photo">
+  <h1>Jiarui Wang</h1>
+  <p class="center"><em>PhD candidate in Economics at Boston University</em></p>
+  <div class="center links">
+    <span style="color: #2855a3;">jiaruiw@bu.edu</span> | <a href="Test.pdf" style="color: #2855a3;">CV</a>
+  </div>
+  <p style="margin-top: 30px;">
+    Hi, I'am Jiarui! My research fields are behavioral and experimental economics, and development economics. 
+    I am currently on the 2025–2026 academic job market.
+  </p>
+  
+  <h2>Job Market Paper</h2>
+  <p><a href="#">Welfare and the Act of Competing</a><br>
+    <span class="paper-links">
+      <a href="#" class="abstract-toggle" data-target="abs-jmp">Abstract</a> |
+      <a href="Test.pdf">Paper</a> |
+      <a href="https://github.com/jiaruiw/jiaruiw.github.io/tree/main/oTree_code" target="_blank">oTree</a> |
+      <a href="#">Experiment Materials</a> 
+    </span>
+  </p>
+  <div id="abs-jmp" class="abstract">
+    Economists  
+  </div>
+  
+  <h2>Working Papers</h2>
+  <div>  
+    <p><a href="#">Political Power and Collectivism: The Persistent Impact of Historical Political Regime</a><br>
+      <em>with Yuting Chen and Liqiang Liu</em><br>
+      <span class="paper-links">
+        <a href="#" class="abstract-toggle" data-target="abs-wp1">Abstract</a> |
+        <a href="Test.pdf">Paper</a>
+      </span>
+    </p>
+    <div id="abs-wp1" class="abstract">
+      Understanding  
     </div>
     
-    <div class="right-panel">
-      <h2>Job Market Paper</h2>
-      <p><a href="#">Welfare and the Act of Competing</a><br>
-        <span class="paper-links">
-          <a href="#" class="abstract-toggle" data-target="abs-jmp">Abstract</a> |
-          <a href="Test.pdf">Paper</a> |
-          <a href="https://github.com/jiaruiw/jiaruiw.github.io/tree/main/oTree_code" target="_blank">oTree</a> |
-          <a href="#">Experimental Materials</a> 
-        </span>
-      </p>
-      <div id="abs-jmp" class="abstract">
-        Economists often view competition as a positive force that incentivizes effort and improves efficiency. Yet a full accounting of the welfare effects 
-        of competition requires consideration of the direct utility costs and benefits of competition itself. This paper investigates how competition affects utility 
-        derived purely from the act of competing, independent of realized outcomes. I conduct a series of experiments which show that competition shapes utility through 
-        two opposing channels: a belief channel, whereby competition lowers expectations of success, thus reducing belief utility, and an intrinsic utility channel, whereby 
-        individuals derive enjoyment directly from competing. The overall effect depends on the relative strength of these channels. I also show that these utility effects 
-        can impact future choices: attribution bias in competitive settings, as it leads individuals to misattribute the enjoyment of competition to the underlying task. 
-      </div>
-      
-      <h2>Working Papers</h2>
-      <div>  
-        <p><a href="#">Political Power and Collectivism: The Persistent Impact of Historical Political Regime</a><br>
-          <em>with Yuting Chen and Liqiang Liu</em><br>
-          <span class="paper-links">
-            <a href="#" class="abstract-toggle" data-target="abs-wp1">Abstract</a> |
-            <a href="Test.pdf">Paper</a>
-          </span>
-        </p>
-        <div id="abs-wp1" class="abstract">
-          Understanding the determinants of collectivism is essential, as it shapes economic behavior, institutional development, and social interactions. This paper identifies a novel determinant of collectivism: 
-          \textit{exposure to centralized political power}. The identification compares individuals from the same birth cohort within a province, exploiting variation in county distances to historical Chinese national 
-          capitals, instrumented by proximity to the initial territorial centroids of ten centralized dynasties. Using data from the 2005 China census, we find that individuals residing in counties closer to historical 
-          capitals of centralized regimes exhibit stronger collectivist orientation than cohort peers in more distant counties within the same province. The finding is robust to alternative measures of collectivism and 
-          exposure to centralized regimes, more conservative inference approaches, and the inclusion of additional covariates. We also find that the effect varies across regions and between the periods before and after 
-          the PRC’s establishment in 1949, but not by gender.
-        </div>
-        
-        <p><a href="#">Risk Aversion and Costly Information Acquisition</a><br>
-          <em>with Jiaqi Yang</em><br>
-          <span class="paper-links">
-            <a href="#" class="abstract-toggle" data-target="abs-wp2">Abstract</a> |
-            <a href="Test.pdf">Paper</a>
-          </span>
-        </p>
-        <div id="abs-wp2" class="abstract">
-          Abstract
-        </div>
-      </div>
-      
-      <h2>Works in Progress</h2>
-      <div>
-        <p style="margin-bottom: 5px;">Generative AI and Incompetence Bias 
-          (<em>with <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a> </em>) </p>
-
-        <p style="margin-bottom: 5px;">Polarization, Corruption, and Redistribution Preferences  
-          (<em>with <a href="https://www.matteo-ferroni.com" target="_blank">Matteo Ferroni</a>, 
-            <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a>, 
-            and 
-            <a href="https://www.miriamgolden.com" target="_blank">Miriam Golden</a>
-          </em>)</p>
-
-        <p style="margin-bottom: 5px;">Leaders' Public Speech and Local Policy 
-          (<em>with 
-            <a href="https://www.jessebruhn.com" target="_blank">Jesse Bruhn</a>, and 
-            <a href="https://www.theahowchoon.com" target="_blank">Thea How Choon</a></em>)</p>
-      </div>
-      
-      <h2>Pre-doc Research</h2>
-      <div>
-       <p><a href="#">Do Markets Erode Trust? An Experimental Study</a><br>
-          <em>with Yefeng Chen, Yuli Ding, Yiwen Pan, Xianghua Wu</em><br>
-          <span class="paper-links">
-            <a href="#" class="abstract-toggle" data-target="abs-predoc">Abstract</a> |
-            <a href="Test.pdf">Paper</a>
-          </span>
-        </p>
-        <div id="abs-predoc" class="abstract">
-          Through experimental methods, this research examines whether market interactions systematically reduce trust between participants, investigating the relationship between market mechanisms and social cohesion.
-        </div>
-      </div>
+    <p><a href="#">Risk Aversion and Costly Information Acquisition</a><br>
+      <em>with Jiaqi Yang</em><br>
+      <span class="paper-links">
+        <a href="#" class="abstract-toggle" data-target="abs-wp2">Abstract</a> |
+        <a href="Test.pdf">Paper</a>
+      </span>
+    </p>
+    <div id="abs-wp2" class="abstract">
+      Here is abstract
     </div>
+  </div>
+  
+  <h2>Works in Progress</h2>
+  <div>
+    <p style="margin-bottom: 5px;">Generative AI and Incompetence Bias 
+      (<em>with <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a> </em>) </p>
+
+    
+    <p style="margin-bottom: 5px;">Polarization, Corruption, and Redistribution Preferences  
+      (<em>with <a href="https://www.matteo-ferroni.com" target="_blank">Matteo Ferroni</a>, 
+        <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a>, 
+        and 
+        <a href="https://www.miriamgolden.com" target="_blank">Miriam Golden</a>
+      </em>)</p>
+
+    
+    <p style="margin-bottom: 5px;">From Tweets to Policy: The Impact of Leaders' Public Speech on Local Policy 
+      (<em>with 
+        <a href="https://www.jessebruhn.com" target="_blank">Jesse Bruhn</a>, and 
+        <a href="https://www.theahowchoon.com" target="_blank">Thea How Choon</a></em>)</p>
+  </div>
+  
+  <h2>Pre-doc Research</h2>
+  <div>
+   <p><a href="#">Do Markets Erode Trust? An Experimental Study</a>  <br>
+      <em>with Yefeng Chen, Yuli Ding, Yiwen Pan, Xianghua Wu</em><br>
+      <span class="paper-links">
+        <a href="#" class="abstract-toggle" data-target="abs-predoc">Abstract</a> |
+        <a href="Test.pdf">Paper</a>
+      </span>
+    </p>
+    <div id="abs-predoc" class="abstract">
+      Here is abstract
+    </div>
+    <br>
+    <br>
+    <br>
   </div>
 
   <script>
