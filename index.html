@@ -12,7 +12,7 @@
     }
     
     html, body {
-      /* 移除固定高度，让内容决定页面高度 */
+      
       height: auto;
       min-height: 100vh;
     }
@@ -24,7 +24,7 @@
       color: #222;
       display: flex;
       justify-content: center;
-      /* 大幅减少padding */
+      
       padding: 30px 30px 10px 30px;
     }
     
@@ -35,7 +35,7 @@
       max-width: 1200px;
       width: 100%;
       margin: 0 auto;
-      /* 确保container紧贴内容 */
+     
       min-height: fit-content;
     }
     
@@ -44,17 +44,17 @@
       text-align: center;
     }
     
-    /* 完全移除底部间距的关键CSS */
+    
     .right-panel {
       flex: 1;
       min-width: 0;
-      max-width: 600px;
-      /* 确保右侧面板没有额外底部间距 */
+      max-width: 1000px;
+      
       margin-bottom: 0;
       padding-bottom: 0;
     }
     
-    /* 移除所有可能的底部间距 */
+     
     .right-panel > *:last-child {
       margin-bottom: 0 !important;
     }
@@ -68,7 +68,7 @@
       margin-bottom: 0 !important;
     }
     
-    /* 特别针对最后一个section */
+    
     .right-panel h2:last-of-type + div {
       margin-bottom: 0 !important;
     }
