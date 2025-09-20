@@ -11,26 +11,25 @@
       box-sizing: border-box;
     }
     
-    html {
+    html, body {
       height: 100%;
-      overflow-y: auto;
     }
     
     body {
       font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 20px 20px 20px;  
+      padding: 40px 20px 40px 20px; 
       line-height: 1.6;
       background-color: #fff;
       color: #222;
-      position: relative;
     }
     
     .container {
       display: flex;
       gap: 150px;
       align-items: flex-start;
+      
     }
     
     .left-panel {
@@ -67,8 +66,7 @@
     
     .contact-info {
       text-align: center;
-      margin-bottom: 30px;
-      margin-top: 25px;
+      margin-bottom: 20px;
     }
     
     .intro-text {
@@ -115,7 +113,7 @@
     .abstract {
       display: none;           
       margin-top: 8px;
-      margin-bottom: 15px;
+      margin-bottom: 15px; /* 减少底部边距 */
       padding: 15px;
       background-color: #f8f9fa;
       border-left: 3px solid #2855a3;
@@ -135,6 +133,7 @@
       color: #2855a3 !important;
     }
     
+   
     .right-panel > div:last-child {
       margin-bottom: 0;
     }
@@ -143,22 +142,16 @@
       margin-bottom: 0;
     }
     
+    
     .right-panel h2:last-of-type + div {
       margin-bottom: 0;
     }
 
-    .subtitle-second {
-      margin-top: -15px;  
-    }
     
-    .footer-fix {
-      margin-top: 20px;
-      border-top: 1px solid #eee;
-      padding-top: 10px;
-      font-size: 12px;
-      color: #999;
-      text-align: center;
-    }
+      .subtitle-second {
+     margin-top: -7px;  
+     }
+      
     
     @media (max-width: 768px) {
       body {
@@ -179,6 +172,7 @@
         width: 200px;
         height: 150px;
       }
+
     }
   </style>
 </head>
@@ -192,11 +186,11 @@
      
       <p class="intro-text">
         Hi, I'am Jiarui, interested in behavioral and experimental economics, and development economics. 
-        I am currently on the 2025–2026 academic job market.
+        I am currently on the 2025—2026 academic job market.
       </p>
       
-      <div class="contact-info">
-        <a href="Test.pdf" style="color: #2855a3;">CV</a> | <span style="color: #2855a3;">jiaruiw@bu.edu</span>
+       <div class="contact-info">
+        <span style="color: #2855a3;">jiaruiw@bu.edu</span> | <a href="Test.pdf" style="color: #2855a3;">CV</a>
       </div>
       
     </div>
@@ -272,10 +266,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="footer-fix">
-    © 2025 Jiarui Wang | Last updated: September 2025
   </div>
 
   <script>
