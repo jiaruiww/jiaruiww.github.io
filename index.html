@@ -12,31 +12,27 @@
     }
     
     html, body {
-      
-      height: auto;
-      min-height: 100vh;
+      height: 100%;
     }
     
     body {
       font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 20px 20px;  
       line-height: 1.6;
       background-color: #fff;
       color: #222;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
-      
-      padding: 30px 30px 10px 30px;
+      flex-direction: column;
     }
     
     .container {
       display: flex;
       gap: 150px;
       align-items: flex-start;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-     
-      min-height: fit-content;
+      flex: 1;
     }
     
     .left-panel {
@@ -44,41 +40,9 @@
       text-align: center;
     }
     
-    
     .right-panel {
-      flex: 1;
+      flex: 0 0 800px;
       min-width: 0;
-      max-width: 1200px;
-      
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    
-     
-    .right-panel > *:last-child {
-      margin-bottom: 0 !important;
-    }
-    
-    .right-panel > div:last-child {
-      margin-bottom: 0 !important;
-      padding-bottom: 0;
-    }
-    
-    .right-panel > div:last-child > *:last-child {
-      margin-bottom: 0 !important;
-    }
-    
-    
-    .right-panel h2:last-of-type + div {
-      margin-bottom: 0 !important;
-    }
-    
-    .right-panel h2:last-of-type + div p:last-child {
-      margin-bottom: 0 !important;
-    }
-    
-    .right-panel h2:last-of-type + div div:last-child {
-      margin-bottom: 0 !important;
     }
     
     img {
@@ -105,8 +69,7 @@
     
     .contact-info {
       text-align: center;
-      margin-bottom: 30px;
-      margin-top: 25px;
+      margin-bottom: 20px;
     }
     
     .intro-text {
@@ -153,7 +116,7 @@
     .abstract {
       display: none;           
       margin-top: 8px;
-      margin-bottom: 15px;
+      margin-bottom: 15px; /* 减少底部边距 */
       padding: 15px;
       background-color: #f8f9fa;
       border-left: 3px solid #2855a3;
@@ -173,7 +136,7 @@
       color: #2855a3 !important;
     }
     
-    /* 优化底部间距的关键CSS */
+   
     .right-panel > div:last-child {
       margin-bottom: 0;
     }
@@ -182,28 +145,20 @@
       margin-bottom: 0;
     }
     
+    
     .right-panel h2:last-of-type + div {
       margin-bottom: 0;
     }
-    
-    /* 确保最后一个section没有额外间距 */
-    .right-panel > h2:last-of-type {
-      margin-bottom: 20px;
-    }
-    
-    /* 减少"Pre-doc Research"部分的底部间距 */
-    .right-panel > div:last-of-type p:last-child {
-      margin-bottom: 0;
-    }
 
-    .subtitle-second {
-      margin-top: -15px;  
-    }
+    
+      .subtitle-second {
+     margin-top: -7px;  
+     }
       
+    
     @media (max-width: 768px) {
       body {
-        padding: 20px 20px 5px 20px;
-        align-items: flex-start;
+        padding: 20px 15px 15px 15px;
       }
       
       .container {
@@ -216,14 +171,11 @@
         width: 100%;
       }
       
-      .right-panel {
-        max-width: none;
-      }
-      
       img {
         width: 200px;
         height: 150px;
       }
+
     }
   </style>
 </head>
@@ -237,11 +189,11 @@
      
       <p class="intro-text">
         Hi, I'am Jiarui, interested in behavioral and experimental economics, and development economics. 
-        I am currently on the 2025â€"2026 academic job market.
+        I am currently on the 2025—2026 academic job market.
       </p>
       
        <div class="contact-info">
-         <a href="Test.pdf" style="color: #2855a3;">CV</a> | <span style="color: #2855a3;">jiaruiw@bu.edu</span>
+        <span style="color: #2855a3;">jiaruiw@bu.edu</span> | <a href="Test.pdf" style="color: #2855a3;">CV</a>
       </div>
       
     </div>
