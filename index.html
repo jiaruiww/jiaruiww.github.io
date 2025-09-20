@@ -11,20 +11,28 @@
       box-sizing: border-box;
     }
     
+    html, body {
+      height: 100%;
+    }
+    
     body {
       font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 40px 20px 20px 20px; /* 减少底部padding */
       line-height: 1.6;
       background-color: #fff;
       color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
     .container {
       display: flex;
       gap: 40px;
       align-items: flex-start;
+      flex: 1;
     }
     
     .left-panel {
@@ -108,7 +116,7 @@
     .abstract {
       display: none;           
       margin-top: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 15px; /* 减少底部边距 */
       padding: 15px;
       background-color: #f8f9fa;
       border-left: 3px solid #2855a3;
@@ -128,12 +136,25 @@
       color: #2855a3 !important;
     }
     
-    /* 确保底部间距合理 */
+    /* 确保底部间距合理，移除过大的margin */
     .right-panel > div:last-child {
       margin-bottom: 0;
     }
     
+    .right-panel > div:last-child p:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* 为最后一个section添加适当的底部边距 */
+    .right-panel h2:last-of-type + div {
+      margin-bottom: 0;
+    }
+    
     @media (max-width: 768px) {
+      body {
+        padding: 20px 15px 15px 15px;
+      }
+      
       .container {
         flex-direction: column;
         gap: 20px;
@@ -177,7 +198,7 @@
         </span>
       </p>
       <div id="abs-jmp" class="abstract">
-        Economists  
+        This paper examines the welfare implications of competitive behavior in economic settings, analyzing how the act of competing itself affects individual and social outcomes beyond traditional market efficiency measures.
       </div>
       
       <h2>Working Papers</h2>
@@ -190,7 +211,7 @@
           </span>
         </p>
         <div id="abs-wp1" class="abstract">
-          Understanding  
+          This study investigates how historical political regimes shape contemporary collective behavior and attitudes, examining the long-term cultural and institutional legacies of different governance systems.
         </div>
         
         <p><a href="#">Risk Aversion and Costly Information Acquisition</a><br>
@@ -201,7 +222,7 @@
           </span>
         </p>
         <div id="abs-wp2" class="abstract">
-          Here is abstract
+          We analyze how individual risk preferences affect decisions to acquire costly information, exploring the interaction between risk aversion and information-seeking behavior in uncertain environments.
         </div>
       </div>
       
@@ -210,7 +231,6 @@
         <p style="margin-bottom: 5px;">Generative AI and Incompetence Bias 
           (<em>with <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a> </em>) </p>
 
-        
         <p style="margin-bottom: 5px;">Polarization, Corruption, and Redistribution Preferences  
           (<em>with <a href="https://www.matteo-ferroni.com" target="_blank">Matteo Ferroni</a>, 
             <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a>, 
@@ -218,7 +238,6 @@
             <a href="https://www.miriamgolden.com" target="_blank">Miriam Golden</a>
           </em>)</p>
 
-        
         <p style="margin-bottom: 5px;">From Tweets to Policy: The Impact of Leaders' Public Speech on Local Policy 
           (<em>with 
             <a href="https://www.jessebruhn.com" target="_blank">Jesse Bruhn</a>, and 
@@ -227,7 +246,7 @@
       
       <h2>Pre-doc Research</h2>
       <div>
-       <p><a href="#">Do Markets Erode Trust? An Experimental Study</a>  <br>
+       <p><a href="#">Do Markets Erode Trust? An Experimental Study</a><br>
           <em>with Yefeng Chen, Yuli Ding, Yiwen Pan, Xianghua Wu</em><br>
           <span class="paper-links">
             <a href="#" class="abstract-toggle" data-target="abs-predoc">Abstract</a> |
@@ -235,7 +254,7 @@
           </span>
         </p>
         <div id="abs-predoc" class="abstract">
-          Here is abstract
+          Through experimental methods, this research examines whether market interactions systematically reduce trust between participants, investigating the relationship between market mechanisms and social cohesion.
         </div>
       </div>
     </div>
