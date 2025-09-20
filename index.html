@@ -23,6 +23,8 @@
       display: flex;
       justify-content: center;
       padding: 30px;
+      /* 减少底部padding */
+      padding-bottom: 20px;
     }
     
     .container {
@@ -32,6 +34,8 @@
       max-width: 1200px;
       width: 100%;
       margin: 0 auto;
+      /* 确保container紧贴内容 */
+      min-height: fit-content;
     }
     
     .left-panel {
@@ -137,6 +141,7 @@
       color: #2855a3 !important;
     }
     
+    /* 优化底部间距的关键CSS */
     .right-panel > div:last-child {
       margin-bottom: 0;
     }
@@ -148,6 +153,16 @@
     .right-panel h2:last-of-type + div {
       margin-bottom: 0;
     }
+    
+    /* 确保最后一个section没有额外间距 */
+    .right-panel > h2:last-of-type {
+      margin-bottom: 20px;
+    }
+    
+    /* 减少"Pre-doc Research"部分的底部间距 */
+    .right-panel > div:last-of-type p:last-child {
+      margin-bottom: 0;
+    }
 
     .subtitle-second {
       margin-top: -15px;  
@@ -156,6 +171,8 @@
     @media (max-width: 768px) {
       body {
         padding: 20px;
+        /* 移动端减少底部padding */
+        padding-bottom: 15px;
         align-items: flex-start;
       }
       
@@ -190,7 +207,7 @@
      
       <p class="intro-text">
         Hi, I'am Jiarui, interested in behavioral and experimental economics, and development economics. 
-        I am currently on the 2025—2026 academic job market.
+        I am currently on the 2025â€"2026 academic job market.
       </p>
       
        <div class="contact-info">
