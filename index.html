@@ -23,31 +23,27 @@
       line-height: 1.6;
       background-color: #fff;
       color: #222;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      height: auto; /* 移除min-height限制，让body只有内容高度 */
+      display: block; /* 改用block布局而非flex */
     }
     
     .container {
       display: flex;
       gap: 150px;
       align-items: flex-start;
-      flex: 1;
-      min-height: calc(100vh - 80px); /* 减去页面上下padding的总和 */
+      height: auto; /* 让容器高度自适应内容 */
+      margin-bottom: 0; /* 确保容器底部没有额外边距 */
+      padding-bottom: 0; /* 确保容器底部没有额外内边距 */
     }
     
     .left-panel {
       flex: 0 0 300px;
       text-align: center;
-      display: flex;
-      flex-direction: column;
     }
     
     .right-panel {
       flex: 0 0 800px;
       min-width: 0;
-      display: flex;
-      flex-direction: column;
     }
     
     img {
@@ -122,7 +118,7 @@
     .abstract {
       display: none;           
       margin-top: 8px;
-      margin-bottom: 15px; /* 减少底部边距 */
+      margin-bottom: 15px;
       padding: 15px;
       background-color: #f8f9fa;
       border-left: 3px solid #2855a3;
@@ -142,23 +138,29 @@
       color: #2855a3 !important;
     }
     
-    /* 修改：确保最后一个元素没有多余的底部空间 */
     .right-panel > div:last-child {
-      margin-bottom: auto; /* 让最后一个div推到容器底部 */
+      margin-bottom: 0; /* 移除最后一个div的底部边距 */
     }
     
     .right-panel > div:last-child p:last-child {
-      margin-bottom: 0;
+      margin-bottom: 0; /* 确保最后一个段落没有底部边距 */
     }
     
     .right-panel h2:last-of-type + div {
       margin-bottom: 0;
     }
-
+    
     .subtitle-second {
       margin-top: -15px;  
     }
-      
+    
+    /* 添加一个小的页脚，防止内容看起来悬空 */
+    .footer {
+      height: 1px; /* 几乎不可见的高度 */
+      width: 100%;
+      margin-top: 20px; /* 与内容的距离 */
+    }
+    
     @media (max-width: 768px) {
       body {
         padding: 20px 15px 15px 15px;
@@ -167,7 +169,6 @@
       .container {
         flex-direction: column;
         gap: 20px;
-        min-height: auto; /* 在移动端不强制最小高度 */
       }
       
       .left-panel {
@@ -273,6 +274,8 @@
       </div>
     </div>
   </div>
+  <!-- 添加一个隐形的页脚来阻止底部空白 -->
+  <div class="footer"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
