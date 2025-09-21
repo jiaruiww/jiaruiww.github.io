@@ -21,15 +21,6 @@
       color: #222;
     }
     
-/*     img {
-      width: 320px;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 10px;
-      display: block;
-      margin: 0 auto;
-    } */
-
     img {
       width: 220px;
       height: 220px;
@@ -58,20 +49,19 @@
     .center {
       text-align: center;
     }
-    .links a {
+    .links span {
       margin: 0 10px;
-      text-decoration: none;
-      color: #0044cc;
-    }
-    a {
       color: #2855a3;
-      text-decoration: none;
     }
-    .paper-links a {
+    .paper-links span {
       color: #666;
-      text-decoration: none;
+      margin-right: 10px;
     }
-    .paper-links a:hover {
+    .paper-title {
+      color: #2855a3;
+      font-weight: normal;
+    }
+    .collaborator-name {
       color: #2855a3;
     }
     .abstract {
@@ -89,6 +79,7 @@
     }
     .abstract-toggle {
       cursor: pointer;
+      color: #666;
     }
     .abstract-toggle:hover {
       color: #2855a3 !important;
@@ -100,7 +91,7 @@
   <h1>Jiarui Wang</h1>
   <p class="center"><em>PhD candidate in Economics at Boston University</em></p>
   <div class="center links">
-    <span style="color: #2855a3;">jiaruiw@bu.edu</span> | <a href="Test.pdf" style="color: #2855a3;">CV</a>
+    <span>jiaruiw@bu.edu</span> | <span>CV</span>
   </div>
   <p style="margin-top: 30px;">
     Hi, I'am Jiarui! My research fields are behavioral and experimental economics, and development economics. 
@@ -108,47 +99,36 @@
   </p>
   
   <h2>Job Market Paper</h2>
-  <p><a href="#">Welfare and the Act of Competing</a><br>
+  <p><span class="paper-title">Welfare and the Act of Competing</span><br>
     <span class="paper-links">
-      <a href="#" class="abstract-toggle" data-target="abs-jmp">Abstract</a> |
-      <a href="Test.pdf">Paper</a> |
-      <a href="https://github.com/jiaruiw/jiaruiw.github.io/tree/main/oTree_code" target="_blank">oTree</a> |
-      <a href="#">Experiment Materials</a> 
+      <span class="abstract-toggle" data-target="abs-jmp">Abstract</span> |
+      <span>Paper</span> |
+      <span>oTree</span> |
+      <span>Experiment Materials</span> 
     </span>
   </p>
   <div id="abs-jmp" class="abstract">
-    Economists often view competition as a positive force that incentivizes effort and improves efficiency. 
-    Yet a full accounting of the welfare effects of competition requires consideration of the direct utility costs and benefits of competition itself. 
-    This paper investigates how competition affects utility derived purely from the act of competing, independent of realized outcomes. 
-    I conduct a series of experiments which show that competition shapes utility through two opposing channels: a belief channel, whereby competition lowers expectations of success, 
-    thus reducing belief utility, and an intrinsic utility channel, whereby individuals derive enjoyment directly from competing. The overall effect depends on the relative strength of these channels. 
-    I also show that these utility effects can impact future choices: attribution bias in competitive settings, as it leads individuals to misattribute the enjoyment of competition to the underlying task.  
+    
   </div>
   
   <h2>Working Papers</h2>
   <div>  
-    <p><a href="#">Political Power and Collectivism: The Persistent Impact of Historical Political Regime</a><br>
+    <p><span class="paper-title">Political Power and Collectivism: The Persistent Impact of Historical Political Regime</span><br>
       <em>with Yuting Chen and Liqiang Liu</em><br>
       <span class="paper-links">
-        <a href="#" class="abstract-toggle" data-target="abs-wp1">Abstract</a> |
-        <a href="Test.pdf">Paper</a>
+        <span class="abstract-toggle" data-target="abs-wp1">Abstract</span> |
+        <span>Paper</span>
       </span>
     </p>
     <div id="abs-wp1" class="abstract">
-      Understanding the determinants of collectivism is essential, as it shapes economic behavior, institutional development, and social interactions. 
-      This paper identifies a novel determinant of collectivism: \textit{exposure to centralized political power}. 
-      The identification compares individuals from the same birth cohort within a province, exploiting variation in county distances to historical Chinese national capitals, 
-      instrumented by proximity to the initial territorial centroids of ten centralized dynasties. Using data from the 2005 China census, 
-      we find that individuals residing in counties closer to historical capitals of centralized regimes exhibit stronger collectivist orientation than cohort peers in more distant counties within the same province. 
-      The finding is robust to alternative measures of collectivism and exposure to centralized regimes, more conservative inference approaches, 
-      and the inclusion of additional covariates. We also find that the effect varies across regions and between the periods before and after the PRC’s establishment in 1949, but not by gender.  
+      
     </div>
     
-    <p><a href="#">Risk Aversion and Costly Information Acquisition</a><br>
+    <p><span class="paper-title">Risk Aversion and Costly Information Acquisition</span><br>
       <em>with Jiaqi Yang</em><br>
       <span class="paper-links">
-        <a href="#" class="abstract-toggle" data-target="abs-wp2">Abstract</a> |
-        <a href="Test.pdf">Paper</a>
+        <span class="abstract-toggle" data-target="abs-wp2">Abstract</span> |
+        <span>Paper</span>
       </span>
     </p>
     <div id="abs-wp2" class="abstract">
@@ -159,30 +139,30 @@
   <h2>Works in Progress</h2>
   <div>
     <p style="margin-bottom: 5px;">Generative AI and Incompetence Bias 
-      (<em>with <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a> </em>) </p>
+      (<em>with <span class="collaborator-name">Ray Fisman</span> </em>) </p>
 
     
     <p style="margin-bottom: 5px;">Polarization, Corruption, and Redistribution Preferences  
-      (<em>with <a href="https://www.matteo-ferroni.com" target="_blank">Matteo Ferroni</a>, 
-        <a href="https://sites.bu.edu/fisman/" target="_blank">Ray Fisman</a>, 
+      (<em>with <span class="collaborator-name">Matteo Ferroni</span>, 
+        <span class="collaborator-name">Ray Fisman</span>, 
         and 
-        <a href="https://www.miriamgolden.com" target="_blank">Miriam Golden</a>
+        <span class="collaborator-name">Miriam Golden</span>
       </em>)</p>
 
     
     <p style="margin-bottom: 5px;">Leaders' Public Speech and Local Policy 
       (<em>with 
-        <a href="https://www.jessebruhn.com" target="_blank">Jesse Bruhn</a>, and 
-        <a href="https://www.theahowchoon.com" target="_blank">Thea How Choon</a></em>)</p>
+        <span class="collaborator-name">Jesse Bruhn</span>, and 
+        <span class="collaborator-name">Thea How Choon</span></em>)</p>
   </div>
   
   <h2>Pre-doc Research</h2>
   <div>
-   <p><a href="#">Do Markets Erode Trust? An Experimental Study</a>  <br>
+   <p><span class="paper-title">Do Markets Erode Trust? An Experimental Study</span>  <br>
       <em>with Yefeng Chen, Yuli Ding, Yiwen Pan, Xianghua Wu</em><br>
       <span class="paper-links">
-        <a href="#" class="abstract-toggle" data-target="abs-predoc">Abstract</a> |
-        <a href="Test.pdf">Paper</a>
+        <span class="abstract-toggle" data-target="abs-predoc">Abstract</span> |
+        <span>Paper</span>
       </span>
     </p>
     <div id="abs-predoc" class="abstract">
@@ -195,7 +175,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Get all abstract toggle links
+      // Get all abstract toggle spans
       const toggles = document.querySelectorAll('.abstract-toggle');
       
       toggles.forEach(toggle => {
@@ -210,7 +190,7 @@
             // Toggle the 'open' class
             targetDiv.classList.toggle('open');
             
-            // Update the link text
+            // Update the text
             if (targetDiv.classList.contains('open')) {
               this.textContent = 'Hide Abstract';
             } else {
