@@ -56,13 +56,16 @@
     .paper-links span {
       color: #666;
       margin-right: 10px;
+      cursor: pointer;
     }
     .paper-title {
       color: #2855a3;
       font-weight: normal;
+      cursor: pointer;
     }
     .collaborator-name {
       color: #2855a3;
+      cursor: pointer;
     }
     .abstract {
       display: none;           
@@ -78,11 +81,8 @@
       display: block;           
     }
     .abstract-toggle {
-      cursor: pointer;
       color: #666;
-    }
-    .abstract-toggle:hover {
-      color: #2855a3 !important;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -174,32 +174,7 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Get all abstract toggle spans
-      const toggles = document.querySelectorAll('.abstract-toggle');
-      
-      toggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-          e.preventDefault();
-          
-          // Get the target abstract div
-          const targetId = this.getAttribute('data-target');
-          const targetDiv = document.getElementById(targetId);
-          
-          if (targetDiv) {
-            // Toggle the 'open' class
-            targetDiv.classList.toggle('open');
-            
-            // Update the text
-            if (targetDiv.classList.contains('open')) {
-              this.textContent = 'Hide Abstract';
-            } else {
-              this.textContent = 'Abstract';
-            }
-          }
-        });
-      });
-    });
+    // Abstract toggle functionality removed
   </script>
 </body>
 </html>
