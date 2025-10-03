@@ -1,0 +1,920 @@
+{% extends "global/Page.html" %}
+
+{% block content %}
+
+<div style="font-family: 'Arial', sans-serif;">
+   <style>
+       h3 {
+           font-size: 30px !important;
+           margin-bottom: 25px !important;
+           font-weight: 500 !important;
+           padding-left: 15px !important;
+           text-transform: none !important;
+           letter-spacing: normal !important;
+       }
+       .inline-error {
+           color: #cc2e39;
+           margin-top: 10px;
+           font-size: 18px;
+           text-align: center;
+           background-color: #f8d7da;
+           border: 1px solid #f5c6cb;
+           border-radius: 4px;
+           padding: 10px 15px;
+           margin-bottom: 20px;
+       }
+
+       /* Coin container styles - improved version */
+       .coin-container {
+           display: flex;
+           justify-content: center;
+           gap: 8px;
+           cursor: grab;
+           margin: 0 auto;
+           transition: opacity 0.1s ease;
+           /* Important: add user selection control */
+           user-select: none;
+           -webkit-user-select: none;
+           -moz-user-select: none;
+           -ms-user-select: none;
+       }
+
+       .coin-container:active {
+           cursor: grabbing;
+       }
+
+       .coin {
+           width: 50px;
+           height: 50px;
+           border-radius: 50%;
+           background: #d4af37;
+           border: 2px solid #b8932b;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           font-weight: 600;
+           color: #4a3c1d;
+           font-size: 11px;
+           box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+           font-family: 'Arial', sans-serif;
+           /* Important: prevent text selection */
+           user-select: none;
+           -webkit-user-select: none;
+           -moz-user-select: none;
+           -ms-user-select: none;
+           /* Add pointer events */
+           pointer-events: auto;
+       }
+
+       /* Drop area styles - improved version */
+       .drop-box {
+           width: 400px;
+           height: 200px;
+           border: 3px solid #999;
+           border-radius: 12px;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           background-color: #fafafa;
+           transition: all 0.2s ease;
+           position: relative;
+           padding: 25px;
+           /* Important: ensure drop area can receive drop events */
+           pointer-events: auto;
+       }
+
+       .drop-box.drag-over {
+           /* Remove light blue effect during drag */
+       }
+
+       .drop-box.selected {
+           border-color: #2c3e50;
+           border-width: 4px;
+           background-color: #ecf0f1;
+       }
+
+       .drop-box .box-text {
+           font-size: 20px;
+           font-weight: 600;
+           color: rgba(0, 0, 0, 0.95);
+           text-align: center;
+           position: absolute;
+           top: 20px;
+           user-select: none;
+       }
+
+       /* Click hint styles */
+       .click-hint {
+           position: absolute;
+           bottom: 15px;
+           font-size: 14px;
+           color: #666;
+           font-style: italic;
+           opacity: 0.8;
+           user-select: none;
+       }
+
+       .drop-box:hover {
+           /* Remove all hover effects, including pointer cursor */
+       }
+
+       .drop-box:hover .click-hint {
+           /* Remove blue text effect */
+       }
+
+       /* Coins in box styles */
+       .coins-in-box {
+           display: flex;
+           justify-content: center;
+           gap: 8px;
+           user-select: none;
+           -webkit-user-select: none;
+           -moz-user-select: none;
+           -ms-user-select: none;
+       }
+
+       .coin-in-box {
+           width: 50px;
+           height: 50px;
+           border-radius: 50%;
+           background: #d4af37;
+           border: 2px solid #b8932b;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           font-weight: 600;
+           color: #4a3c1d;
+           font-size: 11px;
+           box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+           font-family: 'Arial', sans-serif;
+           cursor: grab;
+           user-select: none;
+           -webkit-user-select: none;
+           -moz-user-select: none;
+           -ms-user-select: none;
+       }
+
+       .coin-in-box:active {
+           cursor: grabbing;
+       }
+
+       /* Game area layout */
+       .game-area {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           gap: 30px;
+           margin: 30px 0;
+       }
+
+       .choices-container {
+           display: flex;
+           justify-content: center;
+           gap: 50px;
+           margin-top: 30px;
+       }
+
+       /* Instruction text */
+       .instruction-text {
+           font-size: 16px;
+           color: #555;
+           margin: 15px 0;
+           text-align: center;
+       }
+
+       /* Success state */
+       .success-feedback {
+           color: #27ae60;
+           font-size: 16px;
+           font-weight: 500;
+           margin-top: 15px;
+           opacity: 0;
+           transition: opacity 0.3s ease;
+           text-align: center;
+           background-color: #d4edda;
+           border: 1px solid #c3e6cb;
+           border-radius: 4px;
+           padding: 10px 15px;
+       }
+
+       .success-feedback.show {
+           opacity: 1;
+       }
+
+       /* Debug info styles */
+       .debug-info {
+           background-color: #f8f9fa;
+           border: 1px solid #dee2e6;
+           border-radius: 4px;
+           padding: 10px;
+           margin: 10px 0;
+           font-family: monospace;
+           font-size: 12px;
+           color: #495057;
+       }
+
+       /* Browser compatibility styles */
+       * {
+           box-sizing: border-box;
+       }
+
+       /* Ensure it works properly on mobile devices */
+       @media (max-width: 768px) {
+           .choices-container {
+               flex-direction: column;
+               gap: 30px;
+           }
+
+           .drop-box {
+               width: 300px;
+               height: 150px;
+           }
+       }
+   </style>
+
+   <!-- Progress bar -->
+   {% include 'global/ProgressBar.html' %}
+
+   <!-- Bonus prompt -->
+   <div style="background-color: #fff9db; border-radius: 4px; padding: 15px 20px; margin: 20px 0 30px 0; display: flex; align-items: center;">
+       <div style="background-color: #f8ca4d; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+           <span style="color: white; font-weight: bold; font-size: 16px;">$</span>
+       </div>
+       <p style="margin: 0; font-size: 18px; color: #866118;">
+           All payoffs are real and will be added as a bonus to your payment.
+       </p>
+   </div>
+
+   <!-- Hidden form field -->
+   <div class="form-group mb-4" style="display: none;">
+       {{ formfield 'decision' }}
+   </div>
+
+   <div style="display: flex; justify-content: center; margin: 30px 0;">
+       <div style="width: 100%; max-width: 900px;">
+           <!-- Error message -->
+           <div id="error-message" style="display: none;" class="inline-error">
+               Please drag the coins to make your decision or click on one of the boxes.
+           </div>
+
+           <!-- Success feedback -->
+           <div id="success-feedback" class="success-feedback" style="display: none;">
+               Decision recorded successfully!
+           </div>
+
+           <!-- Debug info (only shown in dev mode) -->
+           <div id="debug-info" class="debug-info" style="display: none;">
+               <strong>Debug Info:</strong><br>
+               Decision Value: <span id="debug-decision-value">None</span><br>
+               Validation Status: <span id="debug-validation-status">Pending</span><br>
+               Last Action: <span id="debug-last-action">Page loaded</span>
+           </div>
+
+           <!-- Decision label -->
+           <div style="margin: 35px 0; text-align: center;">
+               <label style="display: block; margin-bottom: 30px; font-size: 1.8em; font-weight: bold; color: #000000;">
+                   Please make your decision:
+               </label>
+           </div>
+
+           <!-- Game area -->
+           <div class="game-area">
+               <!-- 5 ten-cent coins -->
+               <div id="coin-container" class="coin-container" draggable="true">
+                   <div class="coin">10¢</div>
+                   <div class="coin">10¢</div>
+                   <div class="coin">10¢</div>
+                   <div class="coin">10¢</div>
+                   <div class="coin">10¢</div>
+               </div>
+
+               <!-- Instruction text -->
+               <div class="instruction-text">
+                   Drag your $0.50 to one of the options below.
+               </div>
+
+               <!-- Choice boxes -->
+               <div class="choices-container">
+                   <!-- Left: Put into pool -->
+                   <div id="pool-box" class="drop-box" data-choice="Put into pool">
+                       <div class="box-text">Put into pool</div>
+                    </div>
+
+                   <!-- Right: Keep for myself -->
+                   <div id="keep-box" class="drop-box" data-choice="Keep the money">
+                       <div class="box-text">Keep the money</div>
+                    </div>
+               </div>
+           </div>
+
+           <!-- Reminder table -->
+           <p style="margin-top: 55px; font-size: 1.3rem; color: #444; line-height: 1.5;">
+               Reminder:
+           </p>
+
+           <div style="margin: 20px 0;">
+               <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                   <thead>
+                       <tr>
+                           <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Other Participant's Decision</th>
+                           <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Your Decision</th>
+                           <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Other Participant's Payoff</th>
+                           <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Your Payoff</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <tr>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.80</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.80</td>
+                       </tr>
+                       <tr>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.50</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.50</td>
+                       </tr>
+                       <tr>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.90</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.40</td>
+                       </tr>
+                       <tr>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.40</td>
+                           <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.90</td>
+                       </tr>
+                   </tbody>
+               </table>
+               <p style="margin-top: 10px; font-size: 1.2rem;">
+                   Your final bonus from this task depends on <strong style="color: #000;">both</strong> decisions.
+                   Take your time to decide. If dragging does not work,
+                   please click directly on a box to select. Once you are satisfied with your choice, press "Continue."
+               </p>
+           </div>
+
+           <!-- Continue button -->
+           <div style="margin-top: 40px; text-align: right;">
+               <button id="continue-button" type="button" class="btn btn-primary"
+                       style="font-size: 20px; padding: 10px 28px; background-color: #3366ff; color: white; border: none; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s ease;">
+                   Continue
+               </button>
+           </div>
+       </div>
+   </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+    // Improved drag implementation with enhanced browser compatibility
+    class DragDropManager {
+        constructor() {
+            this.coinContainer = document.getElementById('coin-container');
+            this.poolBox = document.getElementById('pool-box');
+            this.keepBox = document.getElementById('keep-box');
+            this.decisionInput = document.getElementById('id_decision');
+            this.continueButton = document.getElementById('continue-button');
+            this.errorMessage = document.getElementById('error-message');
+            this.successFeedback = document.getElementById('success-feedback');
+            this.form = document.querySelector('form');
+
+            // Debug related elements
+            this.debugInfo = document.getElementById('debug-info');
+            this.debugDecisionValue = document.getElementById('debug-decision-value');
+            this.debugValidationStatus = document.getElementById('debug-validation-status');
+            this.debugLastAction = document.getElementById('debug-last-action');
+
+            // Whether to enable debug mode (can be controlled via URL parameters)
+            this.isDebugMode = window.location.search.includes('debug=1');
+            if (this.isDebugMode) {
+                this.debugInfo.style.display = 'block';
+            }
+
+            this.currentChoice = '';
+            this.coinInBox = null;
+            this.isDragging = false;
+
+            // Valid choice constants
+            this.VALID_CHOICES = ['Put into pool', 'Keep the money'];
+
+            this.init();
+        }
+
+        init() {
+            this.setupDragEvents();
+            this.setupDropEvents();
+            this.setupTouchEvents();
+            this.setupButtonEvents();
+            this.setupKeyboardEvents();
+            this.initializePage();
+
+            console.log('DragDropManager initialized');
+        }
+
+        // Update debug info
+        updateDebugInfo(action) {
+            if (this.isDebugMode) {
+                this.debugDecisionValue.textContent = this.decisionInput.value || 'None';
+                this.debugValidationStatus.textContent = this.validateDecision() ? 'Valid' : 'Invalid';
+                this.debugLastAction.textContent = action + ' at ' + new Date().toLocaleTimeString();
+            }
+        }
+
+        // Validate decision data
+        validateDecision() {
+            const value = this.decisionInput.value;
+            return value && this.VALID_CHOICES.includes(value);
+        }
+
+        setupDragEvents() {
+            // Original coin drag events
+            this.coinContainer.addEventListener('dragstart', (e) => {
+                console.log('Drag started');
+                this.isDragging = true;
+                this.coinContainer.style.opacity = '0.7';
+
+                // Set drag data - multiple formats to ensure compatibility
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', 'original-coin');
+                e.dataTransfer.setData('text/html', 'original-coin');
+                e.dataTransfer.setData('application/json', JSON.stringify({type: 'original-coin'}));
+
+                // Prevent default text selection behavior
+                e.stopPropagation();
+                this.updateDebugInfo('Drag started');
+            });
+
+            this.coinContainer.addEventListener('dragend', (e) => {
+                console.log('Drag ended');
+                this.coinContainer.style.opacity = '1';
+                this.isDragging = false;
+                this.updateDebugInfo('Drag ended');
+            });
+        }
+
+        setupDropEvents() {
+            [this.poolBox, this.keepBox].forEach(box => {
+                // dragover - must preventDefault to receive drop events
+                box.addEventListener('dragover', (e) => {
+                    e.preventDefault(); // This is key!
+                    e.stopPropagation();
+                    e.dataTransfer.dropEffect = 'move';
+                    box.classList.add('drag-over');
+                    console.log('Drag over:', box.dataset.choice);
+                });
+
+                // dragleave
+                box.addEventListener('dragleave', (e) => {
+                    // Only remove style when truly leaving the box
+                    if (!box.contains(e.relatedTarget)) {
+                        box.classList.remove('drag-over');
+                    }
+                });
+
+                // drop event
+                box.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    box.classList.remove('drag-over');
+
+                    console.log('Drop event on:', box.dataset.choice);
+
+                    // Try multiple ways to get drag data
+                    let dragData = e.dataTransfer.getData('text/plain') ||
+                                  e.dataTransfer.getData('text/html') ||
+                                  e.dataTransfer.getData('text');
+
+                    console.log('Drag data:', dragData);
+
+                    const choice = box.dataset.choice;
+
+                    if (dragData === 'original-coin') {
+                        this.moveCoinToBox(box, choice);
+                    } else if (dragData === 'coin-from-box') {
+                        this.moveCoinToBox(box, choice);
+                    } else {
+                        // Fallback: if data retrieval fails, still execute move
+                        console.warn('Drag data not recognized, executing move anyway');
+                        this.moveCoinToBox(box, choice);
+                    }
+
+                    this.updateDebugInfo('Drop completed');
+                });
+            });
+
+            // Add global drop event handling (for moving back to original position)
+            document.addEventListener('dragover', (e) => {
+                if (!e.target.closest('.drop-box')) {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('drop', (e) => {
+                if (!e.target.closest('.drop-box')) {
+                    e.preventDefault();
+                    const dragData = e.dataTransfer.getData('text/plain') ||
+                                    e.dataTransfer.getData('text/html');
+                    if (dragData === 'coin-from-box') {
+                        this.moveCoinBack();
+                    }
+                }
+            });
+        }
+
+        setupTouchEvents() {
+            // Improved touch event handling
+            let touchStartX, touchStartY, touchElement;
+
+            const handleTouchStart = (e) => {
+                const touch = e.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                touchElement = e.currentTarget;
+                touchElement.style.opacity = '0.7';
+                console.log('Touch start');
+                this.updateDebugInfo('Touch started');
+            };
+
+            const handleTouchMove = (e) => {
+                e.preventDefault(); // Prevent scrolling
+                const touch = e.touches[0];
+                const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+
+                // Clear all drag-over effects
+                [this.poolBox, this.keepBox].forEach(box => box.classList.remove('drag-over'));
+
+                // Check if over drop area
+                const dropBox = elementBelow?.closest('.drop-box');
+                if (dropBox) {
+                    dropBox.classList.add('drag-over');
+                }
+            };
+
+            const handleTouchEnd = (e) => {
+                if (touchElement) {
+                    touchElement.style.opacity = '1';
+                }
+
+                const touch = e.changedTouches[0];
+                const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+
+                // Clear drag-over effects
+                [this.poolBox, this.keepBox].forEach(box => box.classList.remove('drag-over'));
+
+                // Check drop target
+                const dropBox = elementBelow?.closest('.drop-box');
+                if (dropBox) {
+                    const choice = dropBox.dataset.choice;
+                    this.moveCoinToBox(dropBox, choice);
+                } else if (touchElement && touchElement.classList.contains('coins-in-box')) {
+                    // If dragged from box to empty area
+                    this.moveCoinBack();
+                }
+
+                touchElement = null;
+                console.log('Touch end');
+                this.updateDebugInfo('Touch ended');
+            };
+
+            // Add touch events for original coins
+            this.coinContainer.addEventListener('touchstart', handleTouchStart, {passive: false});
+            this.coinContainer.addEventListener('touchmove', handleTouchMove, {passive: false});
+            this.coinContainer.addEventListener('touchend', handleTouchEnd, {passive: false});
+        }
+
+        setupButtonEvents() {
+            this.continueButton.addEventListener('click', () => {
+                console.log('Continue button clicked');
+                console.log('Current decision value:', this.decisionInput.value);
+
+                // Clear previous messages
+                this.clearMessages();
+
+                // Multi-layer validation
+                if (!this.decisionInput.value) {
+                    this.showErrorMessage('Please drag your $0.50 to one of the options or click on one of the boxes.');
+                    this.updateDebugInfo('Continue clicked - no decision');
+                    return;
+                }
+
+                if (!this.VALID_CHOICES.includes(this.decisionInput.value)) {
+                    this.showErrorMessage('Invalid decision detected: "' + this.decisionInput.value + '". Please make a valid choice.');
+                    this.updateDebugInfo('Continue clicked - invalid decision: ' + this.decisionInput.value);
+                    return;
+                }
+
+                // Final validation
+                if (!this.validateDecision()) {
+                    this.showErrorMessage('Decision validation failed. Please try making your choice again.');
+                    this.updateDebugInfo('Continue clicked - validation failed');
+                    return;
+                }
+
+                // Final check before submission
+                console.log('Submitting form with decision:', this.decisionInput.value);
+                this.updateDebugInfo('Form submission initiated');
+
+                try {
+                    this.form.submit();
+                } catch (error) {
+                    console.error('Form submission error:', error);
+                    this.showErrorMessage('Error submitting form. Please try again.');
+                    this.updateDebugInfo('Form submission error');
+                }
+            });
+
+            // Add click selection functionality as fallback for drag
+            this.setupClickSelection();
+        }
+
+        setupClickSelection() {
+            [this.poolBox, this.keepBox].forEach(box => {
+                box.addEventListener('click', (e) => {
+                    // Prevent repeated clicks when coins are already in the box
+                    if (this.coinInBox && this.coinInBox.parentElement === box) {
+                        return;
+                    }
+
+                    const choice = box.dataset.choice;
+                    console.log('Box clicked:', choice);
+
+                    // Otherwise move to clicked box
+                    this.moveCoinToBox(box, choice);
+
+                    // Add click feedback effect
+                    box.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        box.style.transform = 'scale(1)';
+                    }, 150);
+                });
+
+                // Add visual feedback
+                box.addEventListener('mousedown', () => {
+                    box.style.transform = 'scale(0.98)';
+                });
+
+                box.addEventListener('mouseup', () => {
+                    box.style.transform = 'scale(1)';
+                });
+
+                box.addEventListener('mouseleave', () => {
+                    box.style.transform = 'scale(1)';
+                });
+            });
+        }
+
+        setupKeyboardEvents() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && this.validateDecision()) {
+                    this.continueButton.click();
+                }
+
+                // Optional: add keyboard shortcuts
+                if (e.key === '1' || e.key === 'p') {
+                    this.moveCoinToBox(this.poolBox, 'Put into pool');
+                } else if (e.key === '2' || e.key === 'k') {
+                    this.moveCoinToBox(this.keepBox, 'Keep the money');
+                }
+            });
+        }
+
+        createCoinsInBox() {
+            const coinsContainer = document.createElement('div');
+            coinsContainer.className = 'coins-in-box';
+            coinsContainer.draggable = true;
+
+            // Create 5 coins
+            for (let i = 0; i < 5; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin-in-box';
+                coin.textContent = '10¢';
+                coinsContainer.appendChild(coin);
+            }
+
+            // Add drag events for entire container
+            coinsContainer.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', 'coin-from-box');
+                e.dataTransfer.setData('text/html', 'coin-from-box');
+                coinsContainer.style.opacity = '0.7';
+            });
+
+            coinsContainer.addEventListener('dragend', (e) => {
+                coinsContainer.style.opacity = '1';
+            });
+
+            // Add touch event handling...
+            // (touch event code same as before)
+
+            return coinsContainer;
+        }
+
+        moveCoinToBox(targetBox, choice) {
+            // Input validation
+            if (!choice || !this.VALID_CHOICES.includes(choice)) {
+                console.error('Invalid choice provided:', choice);
+                this.showErrorMessage('Invalid choice detected. Please try again.');
+                this.updateDebugInfo('Invalid choice attempt');
+                return;
+            }
+
+            console.log('Moving coin to:', choice);
+
+            // Remove previous coins
+            if (this.coinInBox) {
+                this.coinInBox.remove();
+            }
+
+            // Hide original coins
+            this.coinContainer.style.display = 'none';
+
+            // Create new coins and add to target box
+            this.coinInBox = this.createCoinsInBox();
+            targetBox.appendChild(this.coinInBox);
+
+            // Update selection state
+            this.selectChoice(choice);
+            this.updateBoxStates(targetBox);
+
+            // Hide click hints, show selection state
+            this.updateClickHints();
+
+            this.updateDebugInfo('Coin moved to box');
+        }
+
+        updateClickHints() {
+            [this.poolBox, this.keepBox].forEach(box => {
+                const hint = box.querySelector('.click-hint');
+                if (box.classList.contains('selected')) {
+                    // Hide hint instead of showing checkmark
+                    hint.style.display = 'none';
+                } else {
+                    hint.textContent = 'Click to select';
+                    hint.style.color = '#666';
+                    hint.style.fontWeight = 'normal';
+                    hint.style.display = 'block';
+                }
+            });
+        }
+
+        moveCoinBack() {
+            console.log('Moving coin back');
+
+            if (this.coinInBox) {
+                this.coinInBox.remove();
+                this.coinInBox = null;
+            }
+
+            // Show original coins
+            this.coinContainer.style.display = 'flex';
+
+            // Reset state
+            this.resetChoice();
+            this.updateDebugInfo('Coin moved back');
+        }
+
+        updateBoxStates(selectedBox) {
+            [this.poolBox, this.keepBox].forEach(box => {
+                box.classList.remove('selected', 'drag-over');
+            });
+            selectedBox.classList.add('selected');
+        }
+
+        selectChoice(choice) {
+            // Input validation
+            if (!choice) {
+                console.error('No choice provided to selectChoice function');
+                this.showErrorMessage('No choice detected. Please make a selection.');
+                this.updateDebugInfo('Empty choice attempt');
+                return;
+            }
+
+            if (!this.VALID_CHOICES.includes(choice)) {
+                console.error('Invalid choice provided:', choice);
+                this.showErrorMessage('Invalid choice detected: ' + choice);
+                this.updateDebugInfo('Invalid choice: ' + choice);
+                return;
+            }
+
+            // Update internal state
+            this.currentChoice = choice;
+            this.decisionInput.value = choice;
+
+            // Verify update was successful
+            if (this.decisionInput.value !== choice) {
+                console.error('Failed to update form field value');
+                this.showErrorMessage('Failed to record your decision. Please try again.');
+                this.updateDebugInfo('Form field update failed');
+                return;
+            }
+
+            // Log record
+            console.log('Decision successfully recorded:', choice);
+            this.updateDebugInfo('Choice selected: ' + choice);
+        }
+
+        resetChoice() {
+            this.currentChoice = '';
+            this.decisionInput.value = '';
+            [this.poolBox, this.keepBox].forEach(box => {
+                box.classList.remove('selected', 'drag-over');
+            });
+            this.clearMessages();
+
+            // Reset click hints - redisplay all hints
+            [this.poolBox, this.keepBox].forEach(box => {
+                const hint = box.querySelector('.click-hint');
+                hint.textContent = 'Click to select';
+                hint.style.color = '#666';
+                hint.style.fontWeight = 'normal';
+                hint.style.display = 'block';
+            });
+
+            this.updateDebugInfo('Choice reset');
+        }
+
+        // Show error message
+        showErrorMessage(message) {
+            this.errorMessage.textContent = message;
+            this.errorMessage.style.display = 'block';
+
+            // Hide success message
+            this.successFeedback.style.display = 'none';
+            this.successFeedback.classList.remove('show');
+
+            // Scroll to error message
+            this.errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Clear all messages
+        clearMessages() {
+            this.errorMessage.style.display = 'none';
+            this.successFeedback.style.display = 'none';
+            this.successFeedback.classList.remove('show');
+        }
+
+        // Page load state restoration and validation
+        initializePage() {
+            this.updateDebugInfo('Page initialized');
+
+            // Check if there's an existing choice (after page refresh)
+            if (this.decisionInput.value) {
+                console.log('Restoring previous decision:', this.decisionInput.value);
+
+                if (this.validateDecision()) {
+                    if (this.decisionInput.value === 'Put into pool') {
+                        this.moveCoinToBox(this.poolBox, 'Put into pool');
+                    } else if (this.decisionInput.value === 'Keep the money') {
+                        this.moveCoinToBox(this.keepBox, 'Keep the money');
+                    }
+                    console.log('Previous decision restored successfully');
+                    this.updateDebugInfo('Previous decision restored');
+                } else {
+                    console.warn('Invalid previous decision found:', this.decisionInput.value);
+                    this.decisionInput.value = '';
+                    this.updateDebugInfo('Invalid previous decision cleared');
+                }
+            }
+
+            // Periodic data integrity validation (every 5 seconds)
+            setInterval(() => {
+                if (this.decisionInput.value && !this.validateDecision()) {
+                    console.warn('Data integrity check failed');
+                    this.showErrorMessage('Data integrity issue detected. Please make your choice again.');
+                    this.resetChoice();
+                }
+            }, 5000);
+        }
+    }
+
+    // Hide default oTree next button
+    const otreeBtn = document.querySelector('.otree-btn-next');
+    if (otreeBtn) {
+        otreeBtn.style.display = 'none';
+    }
+
+    // Check browser compatibility
+    const hasNativeDragDrop = 'draggable' in document.createElement('div');
+    const hasTouchEvents = 'ontouchstart' in window;
+    
+    console.log('Browser capabilities:', {
+        nativeDragDrop: hasNativeDragDrop,
+        touchEvents: hasTouchEvents,
+        userAgent: navigator.userAgent
+    });
+    
+    // Initialize drag manager
+    const dragDropManager = new DragDropManager();
+    
+    // Add global error handling
+    window.addEventListener('error', (e) => {
+        console.error('JavaScript error:', e.error);
+    });
+});
+</script>
+
+{% endblock %}
