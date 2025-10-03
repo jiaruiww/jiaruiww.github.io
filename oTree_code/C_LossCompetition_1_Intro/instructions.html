@@ -1,0 +1,300 @@
+<!--<div class="card">-->
+    <div class="card-body">
+        <p class="study-description">This study consists of Competition and Survey Sections.
+You will receive a <strong>base</strong> payment of <strong>$6.00</strong> for participating.
+You may <strong>lose up to $4</strong> of this amount in the Competition Section.
+             Bonuses are available in the Survey Section.
+            Your final payment will depend on your performance and decisions.
+The entire study will take approximately 15 to 25 minutes to complete.</p>
+
+        <!-- Task Section -->
+        <h3 class="section-header mt-5">Competition Section</h3>
+
+        <p class="task-instructions mb-4">
+           You will be randomly paired with another participant for an
+             IQ Quiz Competition (Intelligence Quotient Quiz Competition).
+            Only <strong>one</strong> of you will keep the initial payment of $6.
+             The participant with the higher  score will be the <strong>top performer</strong>
+            and <strong>keep the $6</strong>. The one with the lower score
+            will be the <strong>bottom performer</strong> and <strong>lose $4</strong> from their initial payment.
+             If both participants have the same score, one will be randomly selected to lose $4.
+            <br><br>
+
+           In the IQ Quiz Competition, you will <strong>earn 1 point</strong> for each correct answer, <strong>lose 0.25 points</strong> for each incorrect answer,
+            and neither earn nor lose any points for skipped questions.
+
+            Once you submit an answer or skip a question, you <i>cannot</i> go back to it. The quiz consists of fifty questions,
+            and you will have <i>4 minutes</i>  to answer as many as possible. <br><br>
+
+            Throughout the competition, <strong>you will see your opponent's <u>raw</u> score in real time</strong>,
+            which shows only the number of questions they have answered correctly (without any deductions for wrong answers).
+            You will not see your own score during the competition.
+            Your final score and competition results will be revealed at the end of the study.
+            <br><br>
+
+            Before the competition begins, you will have the opportunity to answer <em>a practice question</em>
+            to get familiar with the quiz format.
+        </p>
+
+
+        <!-- Survey Section -->
+        <h3 class="section-header mt-5">Survey Section</h3>
+
+        <p class="task-instructions mb-4">You will answer six survey questions and complete a decision-making task,
+            followed by a few final survey questions. Some questions offer bonuses
+            and will be clearly marked.</p>
+
+        <!-- Comprehension Question - removed header -->
+
+
+
+        <p class="comprehension-intro mb-4">
+            <em>Before we proceed, let's ensure you understand the instructions clearly.
+                Please answer the following question correctly to continue.</em>
+        </p>
+
+        <!-- Custom error message container -->
+        <div id="custom-error-container" class="custom-error-message" style="display: none;">
+            Incorrect. Please review the instructions and try again.
+        </div>
+
+        <div class="comprehension-question mb-4">
+            {% formfield player.intro_comp_answer %}
+            <div class="empty-selection-error">
+                Please answer correctly to continue.
+            </div>
+        </div>
+    </div>
+<!--</div>-->
+
+<!-- Global next button - keep only this one -->
+<div class="next-button-container">
+    {% next_button %}
+</div>
+
+<style>
+    .card-body {
+        padding: 30px;
+        font-family: 'Arial', sans-serif;
+        background-color: #ffffff; /* White background for serious experiment style */
+        color: #000000; /* Black text for readability */
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .study-description, .task-instructions, .section-header {
+        font-size: 20px;
+        line-height: 1.6;
+        color: #000000;
+    }
+
+    .task-instructions {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 1.8;
+        padding: 15px;
+        border: 1px solid #e1e7ef; /* Subtle border */
+        background-color: #f7f9fc; /* Lighter blue-gray for a more professional look */
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+
+    /* Comprehension check styling */
+    .comprehension-intro {
+        font-size: 20px;
+        line-height: 1.8;
+        margin: 30px 0 15px 0;
+    }
+
+    .comprehension-question {
+        font-size: 20px;
+        line-height: 1.8;
+        margin: 15px 0;
+    }
+
+    .section-header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    /* Global next button styling */
+    .next-button-container {
+        margin-top: 40px;
+        text-align: right;
+        display: flex;
+        justify-content: flex-end; /* Ensures right alignment */
+        width: 100%;
+    }
+
+    .next-button-container button {
+        font-size: 20px;
+        padding: 10px 25px;
+        background-color: #3366ff; /* Blue color to match image */
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    /* Hide any default Next buttons that might be rendered by oTree */
+    .otree-btn-next:not(.next-button-container button) {
+        display: none;
+    }
+
+    /* Override any framework styling that might affect the Next button */
+    .next-button, button[type="submit"], input[type="submit"] {
+        float: right !important;
+    }
+
+    /* Styling for oTree form fields */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        font-size: 18px;
+    }
+
+    /* Style radio buttons for better appearance */
+    .radio {
+        margin-bottom: 10px;
+    }
+
+    .radio label {
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+    }
+
+    .radio input[type="radio"] {
+        margin-right: 10px;
+        transform: scale(1.2);
+    }
+
+    /* Error message styling */
+    .invalid-feedback, .alert-danger {
+        display: none !important; /* Hide all default error messages */
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
+        font-size: 18px;
+    }
+
+    /* Custom error message for empty selection */
+    .empty-selection-error {
+        display: none;
+    }
+
+    /* Show custom error when form is submitted without selection */
+    .was-validated .empty-selection-error:not(:has(input:checked)) {
+        display: block;
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
+        font-size: 18px;
+    }
+
+    /* Custom error message styling */
+    .custom-error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    /* Hide the default oTree error alert */
+    .otree-form-errors {
+        display: none !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if there are form errors
+    const hasErrors = document.querySelector('.otree-form-errors, .has-error');
+    const customErrorContainer = document.getElementById('custom-error-container');
+
+    // Get scroll position from sessionStorage if available
+    const savedScrollPosition = sessionStorage.getItem('saved_scroll_position');
+    if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition));
+        // Clear it after use
+        sessionStorage.removeItem('saved_scroll_position');
+    }
+
+    if (hasErrors) {
+        // Show our custom error message
+        customErrorContainer.style.display = 'block';
+
+        // Hide the default oTree error at the top if it exists
+        const otreeFormErrors = document.querySelector('.otree-form-errors');
+        if (otreeFormErrors) {
+            otreeFormErrors.style.display = 'none';
+        }
+
+        // Also hide the alert at the top if it exists
+        const alertError = document.querySelector('.alert.alert-danger');
+        if (alertError) {
+            alertError.style.display = 'none';
+        }
+
+        // Hide any field-specific error messages
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }
+
+    // Also set up a listener for form submission to potentially show errors
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            // Save the current scroll position before submitting
+            sessionStorage.setItem('saved_scroll_position', window.scrollY);
+
+            // Save the form data so we can check it after page reload
+            const radios = document.querySelectorAll('input[name="intro_comp_answer"]');
+            let selectedValue = null;
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                }
+            });
+
+            if (selectedValue && selectedValue !== "B") {
+                // If an incorrect answer is selected, we know there will be an error
+                // Store this in sessionStorage to check after reload
+                sessionStorage.setItem('show_custom_error', 'true');
+            }
+        });
+    }
+
+    // Check if we previously set the flag to show error (for after form submit)
+    if (sessionStorage.getItem('show_custom_error') === 'true') {
+        customErrorContainer.style.display = 'block';
+        // Clear the flag
+        sessionStorage.removeItem('show_custom_error');
+    }
+
+    // Make sure to hide any field-specific error messages that might appear after page reload
+    setTimeout(function() {
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }, 100);
+});
+</script>

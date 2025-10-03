@@ -1,0 +1,64 @@
+{{ block title }} {{ endblock }}
+
+{{ block content }}
+
+<!--    <p>Please read the following consent form carefully before proceeding:</p>-->
+
+<style>
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+    .consent-checkbox {
+        font-size: 20px;
+        line-height: 1.5;
+        display: flex;
+        align-items: flex-start; /* Align to top for multi-line text */
+    }
+    .consent-checkbox input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 10px;
+        flex-shrink: 0; /* Prevents the checkbox from shrinking */
+        margin-top: 5px; /* Adds a small top margin to align with the first line */
+    }
+    /* Override any framework styling that might affect the Next button */
+    .next-button, button[type="submit"], input[type="submit"] {
+        float: right !important;
+    }
+</style>
+
+<div style="display: flex; align-items: center;">
+    <img src="{{static 'BU_logo.png'}}" alt="Welcome Image" style="margin-right: 10px;" width="135"/>
+    <h1>Welcome!</h1>
+</div>
+
+<br>
+
+{{ include_sibling 'consent_form.html' }}
+
+<br>
+
+<div class="consent-checkbox">
+    <input type="checkbox" name="consent_given" id="consent-checkbox" required>
+    <label for="consent-checkbox">
+        <strong>I consent to participate in this study.</strong> By checking this box,
+        I confirm that I have read and understood the information provided about the purpose, risks, and benefits of this study.
+        I understand that my participation is voluntary and I agree to the use of my data as described in the study information.
+    </label>
+</div>
+
+<br>
+
+<div class="button-container">
+    {% next_button %}
+</div>
+
+{{ endblock }}

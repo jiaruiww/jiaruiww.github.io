@@ -1,0 +1,58 @@
+{{ block title }}
+    <div class="centered-title">Instructions</div>
+{{ endblock }}
+
+{{ block content }}
+
+    {{ include_sibling 'instructions.html' }}
+
+    <br>
+
+    <div class="button-container">
+        {% next_button %}
+    </div>
+
+    <style>
+        .centered-title {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            color: #080809;
+        }
+
+        /* Aligns the button at the bottom right */
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* Moves button to the right */
+            margin-top: 30px; /* Adds space above the button */
+        }
+
+        /* Make oTree's next button larger while keeping its original color */
+        .otree-btn-next {
+            font-size: 20px;
+            padding: 9px 25px;
+        }
+
+        /* Hide the default oTree error alert */
+        .otree-form-errors, .alert-danger {
+            display: none !important;
+        }
+
+        /* Hide all field-specific error messages */
+        .invalid-feedback, .help-block {
+            display: none !important;
+        }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide the default "Please fix the errors" message at the top
+        const defaultErrorAlerts = document.querySelectorAll('.alert-danger, .otree-form-errors');
+        defaultErrorAlerts.forEach(alert => {
+            alert.style.display = 'none';
+        });
+    });
+    </script>
+
+{{ endblock }}

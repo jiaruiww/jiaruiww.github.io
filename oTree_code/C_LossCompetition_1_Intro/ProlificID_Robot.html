@@ -1,0 +1,179 @@
+{{ block title }}
+{{ endblock }}
+
+{{ block content }}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <br>
+            <form method="post" id="prolific-form">
+                <div class="form-group">
+                    <label for="id_prolific_id" style="font-size: 22px; font-weight: bold;"> What is your Prolific ID? </label>
+                    <small id="prolific_id_help" class="form-text text-muted" style="display: block; white-space: nowrap; font-style: italic; font-size: 16px;">
+                        Please make sure your prolific ID is entered correctly. We will use it to process payment.
+                    </small>
+                    <!-- Add required attribute to the input field -->
+                    <input type="text" class="form-control" id="id_prolific_id" name="prolific_id" value="{{ initial_prolific_id }}" required>
+                    <div class="invalid-feedback" id="prolific-error" style="display: none; color: red; margin-top: 5px;">
+                        Fill out this field.
+                    </div>
+                </div>
+
+                <br>
+                <br>
+                <br>
+
+                <!-- Google reCAPTCHA -->
+                <div class="form-group">
+                    <label style="font-size: 16px;"><i>Verify you are not a robot</i></label>
+                    <div style="margin-bottom: 10px;"></div>
+
+                    <div class="g-recaptcha" data-sitekey="6LfpUtoqAAAAADpiZTniBTtuOc-y_s1Gv84v93rv" data-callback="recaptchaCompleted"></div>
+
+                    <div class="invalid-feedback" id="recaptcha-error" style="display: none; color: red; margin-top: 5px;">
+                        Please complete the reCAPTCHA verification.
+                    </div>
+
+                    {% if captcha_failed %}
+                    <div class="alert alert-danger mt-2">
+                        CAPTCHA verification failed. Please try again.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <br>
+                <br>
+                <br>
+
+                <!-- Hidden field to track captcha verification -->
+                <input type="hidden" name="captcha_verified" id="captcha_verified" value="false">
+
+                <!-- Added hidden field to store the actual reCAPTCHA response token -->
+                <input type="hidden" name="recaptcha_response" id="recaptcha_response" value="">
+
+                <div class="button-container">
+                    <button type="submit" class="otree-btn-next btn btn-primary" id="next-button" disabled>
+                        Next
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include Google reCAPTCHA API -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+// Track the state of form validation
+let prolificIdValid = false;
+let recaptchaValid = false;
+
+// Function called when reCAPTCHA is completed
+function recaptchaCompleted(response) {
+    // Store the actual reCAPTCHA response token
+    document.getElementById('recaptcha_response').value = response;
+
+    recaptchaValid = true;
+    document.getElementById('captcha_verified').value = "true";
+    document.getElementById('recaptcha-error').style.display = 'none';
+    updateSubmitButton();
+}
+
+// Function to update the submit button state
+function updateSubmitButton() {
+    const nextButton = document.getElementById('next-button');
+    nextButton.disabled = !(prolificIdValid && recaptchaValid);
+}
+
+// Function to validate Prolific ID
+function validateProlificId() {
+    const prolificInput = document.getElementById('id_prolific_id');
+    const errorElement = document.getElementById('prolific-error');
+
+    if (prolificInput.value.trim() === '') {
+        prolificIdValid = false;
+        prolificInput.classList.add('is-invalid');
+        errorElement.style.display = 'block';
+    } else {
+        prolificIdValid = true;
+        prolificInput.classList.remove('is-invalid');
+        errorElement.style.display = 'none';
+    }
+
+    updateSubmitButton();
+}
+
+// Initialize form validation on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const prolificInput = document.getElementById('id_prolific_id');
+    const form = document.getElementById('prolific-form');
+
+    // Check initial Prolific ID value
+    if (prolificInput.value.trim() !== '') {
+        prolificIdValid = true;
+        updateSubmitButton();
+    }
+
+    // Add event listener for Prolific ID input
+    prolificInput.addEventListener('input', validateProlificId);
+
+    // Form submission validation
+    form.addEventListener('submit', function(event) {
+        validateProlificId();
+
+        if (!prolificIdValid) {
+            event.preventDefault();
+            return false;
+        }
+
+        if (!recaptchaValid) {
+            event.preventDefault();
+            document.getElementById('recaptcha-error').style.display = 'block';
+            return false;
+        }
+
+        return true;
+    });
+});
+</script>
+
+<style>
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+    .consent-checkbox {
+        font-size: 20px;
+        line-height: 1.5;
+        display: flex;
+        align-items: flex-start; /* Align to top for multi-line text */
+    }
+    .consent-checkbox input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 10px;
+        flex-shrink: 0; /* Prevents the checkbox from shrinking */
+        margin-top: 5px; /* Adds a small top margin to align with the first line */
+    }
+    /* Override any framework styling that might affect the Next button */
+    .next-button, button[type="submit"], input[type="submit"] {
+        float: right !important;
+    }
+
+    /* Style for the required field error message */
+    .invalid-feedback {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+</style>
+
+{{ endblock }}
