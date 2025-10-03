@@ -1,0 +1,239 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .question-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #000;
+        line-height: 1.4;
+    }
+
+    .question-explanation {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.5;
+        margin-bottom: 40px;
+    }
+
+    /* Progress Bar Styles */
+    .progress-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4d7ef7; /* Blue color */
+        transition: width 0.3s ease;
+    }
+
+    /* Likert scale styling */
+    .likert-scale {
+        display: flex;
+        justify-content: space-between;
+        margin: 60px 0 30px 0;
+        max-width: 1000px;
+    }
+
+    .likert-option {
+        text-align: center;
+        width: 60px;
+        margin: 0 10px;
+        position: relative;
+    }
+
+    .likert-option input[type="radio"] {
+        margin: 0 auto 15px;
+        display: block;
+        cursor: pointer;
+        height: 20px;
+        width: 20px;
+    }
+
+    .likert-option-number {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /* Statement labels under numbers */
+    .statement-label {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 15px;
+        white-space: nowrap;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+    }
+
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    /* Validation message */
+    .validation-message {
+        color: #e74c3c;
+        font-size: 16px;
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+        clear: both;
+    }
+
+    /* Description box */
+    .description-box {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin: 20px 0;
+        color: #555;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+</style>
+
+<div class="content-container">
+    <!-- Include progress bar -->
+    <div class="progress-container">
+        {% include 'global/ProgressBar.html' %}
+    </div>
+
+    <div class="question-title">
+        Based on your experience in the IQ Quiz Competition, how well do you think you performed compared to all other participants in this study, on a scale from 0 to 10?
+    </div>
+
+    <div class="question-explanation">
+        The lowest value (0) indicates that you believe you performed worse than almost everyone else, and the highest value (10) indicates that you believe you performed better than nearly all other participants.
+        For example, if you think you performed better than approximately 70% of all other participants, you should select 7. Please make your choice.
+    </div>
+
+    <form method="post" id="relativePerformanceForm" onsubmit="return validateForm()">
+        <div class="likert-scale">
+            <div class="likert-option">
+                <input type="radio" id="scale-0" name="relative_performance" value="0" required>
+                <div class="likert-option-number">0</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-1" name="relative_performance" value="1" required>
+                <div class="likert-option-number">1</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-2" name="relative_performance" value="2" required>
+                <div class="likert-option-number">2</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-3" name="relative_performance" value="3" required>
+                <div class="likert-option-number">3</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-4" name="relative_performance" value="4" required>
+                <div class="likert-option-number">4</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-5" name="relative_performance" value="5" required>
+                <div class="likert-option-number">5</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-6" name="relative_performance" value="6" required>
+                <div class="likert-option-number">6</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-7" name="relative_performance" value="7" required>
+                <div class="likert-option-number">7</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-8" name="relative_performance" value="8" required>
+                <div class="likert-option-number">8</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-9" name="relative_performance" value="9" required>
+                <div class="likert-option-number">9</div>
+            </div>
+
+            <div class="likert-option">
+                <input type="radio" id="scale-10" name="relative_performance" value="10" required>
+                <div class="likert-option-number">10</div>
+            </div>
+        </div>
+
+        <br>
+        <div class="validation-message" id="validationMessage">Please select an option to continue.</div>
+
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make the entire option clickable
+        const likertOptions = document.querySelectorAll('.likert-option');
+        likertOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const radioInput = this.querySelector('input[type="radio"]');
+                if (radioInput) {
+                    radioInput.checked = true;
+                    // Hide validation message when an option is selected
+                    document.getElementById('validationMessage').style.display = 'none';
+                }
+            });
+        });
+    });
+
+    function validateForm() {
+        const form = document.getElementById('relativePerformanceForm');
+        const radios = form.elements['relative_performance'];
+        let isChecked = false;
+
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+
+        if (!isChecked) {
+            document.getElementById('validationMessage').style.display = 'block';
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}
