@@ -1,0 +1,77 @@
+{{ extends "global/Page.html" }}
+{{ load otree }}
+
+{{ block content }}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+    }
+
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .header {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+        color: #000;
+    }
+
+    p {
+        font-size: 20px;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        color: #000;
+    }
+
+    .status-reminder {
+        margin-bottom: 30px;
+    }
+
+    .button-container {
+        text-align: right;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+
+    .otree-btn-next {
+        font-size: 18px;
+        padding: 10px 25px;
+    }
+</style>
+
+<div class="content-container">
+    <div class="header">
+        <h1>Survey Introduction</h1>
+    </div>
+
+    <div class="status-reminder">
+        <p><strong>The IQ Quiz Competition is complete.</strong> You will see the results at the end of the study.
+        As a reminder, <strong>only the top performer will keep the full initial payment of $6, while
+                the bottom performer will lose $4.</strong></p>
+    </div>
+
+    <p>Next, you will answer six survey questions and complete a decision-making task,
+    followed by a few final survey questions. You can earn a bonus of up to <strong>$1.30</strong>
+    in this section, depending on your performance and decisions. Bonus-eligible questions will be clearly marked.</p>
+
+    <p>Please note that your responses will remain anonymous. Your honest responses are greatly appreciated.
+    To ensure high-quality research, attention checks are included throughout the survey.
+    Responses indicating inattention may be <strong>excluded</strong> from the analysis.</p>
+
+    <div class="button-container">
+        {{ next_button }}
+    </div>
+</div>
+{{ endblock }}
