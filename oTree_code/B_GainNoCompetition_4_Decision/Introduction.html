@@ -1,0 +1,217 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block form_errors %}
+    <!-- Override default error prompt, do not display any content -->
+{% endblock form_errors %}
+
+{% block content %}
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.4;
+        color: #000;
+        font-size: 18px; /* Base font size increased */
+    }
+    .content-container {
+        /* Preserving original width without specific constraints */
+        padding: 0;
+        margin: 0;
+    }
+    h3 {
+        font-size: 30px; /* Increased from 26px */
+        margin-bottom: 25px;
+        font-weight: 500;
+        padding-left: 15px;
+    }
+    p {
+        font-size: 18px; /* Increased from 16px */
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+    .main-box {
+        background-color: #fff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .question-box {
+        background-color: #fff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+    strong {
+        font-weight: 600;
+    }
+    .question-title {
+        font-style: italic;
+        margin-bottom: 15px;
+        font-size: 18px; /* Added explicit font size */
+    }
+    .question-text {
+        font-size: 18px; /* Increased from 16px */
+        margin-bottom: 25px;
+    }
+    .answer-options {
+        margin-top: 20px;
+        font-size: 18px; /* Added explicit font size */
+    }
+    .answer-option {
+        margin-bottom: 15px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0 20px 0;
+        font-size: 18px; /* Increased table font size */
+    }
+    th, td {
+        text-align: center;
+        padding: 12px; /* Slightly increased from 10px */
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #fff;
+        font-weight: 500;
+    }
+    .payoff-note {
+        margin: 20px 0 10px 0;
+        font-weight: 600;
+        color: #0345b2;
+    }
+    /* We're now using inline styles for the bonus box, so this class can be removed */
+    input[type="radio"] {
+        margin-right: 10px;
+    }
+    label {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 18px; /* Added explicit font size */
+    }
+    /* Target the otree form fields to increase their font size */
+    .form-control {
+        font-size: 18px;
+    }
+    /* Target any radio buttons and their labels */
+    input[type="radio"] + span {
+        font-size: 18px;
+    }
+    /* Style for error message */
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 15px;
+        margin: 15px 0;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+    /* Inline error message style */
+    .inline-error {
+        color: #cc2e39;
+        margin-top: 10px;
+        font-size: 18px;
+
+    }
+    /* Hide the top error alert */
+    .alert-danger {
+        display: none !important;
+    }
+</style>
+
+<!-- Include progress bar -->
+{% include 'global/ProgressBar.html' %}
+
+<!-- Styled bonus message with the same style as in BeliefElicitation.html -->
+<div style="background-color: #fff9db; border-radius: 4px; padding: 15px 20px; margin: 20px 0 30px 0; display: flex; align-items: center;">
+    <div style="background-color: #f8ca4d; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+        <span style="color: white; font-weight: bold; font-size: 16px;">$</span>
+    </div>
+    <p style="margin: 0; font-size: 18px; color: #866118;">
+        All payoffs are real and will be added as a bonus to your payment.
+    </p>
+</div>
+
+
+<h3>Decision-Making Task</h3>
+
+<div class="main-box">
+   <p>You are now paired with another random participant (not the person you interacted with earlier). </p>
+      <p> Each of you is given  <strong>$0.50</strong> and will independently decide whether to contribute it into a <strong>shared pool</strong> or to <strong>keep it</strong> for yourself.
+       Your final payment will depend on both of your decisions, as shown below:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Other Participant's Decision</th>
+                <th>Your Decision</th>
+                <th>Other Participant's Payoff</th>
+                <th>Your Payoff</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Put into pool</td>
+                <td>Put into pool</td>
+                <td>$0.80</td>
+                <td>$0.80</td>
+            </tr>
+            <tr>
+                <td>Keep the money</td>
+                <td>Keep the money</td>
+                <td>$0.50</td>
+                <td>$0.50</td>
+            </tr>
+            <tr>
+                <td>Keep the money</td>
+                <td>Put into pool</td>
+                <td>$0.90</td>
+                <td>$0.40</td>
+            </tr>
+            <tr>
+                <td>Put into pool</td>
+                <td>Keep the money</td>
+                <td>$0.40</td>
+                <td>$0.90</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="question-box">
+    <p class="question-title">Please answer the following question to ensure you understand the rules:</p>
+
+    <p class="question-text">If the other participant chooses to keep the money, and you choose to put the money into the pool, how much will you receive?</p>
+
+    <div class="answer-options">
+        <label for="id_understanding_check">Your Answer:</label>
+{{ form.understanding_check }}
+
+{% if form.understanding_check.errors %}
+    <div class="inline-error">
+        {{ form.understanding_check.errors.0 }}
+    </div>
+{% endif %}
+    </div>
+</div>
+
+<div class="button-container">
+    {% next_button %}
+</div>
+{% endblock %}
