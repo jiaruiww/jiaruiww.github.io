@@ -1,0 +1,225 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .quiz-title {
+        font-size: 28px;
+        color: #000;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .option-container {
+        margin-bottom: 10px;
+    }
+
+    .option-box {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 12px 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        width: 900px;
+        box-sizing: border-box;
+    }
+
+    .option-box:hover {
+        background-color: #f8f9fa;
+    }
+
+    .radio-circle {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .option-text {
+        font-size: 20px;
+    }
+
+    input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    input[type="radio"]:checked + .option-box .radio-circle {
+        border-color: #4d7ef7;
+    }
+    input[type="radio"]:checked + .option-box .radio-circle::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #4d7ef7;
+    }
+
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    .scenario-description {
+        font-size: 22px;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .emphasis {
+        color: #1A4B8C;
+        font-weight: 700;
+    }
+
+    .image-container {
+        text-align: center;
+        margin: 25px 0;
+    }
+
+    .image-container img {
+        max-width: 70%;
+        height: auto;
+    }
+
+    /* Progress Bar Styles */
+    .progress-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4d7ef7; /* Blue color */
+        transition: width 0.3s ease;
+    }
+
+    /* Validation message */
+    .validation-message {
+        color: #e74c3c;
+        font-size: 16px;
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+        clear: both;
+    }
+</style>
+
+<div class="content-container">
+    {% include 'global/ProgressBar.html' %}
+
+    <div class="scenario-description">
+        <p>
+            Consider a local job market where both <span class="emphasis">immigrants</span> and <span class="emphasis">locals</span> work as day laborers.
+            On Day 1, <span class="emphasis">immigrant workers</span> found <span class="emphasis">20 jobs</span>,
+            while <span class="emphasis">local workers</span> found <span class="emphasis">40 jobs</span>.
+            On Day 2, <span class="emphasis">immigrant workers</span> found <span class="emphasis">40 jobs</span>.
+        </p>
+
+        <p>
+            Which of the following estimates is more likely to be accurate regarding the number of jobs <span class="emphasis">local workers</span> found on Day 2?
+        </p>
+    </div>
+
+
+
+    <!-- Image of the day labor market - temporarily using the computer sales image -->
+    <div class="image-container">
+        <img src="/static/ZS_Labor_Update.png" alt="Labor market figure">
+    </div>
+    <br>
+    <br>
+    <form method="post" id="laborSurveyForm" onsubmit="return validateForm()">
+        <div class="option-container">
+            <label>
+                <input type="radio" name="labor_estimate" value="20" required>
+                <div class="option-box">
+                    <div class="radio-circle"></div>
+                    <span class="option-text">20 jobs</span>
+                </div>
+            </label>
+        </div>
+
+        <div class="option-container">
+            <label>
+                <input type="radio" name="labor_estimate" value="80" required>
+                <div class="option-box">
+                    <div class="radio-circle"></div>
+                    <span class="option-text">80 jobs</span>
+                </div>
+            </label>
+        </div>
+
+        <br>
+
+        <div class="validation-message" id="validationMessage">Please select an option to continue.</div>
+
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const optionBoxes = document.querySelectorAll('.option-box');
+        optionBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                const radioInput = this.parentElement.querySelector('input[type="radio"]');
+                radioInput.checked = true;
+                // Hide validation message when an option is selected
+                document.getElementById('validationMessage').style.display = 'none';
+                const event = new Event('change');
+                radioInput.dispatchEvent(event);
+            });
+        });
+    });
+
+    function validateForm() {
+        const form = document.getElementById('laborSurveyForm');
+        const radios = form.elements['labor_estimate'];
+        let isChecked = false;
+
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+
+        if (!isChecked) {
+            document.getElementById('validationMessage').style.display = 'block';
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}

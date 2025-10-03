@@ -1,0 +1,243 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .quiz-title {
+        font-size: 24px;
+        color: #000;
+        margin-bottom: 60px; /* INCREASED from 30px to 60px to create more space */
+        font-weight: bold;
+        line-height: 1.4;
+    }
+
+    /* Likert scale container */
+    .likert-container {
+        width: 100%;
+        margin: 40px 0;
+    }
+
+    /* Numeric scale styling */
+    .likert-scale {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+    }
+
+    .likert-option {
+        text-align: center;
+        width: 160px;
+    }
+
+    /* Radio button styling */
+    .likert-option input[type="radio"] {
+        margin: 0 auto 10px;
+        display: block;
+        cursor: pointer;
+        height: 20px;
+        width: 20px;
+    }
+
+    .likert-option label {
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .likert-option label div:first-child {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .likert-option label div.description {
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    /* New style for the endpoint descriptions to make them larger */
+    .description-endpoint {
+        font-size: 18px !important;
+        font-weight: normal;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    /* Scale endpoints labels */
+    .scale-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .scale-label {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .scale-label-left {
+        text-align: left;
+    }
+
+    .scale-label-right {
+        text-align: right;
+    }
+
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    /* Progress Bar Styles */
+    .progress-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4d7ef7; /* Blue color */
+        transition: width 0.3s ease;
+    }
+
+    /* Validation message */
+    .validation-message {
+        color: #e74c3c;
+        font-size: 16px;
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+    }
+</style>
+
+<div class="content-container">
+    {% include 'global/ProgressBar.html' %}
+
+    <h1 class="quiz-title">On a scale from 1 (not at all likely) to 7 (extremely likely),
+        how likely would you be to voluntarily take another 10 IQ questions,
+        similar to the ones you just saw in the IQ quiz, with no monetary rewards?</h1>
+    <!-- Removed this extra margin div since we increased the margin-bottom of quiz-title -->
+    <!-- <div style="margin-top: 10px;"></div> -->
+
+    <form method="post" id="voluntaryForm" onsubmit="return validateForm()">
+        <div class="likert-container">
+            <div class="likert-scale">
+                <div class="likert-option">
+                    <input type="radio" id="rating-1" name="likelihood_voluntary" value="1" required>
+                    <label for="rating-1">
+                        <div>1</div>
+                        <div class="description-endpoint">Not at all likely</div>
+                    </label>
+                </div>
+
+                <div class="likert-option">
+                    <input type="radio" id="rating-2" name="likelihood_voluntary" value="2" required>
+                    <label for="rating-2">
+                        <div>2</div>
+                    </label>
+                </div>
+
+                <div class="likert-option">
+                    <input type="radio" id="rating-3" name="likelihood_voluntary" value="3" required>
+                    <label for="rating-3">
+                        <div>3</div>
+                    </label>
+                </div>
+
+                <div class="likert-option">
+                    <input type="radio" id="rating-4" name="likelihood_voluntary" value="4" required>
+                    <label for="rating-4">
+                        <div>4</div>
+                    </label>
+                </div>
+
+                <div class="likert-option">
+                    <input type="radio" id="rating-5" name="likelihood_voluntary" value="5" required>
+                    <label for="rating-5">
+                        <div>5</div>
+                    </label>
+                </div>
+
+                <div class="likert-option">
+                    <input type="radio" id="rating-6" name="likelihood_voluntary" value="6" required>
+                    <label for="rating-6">
+                        <div>6</div>
+                    </label>
+                </div>
+
+                <div class="likert-option">
+                    <input type="radio" id="rating-7" name="likelihood_voluntary" value="7" required>
+                    <label for="rating-7">
+                        <div>7</div>
+                        <div class="description-endpoint">Extremely likely</div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="validation-message" id="validationMessage">Please select an option to continue.</div>
+
+        <br><br>
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make the entire option clickable
+        const likertOptions = document.querySelectorAll('.likert-option');
+        likertOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const radioInput = this.querySelector('input[type="radio"]');
+                if (radioInput) {
+                    radioInput.checked = true;
+                    // Hide validation message when an option is selected
+                    document.getElementById('validationMessage').style.display = 'none';
+                }
+            });
+        });
+    });
+
+    function validateForm() {
+        const form = document.getElementById('voluntaryForm');
+        const radios = form.elements['likelihood_voluntary'];
+        let isChecked = false;
+
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+
+        if (!isChecked) {
+            document.getElementById('validationMessage').style.display = 'block';
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}
