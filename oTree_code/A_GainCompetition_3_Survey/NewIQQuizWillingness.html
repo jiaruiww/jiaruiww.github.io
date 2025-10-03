@@ -1,0 +1,375 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .quiz-description {
+        font-size: 22px;
+        color: #000;
+        margin-bottom: 25px;
+        max-width: 1000px;
+        font-weight: bold;
+    }
+
+    /* Each row option container */
+    .amount-container {
+        display: flex;
+        align-items: center;
+        padding: 4px 0;
+    }
+
+    /* Amount label */
+    .amount-label {
+        font-size: 18px;
+        color: #333;
+        width: 70px;
+        text-align: left;
+    }
+
+    /* Options row */
+    .options-row {
+        display: flex;
+        gap: 15px;
+        flex-grow: 1;
+    }
+
+    /* Radio button and label container */
+    .option-label {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+    .option-label:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Radio button styling */
+    .radio-input {
+        margin-right: 10px;
+    }
+
+    /* Option text */
+    .option-text {
+        font-size: 16px;
+    }
+
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    /* Progress Bar Styles */
+    .progress-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4d7ef7;
+        transition: width 0.3s ease;
+    }
+
+    /* Validation message */
+    .validation-message {
+        color: #e74c3c;
+        font-size: 16px;
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+        clear: both;
+        float: right;
+        margin-right: 20px;
+    }
+</style>
+
+<div class="content-container">
+    <!-- Include progress bar -->
+    {% include 'global/ProgressBar.html' %}
+
+    <div class="quiz-description">
+        <p>Imagine you have another IQ quiz in front of you right now, similar to the one you just completed,
+            but with a different set of fifty questions.
+            You again have 4 minutes to answer as many as possible. <span style="color: #1A4B8C; font-weight: bold;">If you get at least 6 questions correct within the 4 minutes,
+                you will receive a payment.</span> Below is a list of payment amounts. For each amount, please indicate 'Yes' if you would be willing to take the quiz for that payment, or 'No' if you would not.</p>
+    </div>
+
+    <form method="post" id="quizWillingnessForm" onsubmit="return validateForm()">
+        <!-- $0.20 -->
+        <div class="amount-container">
+            <div class="amount-label">$0.20</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_020" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_020" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $0.40 -->
+        <div class="amount-container">
+            <div class="amount-label">$0.40</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_040" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_040" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $0.60 -->
+        <div class="amount-container">
+            <div class="amount-label">$0.60</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_060" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_060" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $0.80 -->
+        <div class="amount-container">
+            <div class="amount-label">$0.80</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_080" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_080" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $1.00 -->
+        <div class="amount-container">
+            <div class="amount-label">$1.00</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_100" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_100" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $1.20 -->
+        <div class="amount-container">
+            <div class="amount-label">$1.20</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_120" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_120" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $1.40 -->
+        <div class="amount-container">
+            <div class="amount-label">$1.40</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_140" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_140" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $1.60 -->
+        <div class="amount-container">
+            <div class="amount-label">$1.60</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_160" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_160" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $1.80 -->
+        <div class="amount-container">
+            <div class="amount-label">$1.80</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_180" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_180" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $2.00 -->
+        <div class="amount-container">
+            <div class="amount-label">$2.00</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_200" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_200" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $2.50 -->
+        <div class="amount-container">
+            <div class="amount-label">$2.50</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_250" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_250" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $3.00 -->
+        <div class="amount-container">
+            <div class="amount-label">$3.00</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_300" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_300" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- $5.00 -->
+        <div class="amount-container">
+            <div class="amount-label">$5.00</div>
+            <div class="options-row">
+                <label class="option-label">
+                    <input type="radio" name="participate_500" value="Yes" class="radio-input" required>
+                    <span class="option-text">Yes, I would take</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="participate_500" value="No" class="radio-input">
+                    <span class="option-text">No, I would not take</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="validation-message" id="validationMessage">Please answer all questions to continue.</div>
+
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure each option-label updates the corresponding radio button
+        document.querySelectorAll('.option-label').forEach(label => {
+            label.addEventListener('click', function() {
+                const radioInput = this.querySelector('input[type="radio"]');
+                if (radioInput) {
+                    radioInput.checked = true;
+                    document.getElementById('validationMessage').style.display = 'none';
+                }
+            });
+        });
+    });
+
+    function validateForm() {
+        const form = document.getElementById('quizWillingnessForm');
+        const requiredFields = [
+            'participate_020', 'participate_040', 'participate_060',
+            'participate_080', 'participate_100', 'participate_120',
+            'participate_140', 'participate_160', 'participate_180',
+            'participate_200', 'participate_250', 'participate_300',
+            'participate_500'
+        ];
+
+        let isValid = true;
+
+        for (const fieldName of requiredFields) {
+            const radios = form.elements[fieldName];
+            let fieldChecked = false;
+
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    fieldChecked = true;
+                    break;
+                }
+            }
+
+            if (!fieldChecked) {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (!isValid) {
+            document.getElementById('validationMessage').style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight);
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}
