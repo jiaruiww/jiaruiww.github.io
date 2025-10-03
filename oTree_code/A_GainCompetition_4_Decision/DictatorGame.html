@@ -1,0 +1,331 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+.question-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.question-text {
+    font-size: 26px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+.instruction-text {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 40px;
+    line-height: 1.4;
+}
+
+.form-group {
+    display: none;
+}
+
+.dictator-game-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 40px 0;
+    padding: 40px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+}
+
+.person-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 250px;
+    min-height: 200px;
+}
+
+.person-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.person-other {
+    background-color: #343a40;
+}
+
+.person-body {
+    width: 60px;
+    height: 40px;
+    border-radius: 10px 10px 0 0;
+    margin-top: -10px;
+}
+
+.person-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.person-you .person-label {
+    color:  #1f5cbd;
+}
+
+.person-other .person-label {
+    color: #000;
+}
+
+.money-display {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.person-you .money-display {
+    color:  #1f5cbd;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0 40px;
+    justify-content: center;
+}
+
+.slider-question {
+    font-size: 18px;
+    color: #1f5cbd;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.arrow-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 25px solid  #1f5cbd;
+    margin: 0 10px;
+}
+
+.arrow-right {
+    border-left: 25px solid  #1f5cbd;
+    border-right: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+
+.arrow-left {
+    border-right: 25px solid  #1f5cbd;
+    border-left: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+
+.money-icon {
+    width: 60px;
+    height: 40px;
+    background-color:  #1f5cbd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0 10px;
+}
+
+.slider-wrapper {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+.slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background:  #1f5cbd;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background:  #1f5cbd;
+    cursor: pointer;
+    border: none;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.otree-btn-next {
+    font-size: 20px;
+    padding: 9px 25px;
+}
+
+.progress-container {
+    margin-bottom: 0;
+}
+
+.validation-message {
+    color: #e74c3c;
+    font-size: 16px;
+    margin-top: 15px;
+    text-align: center;
+    display: none;
+}
+
+.person-figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.person-figure svg {
+    display: block;
+}
+</style>
+
+<div class="question-container">
+    <div class="progress-container">
+        {% include 'global/ProgressBar.html' %}
+    </div>
+
+    <p class="question-text">
+        How would you split $100 between yourself and a randomly-selected participant in this study?
+    </p>
+
+    <p class="instruction-text">
+        The closer you drag the slider to one individual, the more money you allocate to that individual.
+        The randomly-selected individual would never find out that it was you who sent them the money.
+        Please drag the slider to the point where you feel satisfied with the way the money is split.
+    </p>
+
+    <form method="post" id="dictatorForm" onsubmit="return validateForm()">
+        <div class="dictator-game-container">
+            <div class="person-container person-you">
+                <div class="person-figure">
+                    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 100 C15 75, 30 65, 50 65 C70 65, 85 75, 85 100 Z" fill="#1f5cbd"/>
+                        <circle cx="50" cy="46" r="20" fill="#1f5cbd"/>
+                    </svg>
+                </div>
+                <div class="person-label" style="color:  #1f5cbd;">You</div>
+                <div class="money-display" id="yourMoney">$50</div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-question">How would I split the money?</div>
+
+                <div class="arrow-container">
+                    <div class="arrow-right"></div>
+                    <div class="money-icon">$100</div>
+                    <div class="arrow-left"></div>
+                </div>
+
+                <div class="slider-wrapper">
+                    <input type="range"
+                           min="0"
+                           max="100"
+                           value="50"
+                           class="slider"
+                           id="allocationSlider"
+                           name="allocation_amount">
+                </div>
+            </div>
+
+            <div class="person-container">
+                <div class="person-figure">
+                    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 100 C15 75, 30 65, 50 65 C70 65, 85 75, 85 100 Z" fill="#2c3e50"/>
+                        <circle cx="50" cy="46" r="20" fill="#2c3e50"/>
+                    </svg>
+                </div>
+                <div class="person-label">A random participant </div>
+                <div class="money-display" id="otherMoney">$50</div>
+            </div>
+        </div>
+
+        <div class="validation-message" id="validationMessage">Please adjust the slider to make your allocation.</div>
+
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('allocationSlider');
+    const yourMoneyDisplay = document.getElementById('yourMoney');
+    const otherMoneyDisplay = document.getElementById('otherMoney');
+    const validationMessage = document.getElementById('validationMessage');
+
+    function updateMoneyDisplay() {
+        const sliderValue = parseInt(slider.value);
+
+        const otherAmount = sliderValue;
+        const selfAmount = 100 - sliderValue;
+
+        yourMoneyDisplay.textContent = `$${selfAmount}`;
+        otherMoneyDisplay.textContent = `$${otherAmount}`;
+
+        validationMessage.style.display = 'none';
+
+        console.log(`Allocation - Self: $${selfAmount}, Other: $${otherAmount}, Slider: ${sliderValue}`);
+    }
+
+    slider.addEventListener('input', updateMoneyDisplay);
+    slider.addEventListener('change', updateMoneyDisplay);
+
+    updateMoneyDisplay();
+});
+
+function validateForm() {
+    const slider = document.getElementById('allocationSlider');
+    const validationMessage = document.getElementById('validationMessage');
+
+    return true;
+}
+</script>
+{% endblock %}

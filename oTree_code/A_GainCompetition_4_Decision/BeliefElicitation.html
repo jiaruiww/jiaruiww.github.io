@@ -1,0 +1,262 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .question-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .question-text {
+        font-size: 26px;
+        color: #000;
+        font-weight: bold;
+        margin-bottom: 40px;
+        line-height: 1.4;
+    }
+
+    .question-text strong {
+        color: #0345b2;
+        font-weight: bold;
+    }
+
+    .bonus-text {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 40px;
+        line-height: 1.4;
+    }
+
+    .form-group {
+        display: none;
+    }
+
+    .percentage-options {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 40px 0;
+    }
+
+    .percentage-option {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .radio-input {
+        height: 20px;
+        width: 20px;
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: 2px solid #666;
+        border-radius: 50%;
+        background-color: white;
+        outline: none;
+        box-shadow: none;
+        margin-bottom: 10px;
+    }
+
+    .radio-input:checked {
+        background-color: #4d7ef7;
+        border-color: #4d7ef7;
+        position: relative;
+    }
+
+    .radio-input:checked::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: white;
+    }
+
+    .percentage-label {
+        font-size: 16px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    .progress-container {
+        margin-bottom: 0;
+    }
+
+    .validation-message {
+        color: #e74c3c;
+        font-size: 16px;
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+    }
+</style>
+
+<div class="question-container">
+    <div class="progress-container">
+        {% include 'global/ProgressBar.html' %}
+    </div>
+
+    <div style="background-color: #fff9db; border-radius: 4px; padding: 15px 20px; margin: 0 0 30px 0; display: flex; align-items: center;">
+        <div style="background-color: #f8ca4d; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+            <span style="color: white; font-weight: bold; font-size: 16px;">$</span>
+        </div>
+        <p style="margin: 0; font-size: 18px; color: #866118;">
+            If your answer is correct, you will receive a <strong style="color: #866118;">$0.20 bonus</strong>.
+        </p>
+    </div>
+
+    <p class="question-text">
+        Approximately 800 participants are taking part in this study today.
+        What <strong>percentage</strong> of them do you think choose to <strong>keep the money</strong>?
+    </p>
+
+    <form method="post" id="beliefForm" onsubmit="return validateForm()">
+        <div class="percentage-options">
+            <div class="percentage-option">
+                <input type="radio" id="belief-5" name="belief_percentage" value="5" required class="radio-input">
+                <label for="belief-5" class="percentage-label">0-10%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-15" name="belief_percentage" value="15" required class="radio-input">
+                <label for="belief-15" class="percentage-label">11-20%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-25" name="belief_percentage" value="25" required class="radio-input">
+                <label for="belief-25" class="percentage-label">21-30%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-35" name="belief_percentage" value="35" required class="radio-input">
+                <label for="belief-35" class="percentage-label">31-40%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-45" name="belief_percentage" value="45" required class="radio-input">
+                <label for="belief-45" class="percentage-label">41-50%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-55" name="belief_percentage" value="55" required class="radio-input">
+                <label for="belief-55" class="percentage-label">51-60%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-65" name="belief_percentage" value="65" required class="radio-input">
+                <label for="belief-65" class="percentage-label">61-70%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-75" name="belief_percentage" value="75" required class="radio-input">
+                <label for="belief-75" class="percentage-label">71-80%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-85" name="belief_percentage" value="85" required class="radio-input">
+                <label for="belief-85" class="percentage-label">81-90%</label>
+            </div>
+            <div class="percentage-option">
+                <input type="radio" id="belief-95" name="belief_percentage" value="95" required class="radio-input">
+                <label for="belief-95" class="percentage-label">91-100%</label>
+            </div>
+        </div>
+
+        <div class="validation-message" id="validationMessage">Please select a percentage range to continue.</div>
+
+        <p style="margin-top: 100px; font-size: 1.2rem; color: #000000; line-height: 1.5;">
+            Reminder:
+        </p>
+
+        <div style="margin: 20px 0;">
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Other Participant's Decision</th>
+                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Your Decision</th>
+                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Other Participant's Payoff</th>
+                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: 500;">Your Payoff</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.80</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.80</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.50</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.50</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.90</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.40</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Put into pool</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Keep the money</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.40</td>
+                        <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">$0.90</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const percentageOptions = document.querySelectorAll('.percentage-option');
+        percentageOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const radioInput = this.querySelector('input[type="radio"]');
+                if (radioInput) {
+                    radioInput.checked = true;
+                    document.getElementById('validationMessage').style.display = 'none';
+                }
+            });
+        });
+    });
+
+    function validateForm() {
+        const form = document.getElementById('beliefForm');
+        const radios = form.elements['belief_percentage'];
+        let isChecked = false;
+
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+
+        if (!isChecked) {
+            document.getElementById('validationMessage').style.display = 'block';
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}
