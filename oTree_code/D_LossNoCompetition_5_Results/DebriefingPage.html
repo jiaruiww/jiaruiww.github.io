@@ -1,0 +1,104 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .section {
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    .section-title {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .section-content {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .highlight-box {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin: 20px 0;
+    }
+
+    .withdraw-info {
+        font-style: italic;
+        margin-top: 30px;
+        padding: 15px;
+        background-color: #f2f7ff;
+        border-radius: 6px;
+        border-left: 4px solid #4d7ef7;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .otree-btn-next {
+        font-size: 16px;
+        padding: 9px 25px;
+    }
+</style>
+
+<div class="content-container">
+    <h1 class="page-title">Debriefing</h1>
+
+    <div class="section">
+        <p class="section-content">
+            Thank you for participating in this study. The study examined how competitive environments affect happiness
+            and social attitudes. To preserve the validity of the research, some information
+            was temporarily withheld:
+
+        <p class="section-content">
+            <i>Financial Loss Was Simulated</i>：In the quiz, you were told that you might lose part of your
+            payment based on your performance. <b>However, this deduction was only temporary.
+            All participants will receive the full base payment regardless of performance. </b>
+            Any bonuses you earned will also be added.
+            This approach was necessary to comply with Prolific’s payment policy and to preserve the integrity of the study.
+        </p>
+    </div>
+
+
+     <div class="section">
+        <p class="section-content">
+           This minor and non-harmful hidden information was used to prevent bias and ensure valid research
+            results. The study followed ethical guidelines, and no harm was caused.
+            If you do not want your data used now that you know the full purpose, email us at jiaruiw@bu.edu with your Prolific ID.
+        </p>
+    </div>
+
+
+    <div class="section">
+        <p class="section-content">
+            Thank you again for your time and contribution!
+        </p>
+    </div>
+
+    <div class="button-container">
+        {% next_button %}
+    </div>
+</div>
+{% endblock %}

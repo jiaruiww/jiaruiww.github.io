@@ -1,0 +1,173 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .question-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0; /* Remove top padding */
+    }
+
+    .quiz-title {
+        font-size: 24px;
+        color: #000;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .option-container {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: flex-end; /* Align options to the right */
+    }
+
+    .option-box {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 12px 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        width: 100%; /* Make option box fill container width */
+        box-sizing: border-box;
+    }
+
+    .option-box:hover {
+        background-color: #f8f9fa;
+    }
+
+    .radio-circle {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .option-text {
+        font-size: 20px;
+    }
+
+    input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    input[type="radio"]:checked + .option-box .radio-circle {
+        border-color: #4d7ef7;
+    }
+
+    input[type="radio"]:checked + .option-box .radio-circle::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #4d7ef7;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    .survey-label {
+        color: #777;
+        font-style: italic;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    /* Add progress bar container styles */
+    .progress-container {
+        margin-bottom: 0; /* Reduce bottom margin */
+    }
+</style>
+
+<div class="question-container">
+    <!-- Add progress bar container -->
+    <div class="progress-container">
+        {% include 'global/ProgressBar.html' %}
+    </div>
+
+    <form method="post">
+        <div class="question-section">
+            <!-- Bonus information prompt - using same style as BeliefElicitation.html -->
+            <div style="background-color: #fff9db; border-radius: 4px; padding: 15px 20px; margin: 0 0 30px 0; display: flex; align-items: center;">
+                <div style="background-color: #f8ca4d; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+                    <span style="color: white; font-weight: bold; font-size: 16px;">$</span>
+                </div>
+                <p style="margin: 0; font-size: 18px; color: #866118;">
+                    If your answer is correct, you will receive a <strong style="color: #866118;">$0.2 bonus</strong>.
+                </p>
+            </div>
+
+            <h2 class="quiz-title">Do you think you scored {{ C.QUIZ_THRESHOLD_SCORE }} or higher on the IQ Quiz?</h2>
+
+            <div class="option-container">
+                <label style="width: 100%;">
+                    <input type="radio" name="won_iq_quiz" value="True" required>
+                    <div class="option-box">
+                        <div class="radio-circle"></div>
+                        <span class="option-text">Yes</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="option-container">
+                <label style="width: 100%;">
+                    <input type="radio" name="won_iq_quiz" value="False">
+                    <div class="option-box">
+                        <div class="radio-circle"></div>
+                        <span class="option-text">No</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <br>
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const optionBoxes = document.querySelectorAll('.option-box');
+        optionBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                const radioInput = this.parentElement.querySelector('input[type="radio"]');
+                radioInput.checked = true;
+                const event = new Event('change');
+                radioInput.dispatchEvent(event);
+            });
+        });
+
+        const radioCircles = document.querySelectorAll('.radio-circle');
+        radioCircles.forEach(circle => {
+            circle.addEventListener('click', function() {
+                const radioInput = this.closest('label').querySelector('input[type="radio"]');
+                if (radioInput) {
+                    radioInput.checked = true;
+                    const event = new Event('change');
+                    radioInput.dispatchEvent(event);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

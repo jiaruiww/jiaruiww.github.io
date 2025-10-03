@@ -1,0 +1,176 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .question-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #000;
+        line-height: 1.4;
+    }
+
+    /* Progress Bar Styles */
+    .progress-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4d7ef7; /* Blue color */
+        transition: width 0.3s ease;
+    }
+
+    /* Likert scale styling */
+    .likert-scale {
+        display: flex;
+        justify-content: space-between;
+        margin: 60px 0 30px 0;
+        max-width: 1000px;
+    }
+
+    .likert-option {
+        text-align: center;
+        width: 60px;
+        margin: 0 10px;
+        position: relative;
+    }
+
+    .likert-option input[type="radio"] {
+        margin: 0 auto 15px;
+        display: block;
+        cursor: pointer;
+        height: 20px;
+        width: 20px;
+    }
+
+    .likert-option-number {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    /* Remove all warning-related styles */
+</style>
+
+<div class="content-container">
+    <!-- Include progress bar -->
+    <div class="progress-container">
+        {% include 'global/ProgressBar.html' %}
+    </div>
+
+    <div class="question-title">
+        This is not a question that needs to be answered.
+        Instead, the goal of this question is to check whether you are reading all instructions carefully.
+        To indicate this, please click the next button without selecting any of the options below.
+        You must click next without making any selections in order to have your response approved.
+    </div>
+
+    <form method="post" id="attentionCheckForm">
+
+
+        <div class="likert-scale">
+            <div class="likert-option" data-value="0">
+                <input type="radio" id="scale-0" name="attention_check_response" value="0">
+                <div class="likert-option-number">0</div>
+            </div>
+
+            <div class="likert-option" data-value="1">
+                <input type="radio" id="scale-1" name="attention_check_response" value="1">
+                <div class="likert-option-number">1</div>
+            </div>
+
+            <div class="likert-option" data-value="2">
+                <input type="radio" id="scale-2" name="attention_check_response" value="2">
+                <div class="likert-option-number">2</div>
+            </div>
+
+            <div class="likert-option" data-value="3">
+                <input type="radio" id="scale-3" name="attention_check_response" value="3">
+                <div class="likert-option-number">3</div>
+            </div>
+
+            <div class="likert-option" data-value="4">
+                <input type="radio" id="scale-4" name="attention_check_response" value="4">
+                <div class="likert-option-number">4</div>
+            </div>
+
+            <div class="likert-option" data-value="5">
+                <input type="radio" id="scale-5" name="attention_check_response" value="5">
+                <div class="likert-option-number">5</div>
+            </div>
+
+            <div class="likert-option" data-value="6">
+                <input type="radio" id="scale-6" name="attention_check_response" value="6">
+                <div class="likert-option-number">6</div>
+            </div>
+
+            <div class="likert-option" data-value="7">
+                <input type="radio" id="scale-7" name="attention_check_response" value="7">
+                <div class="likert-option-number">7</div>
+            </div>
+
+            <div class="likert-option" data-value="8">
+                <input type="radio" id="scale-8" name="attention_check_response" value="8">
+                <div class="likert-option-number">8</div>
+            </div>
+
+            <div class="likert-option" data-value="9">
+                <input type="radio" id="scale-9" name="attention_check_response" value="9">
+                <div class="likert-option-number">9</div>
+            </div>
+
+            <div class="likert-option" data-value="10">
+                <input type="radio" id="scale-10" name="attention_check_response" value="10">
+                <div class="likert-option-number">10</div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Simple click handling to make the entire option area clickable, but without showing any warnings
+        const likertOptions = document.querySelectorAll('.likert-option');
+
+        likertOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const radioInput = this.querySelector('input[type="radio"]');
+                if (radioInput) {
+                    radioInput.checked = true;
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
