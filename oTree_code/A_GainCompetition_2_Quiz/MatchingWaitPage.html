@@ -1,1 +1,228 @@
+{{ extends 'otree/WaitPage.html' }}
+{{ block title }}
+    {% if timeout_happened %}
+        Thank you for your time!
+    {% else %}
+        Please Wait
+    {% endif %}
+{{ endblock }}
 
+{{ block content }}
+    <!-- Add custom CSS styles -->
+    <style>
+        /* Hide all default progress bars */
+        .otree-wait-page .progress {
+            display: none !important;
+        }
+
+        /* Fully customized progress bar, using oTree default blue */
+        .custom-progress {
+            height: 20px;
+            width: 100%;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+        }
+
+        .custom-progress-bar {
+            float: left;
+            width: 100%;
+            height: 100%;
+            /* Use oTree default blue color */
+            background-color: #1666ec; /* Bootstrap blue used by oTree by default */
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+            /* Use same striped style as oTree */
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, .15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, .15) 50%,
+                rgba(255, 255, 255, .15) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 40px 40px;
+            /* Add animation */
+            animation: progress-bar-stripes 2s linear infinite;
+        }
+
+        @keyframes progress-bar-stripes {
+            from { background-position: 40px 0; }
+            to { background-position: 0 0; }
+        }
+
+        /* Countdown timer style - matching the paragraph font */
+        .countdown-container {
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .countdown-timer {
+            font-size: inherit;
+            font-weight: normal;
+            color: inherit;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        /* Make just the timer digits bold */
+        #minutes, #seconds {
+            font-weight: bold;
+        }
+
+        .countdown-label {
+            font-size: inherit;
+            font-weight: normal;
+            display: inline-block;
+            color: inherit;
+        }
+
+        /* Added style for redirect message */
+        .redirect-message {
+            margin-top: 20px;
+            padding: 10px;
+            color: #333;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        #redirectCountdown {
+            font-weight: bold;
+        }
+    </style>
+
+    {% if timeout_happened %}
+        <p>Unfortunately, we were not able to match you with another participant within 5 minutes.</p>
+         <p>You will be automatically redirected to Prolific in a few seconds.
+         If you are not redirected, please use the following code to <i>return</i> your submission and get your $0.50 bonus: <b>{{ return_code }}</b>
+        </p>
+
+        <!-- Custom progress bar for timeout state -->
+        <div class="custom-progress">
+            <div class="custom-progress-bar"></div>
+        </div>
+
+        <script>
+            // Automatic redirect to Prolific with completion code
+            let countdown = 10;
+            const countdownElement = document.getElementById('redirectCountdown');
+
+            // Update countdown every second
+            const redirectInterval = setInterval(function() {
+                countdown--;
+                if (countdownElement) {
+                    countdownElement.textContent = countdown;
+                }
+
+                if (countdown <= 0) {
+                    clearInterval(redirectInterval);
+                    // Redirect to Prolific with the completion code
+                    window.location.href = "https://app.prolific.com/submissions/complete?cc={{ return_code }}";
+                }
+            }, 1000);
+        </script>
+    {% else %}
+        <p>The system is matching you with a random participant.
+         If matched, the quiz will start immediately.
+         If not matched within 5 minutes, you'll receive a $0.50 bonus as compensation.</p>
+
+        <!-- Custom progress bar for waiting state -->
+        <div class="custom-progress">
+            <div class="custom-progress-bar"></div>
+        </div>
+
+        <!-- Countdown timer display - small and left-aligned -->
+        <div class="countdown-container">
+            <span class="countdown-label">Waiting:</span>
+            <span class="countdown-timer">
+                <span id="minutes">5</span>:<span id="seconds">00</span>
+            </span>
+        </div>
+
+        <script>
+            // Hide all default progress bars
+            document.addEventListener('DOMContentLoaded', function() {
+                var defaultBars = document.querySelectorAll('.progress');
+                defaultBars.forEach(function(bar) {
+                    if (!bar.classList.contains('custom-progress')) {
+                        bar.style.display = 'none';
+                    }
+                });
+
+                // Initialize the countdown timer
+                startCountdown();
+            });
+
+            // Simplified countdown function - fixed version
+            function startCountdown() {
+                // FIX: Prioritize using server-provided remaining time
+                let totalSeconds = 300; // Default 5 minutes
+
+                // Check server-provided remaining time
+                if (typeof js_vars !== 'undefined' && js_vars.timeout !== undefined) {
+                    totalSeconds = Math.max(0, Math.floor(js_vars.timeout));
+                    console.log('Using server timeout:', totalSeconds);
+                }
+
+                // FIX: If both players are ready, redirect immediately
+                if (typeof js_vars !== 'undefined' && js_vars.both_ready && js_vars.redirect_to_quiz) {
+                    console.log('Both players ready, redirecting...');
+                    setTimeout(function() {
+                        window.location.href = "{{ redirect_url }}";
+                    }, 500);
+                    return;
+                }
+
+                // FIX: If time has run out, reload page immediately
+                if (totalSeconds <= 0) {
+                    console.log('Time expired, reloading...');
+                    window.location.reload();
+                    return;
+                }
+
+                // FIX: Update display immediately
+                updateTimerDisplay(totalSeconds);
+
+                // FIX: Start countdown
+                const timerInterval = setInterval(function() {
+                    totalSeconds--;
+
+                    if (totalSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        console.log('Countdown finished, reloading...');
+                        window.location.reload();
+                        return;
+                    }
+
+                    updateTimerDisplay(totalSeconds);
+                }, 1000);
+
+                // FIX: Set page reload (using server time + buffer)
+                setTimeout(function() {
+                    console.log('Forced reload after timeout period');
+                    window.location.reload();
+                }, (totalSeconds + 2) * 1000); // Add 2 second buffer
+            }
+
+            // FIX: Simplified display update function
+            function updateTimerDisplay(totalSeconds) {
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+
+                const minutesElement = document.getElementById('minutes');
+                const secondsElement = document.getElementById('seconds');
+
+                if (minutesElement) {
+                    minutesElement.textContent = minutes;
+                }
+                if (secondsElement) {
+                    secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
+                }
+            }
+        </script>
+    {% endif %}
+{{ endblock }}
