@@ -1,0 +1,198 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    /* Progress Bar Styles */
+    .progress-container {
+        width: 100%;
+        height: 12px;
+        background-color: #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #4d7ef7; /* Blue color */
+        transition: width 0.3s ease;
+    }
+
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .question-title {
+        font-size: 24px;
+        color: #000;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .option-container {
+        margin-bottom: 10px;
+    }
+
+    .option-box {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 12px 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        width: 900px;
+        box-sizing: border-box;
+    }
+
+    .option-box:hover {
+        background-color: #f8f9fa;
+    }
+
+    .radio-circle {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .option-text {
+        font-size: 20px;
+    }
+
+    input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+    }
+
+    input[type="radio"]:checked + .option-box .radio-circle {
+        border-color: #4d7ef7;
+    }
+
+    input[type="radio"]:checked + .option-box .radio-circle::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #4d7ef7;
+    }
+
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    .survey-label {
+        color: #777;
+        font-style: italic;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="content-container">
+    <!-- Dynamic progress bar -->
+<!--    <div class="progress-container">-->
+<!--        <div class="progress-bar" style="width: {{ progress_percent }}%"></div>-->
+<!--    </div>-->
+
+     <div class="progress-container">
+        {% include 'global/ProgressBar.html' %}
+    </div>
+
+    <form method="post">
+        <div class="question-section">
+            <h2 class="question-title">Did you understand the instructions throughout the study?</h2>
+            <br>
+
+            <div class="option-container">
+                <label>
+                    <input type="radio" name="understood_rules" value="fully" required>
+                    <div class="option-box">
+                        <div class="radio-circle"></div>
+                        <span class="option-text">I fully understood them</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="option-container">
+                <label>
+                    <input type="radio" name="understood_rules" value="almost_fully">
+                    <div class="option-box">
+                        <div class="radio-circle"></div>
+                        <span class="option-text">I understood them almost fully</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="option-container">
+                <label>
+                    <input type="radio" name="understood_rules" value="partly">
+                    <div class="option-box">
+                        <div class="radio-circle"></div>
+                        <span class="option-text">I only partly understood them</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="option-container">
+                <label>
+                    <input type="radio" name="understood_rules" value="not">
+                    <div class="option-box">
+                        <div class="radio-circle"></div>
+                        <span class="option-text">I did not understand them</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+        <br>
+        <div class="button-container">
+            {% next_button %}
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const optionBoxes = document.querySelectorAll('.option-box');
+        optionBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                const radioInput = this.parentElement.querySelector('input[type="radio"]');
+                radioInput.checked = true;
+                const event = new Event('change');
+                radioInput.dispatchEvent(event);
+            });
+        });
+
+        const radioCircles = document.querySelectorAll('.radio-circle');
+        radioCircles.forEach(circle => {
+            circle.addEventListener('click', function() {
+                const radioInput = this.closest('label').querySelector('input[type="radio"]');
+                if (radioInput) {
+                    radioInput.checked = true;
+                    const event = new Event('change');
+                    radioInput.dispatchEvent(event);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
