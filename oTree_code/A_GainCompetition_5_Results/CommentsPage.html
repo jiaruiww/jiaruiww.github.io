@@ -1,0 +1,80 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        color: #000;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .description {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 30px;
+        line-height: 1.5;
+
+    }
+
+    .comment-area {
+        width: 100%;
+        min-height: 200px;
+        padding: 15px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 30px;
+        font-family: inherit;
+        resize: vertical;
+    }
+
+    .comment-area:focus {
+        border-color: #4d7ef7;
+        outline: none;
+        box-shadow: 0 0 5px rgba(77, 126, 247, 0.3);
+    }
+
+    .note {
+        font-size: 14px;
+        color: #777;
+        font-style: italic;
+        margin-bottom: 30px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+</style>
+
+<div class="content-container">
+    <h1 class="page-title">Thank you for participating in our study!</h1>
+    <p class="description"><i>We would appreciate any comments or feedback about your experience. If any part of the instructions was unclear or if you ran into any issues during the study,
+        please let us know.
+        Your valuable feedback will help us improve our research.</i></p>
+
+    <div class="form-group">
+        <textarea name="comments" id="id_comments" class="comment-area" rows="8"></textarea>
+    </div>
+
+    <p class="note"></p>
+
+    <div class="button-container">
+        {% next_button %}
+    </div>
+</div>
+{% endblock %}
