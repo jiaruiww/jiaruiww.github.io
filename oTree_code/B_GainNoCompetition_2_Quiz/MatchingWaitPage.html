@@ -1,0 +1,83 @@
+{{ extends 'otree/WaitPage.html' }}
+{{ block title }}
+    {% if timeout_happened %}
+        Thank you for your time!
+    {% else %}
+        Please Wait
+    {% endif %}
+{{ endblock }}
+
+{{ block content }}
+    <style>
+        .otree-wait-page .progress {
+            display: none !important;
+        }
+
+        .custom-progress {
+            height: 20px;
+            width: 100%;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+        }
+
+        .custom-progress-bar {
+            float: left;
+            width: 100%;
+            height: 100%;
+            background-color: #1666ec;
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, .15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, .15) 50%,
+                rgba(255, 255, 255, .15) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 40px 40px;
+            animation: progress-bar-stripes 2s linear infinite;
+        }
+
+        @keyframes progress-bar-stripes {
+            from { background-position: 40px 0; }
+            to { background-position: 0 0; }
+        }
+    </style>
+
+    {% if timeout_happened %}
+        <p>Unfortunately, we were not able to match you with another participant within 5 minutes. <br>
+            Please use the following code to <i>return</i> your submission and get your $0.50 bonus: {{ return_code }}</p>
+
+        <div class="custom-progress">
+            <div class="custom-progress-bar"></div>
+        </div>
+    {% else %}
+        <p>The system is matching you with a random participant.
+         If matched, the quiz will start immediately.
+         If not matched within 5 minutes, you'll receive a $0.50 bonus as compensation.</p>
+
+        <div class="custom-progress">
+            <div class="custom-progress-bar"></div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var defaultBars = document.querySelectorAll('.progress');
+                defaultBars.forEach(function(bar) {
+                    if (!bar.classList.contains('custom-progress')) {
+                        bar.style.display = 'none';
+                    }
+                });
+            });
+
+            setTimeout(function() {
+                window.location.reload();
+            }, js_vars.timeout * 1000);
+        </script>
+    {% endif %}
+{{ endblock }}

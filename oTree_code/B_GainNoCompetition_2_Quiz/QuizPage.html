@@ -1,0 +1,433 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    <div class="text-center">IQ Quiz - Question <span style="color: #000000; font-weight: bold;">{{ question_number }}</span></div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Enhanced timer styling -->
+    <style>
+        /* Timer styling - positioned in right corner as a small box */
+        .otree-timer {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: white;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            padding: 8px 15px;
+            z-index: 1000;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .otree-timer p {
+            font-size: 0;  /* Hide all text */
+            margin: 0;
+        }
+
+        .otree-timer p::before {
+            content: "Time Left: ";
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: black;
+        }
+
+        .otree-timer__time-left {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-left: 2px;
+            color: black;
+        }
+
+        /* Custom timer container for manual timer */
+        #custom-timer-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: transparent;
+            padding: 8px 15px;
+            z-index: 1000;
+            min-width: 160px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #custom-timer-label {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: black;
+        }
+
+        #custom-timer {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-left: 5px;
+            color: black;
+        }
+
+        /* Basic layout adjustments */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Image sizing and alignment */
+        img.img-fluid {
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Question section styling */
+        .question-section {
+            padding: 15px 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Question styling */
+        .question-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 25px;
+        }
+
+        /* Answer options styling */
+        .answer-options {
+            margin-left: 15px;
+            color: #000;
+        }
+
+        .form-check {
+            margin-bottom: 18px;
+        }
+
+        /* Make radio buttons more visible */
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-check-label {
+            font-size: 24px;
+            font-weight: 500;
+            margin-left: 10px;
+            color: #000;
+        }
+
+        /* Aligns the button at the bottom right */
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* Moves button to the right */
+            margin-top: 30px; /* Adds space above the button */
+        }
+
+        /* Make oTree's next button larger while keeping its original color */
+        .otree-btn-next {
+            font-size: 20px;
+            padding: 9px 25px;
+        }
+
+        /* Remove the default label from oTree */
+        .form-group > label.col-form-label {
+            display: none;
+        }
+
+        /* Make all text black by default */
+        body, p, div, span, h1, h2, h3, h4, h5, h6, label {
+            color: #000;
+        }
+
+        /* Style for oTree's error message */
+        .invalid-feedback {
+            display: block;
+            font-size: 18px;
+            font-weight: 500;
+            color: #dc3545;
+            margin-top: 15px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Your score and threshold display */
+        .score-container {
+            text-align: center;
+            margin: 20px 0;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+        }
+
+        .score-label {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .score-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .threshold-info {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .threshold-value {
+            font-weight: bold;
+            color: #d30000;
+        }
+    </style>
+<br>
+
+    <!-- Custom Timer Display -->
+    <div id="custom-timer-container">
+        <span id="custom-timer-label">Time Left:</span>
+        <span id="custom-timer">{{ remaining_time }}</span>
+    </div>
+
+
+<!--     <div class="alert alert-warning" role="alert"-->
+<!--     style="margin-top: 5px; margin-bottom: 30px; font-size: 19px; max-width: 80%; padding: 8px 30px; text-align: center; margin-left: 150px; ">-->
+<!--    <strong style="font-style: italic; margin-right: 5px;">Reminder: </strong> <i>If you score {{ winning_threshold }} points or higher, you will earn $4 beyond the base payment of $2.</i>-->
+
+<div style="text-align: center; margin: 25px auto 35px; max-width: 700px; font-size: 20px; font-weight: bold; color: #1e3a5f; padding: 20px; background-color: #e3f2fd; border-left: 5px solid #1976d2; border-right: 5px solid #1976d2;">
+    Reach the target score to receive the $4 bonus.
+</div>
+
+
+</div>
+
+<!--     Reward Information-->
+    <div class="text-center" style="margin: 20px 0; padding: 12px; font-size: 22px; font-weight: 500; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <span style="color: #d30000; font-weight: bold;"> Score {{ winning_threshold }} or above : earn $4 </span>
+        <span style="color: #2c3e50; margin: 0 15px;">|</span>
+        <span style="color: #080809; font-weight: bold;"> Score below {{ winning_threshold }} : earn $0 </span>
+    </div>
+
+<!--   <div class="alert alert-warning" role="alert"-->
+<!--     style="margin-top: 5px; margin-bottom: 50px; font-size: 19px; max-width: 100%; padding: 13px 30px; text-align: center; margin-left: 170px; ">-->
+<!--    <strong style="font-style: italic; margin-right: 5px;">Reminder: If you score {{ winning_threshold }} points or higher, you will receive a $4 reward.</strong>-->
+<!--    </div>-->
+
+    <!-- Main content -->
+    <div class="row">
+        <!-- Left side: Images -->
+        <div class="col-md-7">
+            <!-- Display the main pattern image -->
+            <img src="{% static question_image %}" class="img-fluid mb-4" alt="Pattern Matrix" style="max-width: 60%; object-fit: contain;">
+
+            <!-- Display the choices image -->
+            <img src="{% static choice_image %}" class="img-fluid mb-4" alt="Choice Options" style="max-width: 55%; object-fit: contain;">
+        </div>
+
+        <!-- Right side: Question and answers -->
+        <div class="col-md-5 d-flex flex-column justify-content-center">
+            <div class="question-section">
+                <h5 class="question-title">Which piece is the correct complement?</h5>
+                <div class="answer-options">
+                    {% formfield player.user_answer label="" %}
+                </div>
+                <!-- Container for time's up message - kept for structure but won't be used -->
+                <div id="time-up-container"></div>
+            </div>
+
+            <div class="button-container">
+                {% next_button %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global variables
+    let remainingTime = {{ remaining_time }};
+    let timerInterval;
+    let currentScore = {{ score }};
+    let connectionLost = false;
+    let localTimerActive = false;
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return mins + ':' + (secs < 10 ? '0' : '') + secs;
+    }
+
+    function updateTimer() {
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            remainingTime = 0;
+            document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+
+             
+            ensureFormSubmission();
+            return;
+        }
+
+        document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+        remainingTime--;
+    }
+
+    function ensureFormSubmission() {
+        console.log("Time's up!");
+
+        // Disable radio buttons
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(radio => {
+            radio.disabled = true;
+        });
+
+        // Disable the next button
+        const nextButton = document.querySelector('.otree-btn-next');
+        if (nextButton) {
+            nextButton.disabled = true;
+        }
+
+         
+        if (connectionLost) {
+            
+            showConnectionWarning(true, "Network connection has been disconnected, but the timing has ended. Trying to submit the answer, please do not refresh the page.");
+        }
+
+        // Add a short delay then submit the form to proceed to results
+        setTimeout(function() {
+            try {
+                // Force form submission to go to the next page
+                document.querySelector('form').submit();
+            } catch (e) {
+                console.error("Error submitting form:", e);
+                 
+                showConnectionWarning(true, "Failed to submit answer. Please wait for network recovery or manually click the next question button.");
+            }
+        }, 1500); // 1.5 second delay - kept the same as original
+    }
+
+        function showConnectionWarning(show, message) {
+        let warningEl = document.getElementById('connection-warning');
+        if (!warningEl && show) {
+            warningEl = document.createElement('div');
+            warningEl.id = 'connection-warning';
+            warningEl.className = 'alert alert-warning';
+            warningEl.style.position = 'fixed';
+            warningEl.style.top = '60px';
+            warningEl.style.right = '15px';
+            warningEl.style.zIndex = '1001';
+            warningEl.style.maxWidth = '300px';
+            warningEl.innerHTML = message || 'Network connection has been disconnected. The timer will use local time，<b>please do not refresh the page</b>。';
+            document.body.appendChild(warningEl);
+        } else if (warningEl) {
+            if (show) {
+                warningEl.innerHTML = message || 'Network connection has been disconnected. The timer will use local time，<b>please do not refresh the page</b>。';
+            } else {
+                warningEl.remove();
+            }
+        }
+    }
+
+    // Called every 1 second to fetch new data
+    function fetchScoreUpdates() {
+        try {
+            liveSend({
+                clientTime: Date.now()
+            });
+        } catch (e) {
+            console.error("Error sending live update:", e);
+
+            
+            if (!connectionLost) {
+                connectionLost = true;
+                showConnectionWarning(true);
+
+                 
+                if (!localTimerActive && !timerInterval) {
+                    localTimerActive = true;
+                    timerInterval = setInterval(updateTimer, 1000);
+                }
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Hide the default oTree timer if it exists
+        const defaultTimer = document.querySelector('.otree-timer');
+        if (defaultTimer) {
+            defaultTimer.style.display = 'none';
+        }
+
+        // Initialize custom timer
+        document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+
+        // Start countdown
+        timerInterval = setInterval(updateTimer, 1000);
+
+        // Fetch new data every 1 second
+        setInterval(fetchScoreUpdates, 1000);
+
+        // If time runs out, handle it properly
+        if (remainingTime <= 0) {
+            ensureFormSubmission();
+        }
+
+        
+        window.addEventListener('online', function() {
+            console.log("Browser reports online status");
+            if (connectionLost) {
+                connectionLost = false;
+                showConnectionWarning(false);
+                fetchScoreUpdates(); // 立即尝试恢复连接
+            }
+        });
+
+        window.addEventListener('offline', function() {
+            console.log("Browser reports offline status");
+            connectionLost = true;
+            showConnectionWarning(true);
+        });
+    });
+
+    // This global function is crucial for real-time updates
+    function liveRecv(data) {
+         
+        if (connectionLost) {
+            connectionLost = false;
+            showConnectionWarning(false);
+        }
+
+        console.log("Received data:", data);
+
+        // Check if we received a time_expired signal
+        if (data.time_expired) {
+            console.log("Time expired signal received from server!");
+            ensureFormSubmission();
+            return;
+        }
+
+        // Update player's own score
+        if (data.player_score !== undefined) {
+            currentScore = data.player_score;
+        }
+
+        if (data.remaining_time !== undefined) {
+             
+            if (data.remaining_time < remainingTime - 5 ||
+                data.remaining_time > remainingTime) {
+                remainingTime = data.remaining_time;
+                document.getElementById('custom-timer').textContent = formatTime(remainingTime);
+
+                // If time has run out, handle it properly
+                if (remainingTime <= 0) {
+                    ensureFormSubmission();
+                }
+            }
+        }
+    }
+</script>
+{% endblock %}
