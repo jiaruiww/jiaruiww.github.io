@@ -1,0 +1,256 @@
+<div class="card-body">
+        <p class="study-description">This study consists of Quiz and Survey Sections.
+You will receive a <strong>base</strong> payment of <strong>${{ C.BASE_PAYMENT }}.00</strong> for participating.
+You can earn a <strong>bonus</strong>  of <strong>up to ${{ C.REWARD_AMOUNT }}</strong> in the Quiz Section,
+            and additional bonuses in the Survey Section.
+            The exact amount will depend on your performance and decisions.
+The entire study will take approximately 15 to 25 minutes to complete.</p>
+
+        <h3 class="section-header mt-5">QUIZ Section</h3>
+
+        <p class="task-instructions mb-4">
+           You will take an IQ Quiz (Intelligence Quotient Quiz).
+
+            If you score <strong>{{ C.THRESHOLD_SCORE }} points or higher</strong>, you will <strong>receive</strong> a <strong>${{ C.REWARD_AMOUNT }}</strong> reward.
+            In a previous session of the experiment, about half of the participants scored {{ C.THRESHOLD_SCORE }} points or higher.
+            If you score <strong>below {{ C.THRESHOLD_SCORE }} points</strong>, you will <strong>receive $0</strong>.
+            <br><br>
+
+            In the IQ Quiz, you will <strong>earn 1 point</strong> for each correct answer, <strong>lose 0.25 points</strong> for each incorrect answer,
+            and neither earn nor lose any points for skipped questions.
+            Once you submit an answer or skip a question, you <i>cannot</i> go back to it.
+            The quiz consists of fifty questions,
+            and you will have <i>4 minutes</i> to answer as many as possible.
+            At the end of the study, you will see your score and the quiz results.
+            Before the quiz begins, you will have the opportunity to answer <em>a practice question</em>
+            to get familiar with the format.
+
+        </p>
+
+        <h3 class="section-header mt-5">Survey Section</h3>
+
+        <p class="task-instructions mb-4">You will answer six survey questions and complete a decision-making task,
+            followed by a few final survey questions. Some questions offer bonuses
+            and will be clearly marked.</p>
+
+        <p class="comprehension-intro mb-4">
+            <em>Before we proceed, let's ensure you understand the instructions clearly.
+                Please answer the following question correctly to continue.</em>
+        </p>
+
+        <div id="custom-error-container" class="custom-error-message" style="display: none;">
+            Incorrect. Please review the instructions and try again.
+        </div>
+
+        <div class="comprehension-question mb-4">
+            {% formfield player.intro_comp_answer %}
+            <div class="empty-selection-error">
+                Please answer correctly to continue.
+            </div>
+        </div>
+    </div>
+
+<div class="next-button-container">
+    {% next_button %}
+</div>
+
+<style>
+    .card-body {
+        padding: 30px;
+        font-family: 'Arial', sans-serif;
+        background-color: #ffffff;
+        color: #000000;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .study-description, .task-instructions, .section-header {
+        font-size: 20px;
+        line-height: 1.6;
+        color: #000000;
+    }
+
+    .task-instructions {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 1.8;
+        padding: 15px;
+        border: 1px solid #e1e7ef;
+        background-color: #f7f9fc;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+
+    .comprehension-intro {
+        font-size: 20px;
+        line-height: 1.8;
+        margin: 30px 0 15px 0;
+    }
+
+    .comprehension-question {
+        font-size: 20px;
+        line-height: 1.8;
+        margin: 15px 0;
+    }
+
+    .section-header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .next-button-container {
+        margin-top: 40px;
+        text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .next-button-container button {
+        font-size: 20px;
+        padding: 10px 25px;
+        background-color: #3366ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .otree-btn-next:not(.next-button-container button) {
+        display: none;
+    }
+
+    .next-button, button[type="submit"], input[type="submit"] {
+        float: right !important;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        font-size: 18px;
+    }
+
+    .radio {
+        margin-bottom: 10px;
+    }
+
+    .radio label {
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+    }
+
+    .radio input[type="radio"] {
+        margin-right: 10px;
+        transform: scale(1.2);
+    }
+
+    .invalid-feedback, .alert-danger {
+        display: none !important;
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
+        font-size: 18px;
+    }
+
+    .empty-selection-error {
+        display: none;
+    }
+
+    .was-validated .empty-selection-error:not(:has(input:checked)) {
+        display: block;
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
+        font-size: 18px;
+    }
+
+    .custom-error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .otree-form-errors {
+        display: none !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hasErrors = document.querySelector('.otree-form-errors, .has-error');
+    const customErrorContainer = document.getElementById('custom-error-container');
+
+    const savedScrollPosition = sessionStorage.getItem('saved_scroll_position');
+    if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition));
+        sessionStorage.removeItem('saved_scroll_position');
+    }
+
+    if (hasErrors) {
+        customErrorContainer.style.display = 'block';
+
+        const otreeFormErrors = document.querySelector('.otree-form-errors');
+        if (otreeFormErrors) {
+            otreeFormErrors.style.display = 'none';
+        }
+
+        const alertError = document.querySelector('.alert.alert-danger');
+        if (alertError) {
+            alertError.style.display = 'none';
+        }
+
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }
+
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            sessionStorage.setItem('saved_scroll_position', window.scrollY);
+
+            const radios = document.querySelectorAll('input[name="intro_comp_answer"]');
+            let selectedValue = null;
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                }
+            });
+
+            if (selectedValue && selectedValue !== "B") {
+                sessionStorage.setItem('show_custom_error', 'true');
+            }
+        });
+    }
+
+    if (sessionStorage.getItem('show_custom_error') === 'true') {
+        customErrorContainer.style.display = 'block';
+        sessionStorage.removeItem('show_custom_error');
+    }
+
+    setTimeout(function() {
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }, 100);
+});
+</script>

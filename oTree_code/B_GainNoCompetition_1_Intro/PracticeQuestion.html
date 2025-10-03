@@ -1,0 +1,187 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    <div class="text-center">Practice Question</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div id="custom-error-container" class="custom-error-message" style="display: none;">
+        Your answer is incorrect. Please try again.
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <p class="instruction-text">A pattern with one missing piece is displayed below.
+                Your task is to <strong>select the correct piece</strong> from the four available options.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7">
+            <img src="{% static 'practice_question.png' %}" class="img-fluid mb-4" alt="Pattern Matrix" style="max-width: 59%; object-fit: contain;">
+
+            <img src="{% static 'practice_question_choice.png' %}" class="img-fluid mb-4" alt="Choice Options" style="max-width: 50%; object-fit: contain;">
+        </div>
+
+        <div class="col-md-5 d-flex flex-column justify-content-center">
+            <div class="question-section">
+                <h5 class="question-title">Which piece is the right complement?</h5>
+                <div class="answer-options">
+                    {% formfield player.practice_answer label="" %}
+                </div>
+            </div>
+
+            <div class="button-container">
+                {% next_button %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    img.img-fluid {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .question-section {
+        padding: 15px 10px;
+        margin-bottom: 15px;
+    }
+
+    .question-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #000;
+        margin-bottom: 25px;
+    }
+
+    .answer-options {
+        margin-left: 15px;
+        color: #000;
+    }
+
+    .form-check {
+        margin-bottom: 18px;
+    }
+
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+    }
+
+    .form-check-label {
+        font-size: 24px;
+        font-weight: 500;
+        margin-left: 10px;
+        color: #000;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    .form-group > label.col-form-label {
+        display: none;
+    }
+
+    .instruction-text {
+        font-size: 20px;
+        line-height: 2;
+        color: #000;
+        margin-bottom: 20px;
+    }
+
+    body, p, div, span, h1, h2, h3, h4, h5, h6, label {
+        color: #000;
+    }
+
+    .invalid-feedback, .help-block, .alert-danger {
+        display: none !important;
+    }
+
+    .custom-error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 18px;
+        font-weight: normal;
+    }
+
+    .otree-form-errors {
+        display: none !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hasErrors = document.querySelector('.otree-form-errors, .has-error, .invalid-feedback');
+    const customErrorContainer = document.getElementById('custom-error-container');
+
+    if (hasErrors) {
+        customErrorContainer.style.display = 'block';
+
+        const otreeFormErrors = document.querySelector('.otree-form-errors');
+        if (otreeFormErrors) {
+            otreeFormErrors.style.display = 'none';
+        }
+
+        const alertError = document.querySelector('.alert.alert-danger');
+        if (alertError) {
+            alertError.style.display = 'none';
+        }
+
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }
+
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            const radios = document.querySelectorAll('input[name="practice_answer"]');
+            let selectedValue = null;
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                }
+            });
+
+            if (selectedValue && selectedValue !== "A") {
+                sessionStorage.setItem('show_practice_error', 'true');
+            }
+        });
+    }
+
+    if (sessionStorage.getItem('show_practice_error') === 'true') {
+        customErrorContainer.style.display = 'block';
+        sessionStorage.removeItem('show_practice_error');
+    }
+
+    setTimeout(function() {
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }, 100);
+});
+</script>
+{% endblock %}
