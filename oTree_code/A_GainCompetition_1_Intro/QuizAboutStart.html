@@ -1,0 +1,98 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+    }
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    h1 {
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .success-message {
+        font-weight: bold;
+        color: #28a745;
+        font-size: 22px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .section-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    ol {
+        padding-left: 20px;
+        margin-bottom: 35px;
+    }
+    li {
+        font-size: 20px;
+        margin-bottom: 25px;
+        line-height: 1.7;
+        padding-left: 15px;
+    }
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+</style>
+
+<div class="content-container">
+    <p class="success-message">Your answer was correct.</p> <br>
+
+    <h1>IQ Quiz Competition is About to Start</h1>
+
+
+    <div class="section-title">A few reminders:</div>
+
+    <ol>
+        <li>
+            This study is completely <strong>anonymous</strong>.
+            Neither the organizers nor other participants will know your identity,
+            and no one will know your performance or decisions.
+        </li>
+        <li>
+            To ensure high-quality research, please take the quiz in a quiet environment without distractions.
+            <strong>Turn off notifications or other potential interruptions before starting</strong>.
+
+        </li>
+        <li>
+            During the competition, you will see your opponent's real-time <i>raw</i> score
+            (number of correct answers)
+            and a 4-minute timer. You will not see your own score.
+            Competition results will be revealed at the end of the study.
+            <strong>Only the top performer receives the $4 reward,
+                while the bottom performer receives nothing</strong>.
+            Once you submit an answer or skip a question, you cannot go back to it.
+            When you are ready, click 'Next' to begin matching
+            and start the competition.
+        </li>
+    </ol>
+
+    <br>
+
+    <div class="button-container">
+        {% next_button %}
+    </div>
+</div>
+{% endblock %}

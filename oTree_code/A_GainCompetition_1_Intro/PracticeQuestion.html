@@ -1,0 +1,219 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    <div class="text-center">Practice Question</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Custom error message container added at the top -->
+    <div id="custom-error-container" class="custom-error-message" style="display: none;">
+        Your answer is incorrect. Please try again.
+    </div>
+
+    <!-- Full-width instruction row -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <p class="instruction-text">A pattern with one missing piece is displayed below.
+                Your task is to <strong>select the correct piece</strong> from the four available options.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Left side: Images -->
+        <div class="col-md-7">
+            <!-- Display the main pattern image -->
+            <img src="{% static 'practice_question.png' %}" class="img-fluid mb-4" alt="Pattern Matrix" style="max-width: 59%; object-fit: contain;">
+
+            <!-- Display the choices image -->
+            <img src="{% static 'practice_question_choice.png' %}" class="img-fluid mb-4" alt="Choice Options" style="max-width: 50%; object-fit: contain;">
+        </div>
+
+        <!-- Right side: Question and answers -->
+        <div class="col-md-5 d-flex flex-column justify-content-center">
+            <div class="question-section">
+                <h5 class="question-title">Which piece is the right complement?</h5>
+                <div class="answer-options">
+                    {% formfield player.practice_answer label="" %}
+                </div>
+            </div>
+
+            <div class="button-container">
+                {% next_button %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Basic layout adjustments */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Image sizing and alignment */
+    img.img-fluid {
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Question section styling */
+    .question-section {
+        padding: 15px 10px;
+        margin-bottom: 15px;
+    }
+
+    /* Question styling */
+    .question-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #000;
+        margin-bottom: 25px;
+    }
+
+    /* Answer options styling */
+    .answer-options {
+        margin-left: 15px;
+        color: #000;
+    }
+
+    .form-check {
+        margin-bottom: 18px;
+    }
+
+    /* Make radio buttons more visible */
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+    }
+
+    .form-check-label {
+        font-size: 24px;
+        font-weight: 500;
+        margin-left: 10px;
+        color: #000;
+    }
+
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+
+    /* Remove the default label from oTree */
+    .form-group > label.col-form-label {
+        display: none;
+    }
+
+    /* Instruction text styling */
+    .instruction-text {
+        font-size: 20px;
+        line-height: 2;
+        color: #000;
+        margin-bottom: 20px;
+    }
+
+    /* Make all text black by default */
+    body, p, div, span, h1, h2, h3, h4, h5, h6, label {
+        color: #000;
+    }
+
+    /* Style for oTree's error message */
+    .invalid-feedback, .help-block, .alert-danger {
+        display: none !important;
+    }
+
+    /* Custom error message styling */
+    .custom-error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 18px;
+        font-weight: normal;
+    }
+
+    /* Hide the default oTree error alert */
+    .otree-form-errors {
+        display: none !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if there are form errors
+    const hasErrors = document.querySelector('.otree-form-errors, .has-error, .invalid-feedback');
+    const customErrorContainer = document.getElementById('custom-error-container');
+
+    if (hasErrors) {
+        // Show our custom error message
+        customErrorContainer.style.display = 'block';
+
+        // Hide the default oTree error at the top if it exists
+        const otreeFormErrors = document.querySelector('.otree-form-errors');
+        if (otreeFormErrors) {
+            otreeFormErrors.style.display = 'none';
+        }
+
+        // Also hide the alert at the top if it exists
+        const alertError = document.querySelector('.alert.alert-danger');
+        if (alertError) {
+            alertError.style.display = 'none';
+        }
+
+        // Hide any field-specific error messages
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }
+
+    // Also set up a listener for form submission to potentially show errors
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            // Save the form data so we can check it after page reload
+            const radios = document.querySelectorAll('input[name="practice_answer"]');
+            let selectedValue = null;
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                }
+            });
+
+            if (selectedValue && selectedValue !== "A") {
+                // If an incorrect answer is selected, we know there will be an error
+                // Store this in sessionStorage to check after reload
+                sessionStorage.setItem('show_practice_error', 'true');
+            }
+        });
+    }
+
+    // Check if we previously set the flag to show error (for after form submit)
+    if (sessionStorage.getItem('show_practice_error') === 'true') {
+        customErrorContainer.style.display = 'block';
+        // Clear the flag
+        sessionStorage.removeItem('show_practice_error');
+    }
+
+    // Make sure to hide any field-specific error messages that might appear after page reload
+    setTimeout(function() {
+        const allErrorMessages = document.querySelectorAll('.invalid-feedback, .help-block');
+        allErrorMessages.forEach(msg => {
+            msg.style.display = 'none';
+        });
+    }, 100);
+});
+</script>
+{% endblock %}

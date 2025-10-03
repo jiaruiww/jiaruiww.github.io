@@ -1,0 +1,137 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+    }
+    .content-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 35px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 20px;
+    }
+    .logo {
+        margin-right: 25px;
+    }
+    h1 {
+        font-size: 36px;
+        font-weight: bold;
+        margin: 0;
+    }
+    p {
+        font-size: 20px;
+        margin-bottom: 25px;
+        line-height: 1.7;
+    }
+    .section {
+        margin-bottom: 35px;
+    }
+    .compact-section {
+        margin-bottom: 25px;
+    }
+    .compact-section p {
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+    .section-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .compact-section .section-title {
+        margin-bottom: 12px;
+    }
+    .bullet-point {
+        font-size: 20px;
+        margin-bottom: 25px;
+        padding-left: 35px;
+        position: relative;
+        line-height: 1.7;
+    }
+    .bullet-point:before {
+        content: "•";
+        position: absolute;
+        left: 12px;
+        font-size: 22px;
+    }
+    .bullet-title {
+        font-weight: bold;
+        margin-right: 6px;
+    }
+    /* Aligns the button at the bottom right */
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Moves button to the right */
+        margin-top: 30px; /* Adds space above the button */
+    }
+
+    /* Make oTree's next button larger while keeping its original color */
+    .otree-btn-next {
+        font-size: 20px;
+        padding: 9px 25px;
+    }
+</style>
+
+<div class="content-container">
+    <div class="header">
+        <img src="{{static 'BU_logo.png'}}" alt="Boston University Logo" width="150" style="margin-right: 25px;"/>
+        <h1>Welcome!</h1>
+    </div>
+
+    <div class="section">
+        <p>Thank you for participating in our study! We are academic researchers from Boston University.
+            This study will take approximately 15–25 minutes to complete.
+            Your participation contributes to valuable academic research.
+            After completing the study, you will receive a completion code for payment.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Important Guidelines</div>
+
+        <div class="bullet-point">
+            <span class="bullet-title">Engagement:</span> Your careful attention is essential for the success of this research.
+            Please read all instructions carefully, engage thoroughly
+            in the tasks, and answer questions truthfully.
+            The study includes multiple checks to ensure participants are engaging properly.
+            Responses that show signs of inattention may be flagged as low quality and excluded from our analysis.
+        </div>
+
+        <div class="bullet-point">
+            <span class="bullet-title">Commitment:</span> We kindly ask that you complete the entire study once you begin,
+            as some sections involve interactions with other participants.
+            Your participation is entirely voluntary, and you may withdraw at any point without penalty.
+            However, please note that if you leave the study before finishing, your session will end, and you may not be able to resume later.
+        </div>
+
+        <div class="bullet-point">
+            <span class="bullet-title">Anonymity:</span>
+            This study is completely anonymous. Your Prolific ID will be used only to process your payment.
+            No one will know your decisions or performance, and you will never be personally identified.
+        </div>
+    </div>
+
+    <div class="compact-section">
+        <div class="section-title">Compensation</div>
+        <p>The base payment for participating in the study is $2.00. You can earn a bonus of up to $4.00 in the first section,
+            and additional bonuses in later sections, depending on your performance and decisions. </p>
+    </div>
+
+    <div class="compact-section">
+        <div class="section-title">Contact</div>
+        <p>If you have any questions, you may contact us at jiaruiw@bu.edu </p>
+    </div>
+
+    <div class="button-container">
+        {% next_button %}
+    </div>
+</div>
+{% endblock %}
