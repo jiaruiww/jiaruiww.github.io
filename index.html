@@ -17,12 +17,12 @@
 
     body {
       font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
-      max-width: 1000px;
+      max-width: 1300px;
       margin: 0 auto;
       padding: 40px 20px;
       line-height: 1.6;
-      background-color: #fff;
-      color: #222;
+      background-color: #f4f0e8;
+      color: #2b2620;
     }
 
     img {
@@ -50,41 +50,52 @@
       font-size: 18px;
       margin-bottom: 15px;
     }
+    .lead-in {
+      font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
+      font-style: italic;
+      font-size: 20px;
+      color: #201c17;
+    }
     .center {
       text-align: center;
     }
     .links a {
       margin: 0 5px 0 10px;
       text-decoration: none;
-      color: #2855a3;
+      color: #2b2620;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 15px;
       cursor: pointer;
     }
     .links a:first-child {
       margin-right: 5px;
     }
     .links a:hover {
-      text-decoration: underline;
+      color: #6b4a30;
     }
     a {
-      color: #2855a3;
+      color: #6b4a30;
       text-decoration: none;
     }
     .paper-links a {
-      color: #666;
+      color: #7a7264;
       text-decoration: none;
     }
     .paper-links a:hover {
-      color: #2855a3;
+      color: #6b4a30;
     }
     .abstract {
       display: none;           
-      margin-top: 8px;
-      margin-bottom: 20px;
+      margin-top: 14px;
+      margin-bottom: 5px;
       padding: 15px;
-      background-color: #f8f9fa;
-      border-left: 3px solid #2855a3;
+      background-color: #ece5d8;
+      border-left: 3px solid #6b4a30;
       font-style: italic;
-      color: #555;
+      color: #4a443c;
+      font-size: 16px;
     }
     .abstract.open {
       display: block;           
@@ -93,7 +104,7 @@
       cursor: pointer;
     }
     .abstract-toggle:hover {
-      color: #2855a3 !important;
+      color: #6b4a30 !important;
     }
     .content-section {
       display: none;
@@ -112,6 +123,110 @@
       margin-bottom: 10px;
       padding-left: 3px;
     }
+
+    .nav-rule {
+      border: none;
+      border-top: 1px solid #2b2620;
+      margin: 22px 0 0 0;
+    }
+
+    /* ---------- Paper cards (Working Papers) ---------- */
+    .paper-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 30px;
+      margin-top: 28px;
+      margin-bottom: 10px;
+    }
+    .paper-card img {
+      width: 220px;
+      height: 155px;
+      flex-shrink: 0;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 4px;
+      margin: 0;
+    }
+    .paper-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .card-eyebrow {
+      font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #6b4a30;
+      margin-bottom: 6px;
+    }
+    .card-subtitle {
+      font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      text-wrap: balance;
+    }
+    .card-subtitle a {
+      color: #201c17;
+    }
+    .card-subtitle a:hover {
+      color: #6b4a30;
+    }
+    .card-takeaway {
+      font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
+      font-size: 17.5px;
+      font-style: italic;
+      line-height: 1.5;
+      color: #5a5248;
+      padding-left: 14px;
+      border-left: 2px solid #c9a988;
+      margin-bottom: 14px;
+      text-wrap: balance;
+    }
+    .card-authors {
+      font-size: 15px;
+      font-style: italic;
+      color: #7a7264;
+      margin-top: -4px;
+      margin-bottom: 12px;
+    }
+    .paper-card .paper-links {
+      font-size: 15px;
+    }
+    .card-divider {
+      border: none;
+      border-top: 1px solid #ddd4c4;
+      margin: 26px 0 0 0;
+    }
+    .paper-list p {
+      font-size: 18px;
+    }
+    a.quiet-link {
+      color: #2b2620;
+    }
+    a.quiet-link:hover {
+      color: #6b4a30;
+    }
+    .coauthor-line {
+      font-size: 15px;
+      color: #7a7264;
+    }
+
+    @media (max-width: 680px) {
+      .paper-card {
+        flex-direction: column;
+        gap: 14px;
+      }
+      .paper-card img {
+        width: 100%;
+        height: 200px;
+      }
+      .card-subtitle {
+        font-size: 19px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -119,25 +234,31 @@
   <h1>Jiarui Wang</h1>
   <p class="center"><em>Ph.D. in Economics at Boston University</em></p>
   <div class="center links">
-  <a href="#" style="color: #2855a3; margin-right: 8px;" id="research-link">Research</a>| 
-  <a href="#" style="color: #2855a3; margin-left: 5px; margin-right: 8px;" id="teaching-link">Teaching</a>| 
-  <a href="CV_Jiarui_Wang.pdf" style="color: #2855a3; margin-left: 5px; margin-right: 8px;">CV</a>| 
-  <span style="color: #2855a3; margin-left: 8px; font-size: 18px;">jiaruiw2026@outlook.com</span>
+  <a href="#" id="research-link">Research</a>| 
+  <a href="#" id="teaching-link">Teaching</a>| 
+  <a href="CV_Jiarui_Wang.pdf">CV</a>| 
+  <span style="color: #2b2620; margin-left: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 15px;">jiaruiw2026@outlook.com</span>
 </div>
+<hr class="nav-rule">
 
   <!-- Research Content -->
   <div id="research-content" class="content-section active">
-    <p style="margin-top: 30px; text-align: justify; hyphens: auto;">
-      Welcome! I’m Jiarui. My primary research interests are behavioral and experimental economics.
+    <p style="margin-top: 30px; text-align: justify; hyphens: auto; font-size: 19.5px;">
+      Welcome! I’m Jiarui. My primary research interests are behavioral and experimental economics, as well as neuroeconomics.
       I’m currently interested in how AI shapes human cognition and behavior, and what drives welfare 
       and happiness. I also work on topics in development economics and political economy.
       <br>
        
     </p>
     
-    <h2>Working Papers</h2>
-    <div>  
-      <p><a href="Job_Market_Paper_Jiarui_Wang.pdf">Competing for Its Own Sake: Experimental Evidence on the Welfare Effects of Competition</a><br>
+    <h2 style="margin-top: 55px;">Working Papers</h2>
+
+    <!-- JMP card -->
+    <div class="paper-card">
+      <img src="card_jmp.png" alt="Key figure: welfare effects of competition">
+      <div class="paper-card-body">
+        <p class="card-subtitle"><a href="Job_Market_Paper_Jiarui_Wang.pdf">Competing for Its Own Sake: Experimental Evidence on the Welfare Effects of Competition</a></p>
+        <div class="card-takeaway">Main takeaway: people enjoy competing for its own sake.</div>
         <span class="paper-links">
           <a href="#" class="abstract-toggle" data-target="abs-jmp">Abstract</a> |
           <a href="Job_Market_Paper_Jiarui_Wang.pdf">Paper</a> |
@@ -145,40 +266,47 @@
           <a href="Experimental_Materials.pdf">Experimental Materials</a> |
           <a href="Slides.pdf">Slides</a>
         </span>
-      </p>
-      <div id="abs-jmp" class="abstract">
-        Economists often view competition as a means to motivate effort, improve efficiency, and therefore enhance welfare. 
-        However, this instrumental perspective may overlook that competition itself can directly influence individuals’ welfare. 
-        This paper investigates how competition affects utility derived solely from the act of competing, independent of material outcomes. 
-        I conduct a series of experiments which show that competition affects utility through two opposing channels: a belief channel, 
-        in which competition lowers expectations of success and reduces utility; and a preference channel, through which individuals derive enjoyment directly from competing.  
-        The preference channel dominates, resulting in a net positive impact on utility. 
-        I further show that these welfare effects influence future choices: 
-        competition induces attribution bias, leading individuals to misattribute the enjoyment of competition to the underlying task and increase their willingness to engage in it again, 
-        even in the absence of competition. These effects also extend to social interactions, reducing post-competition zero-sum thinking and fostering altruism.  
+        <div id="abs-jmp" class="abstract">
+          Economists often view competition as a means to motivate effort, improve efficiency, and therefore enhance welfare. 
+          However, this instrumental perspective may overlook that competition itself can directly influence individuals’ welfare. 
+          This paper investigates how competition affects utility derived solely from the act of competing, independent of material outcomes. 
+          I conduct a series of experiments which show that competition affects utility through two opposing channels: a belief channel, 
+          in which competition lowers expectations of success and reduces utility; and a preference channel, through which individuals derive enjoyment directly from competing.  
+          The preference channel dominates, resulting in a net positive impact on utility. 
+          I further show that these welfare effects influence future choices: 
+          competition induces attribution bias, leading individuals to misattribute the enjoyment of competition to the underlying task and increase their willingness to engage in it again, 
+          even in the absence of competition. These effects also extend to social interactions, reducing post-competition zero-sum thinking and fostering altruism.  
+        </div>
       </div>
-      
-      <p><a href="Political_Power_and_Collectivism_Jiarui_Wang.pdf">Political Power and Collectivism: The Persistent Impact of Historical Centralized Political Regimes</a><br>
-        <em>with Yuting Chen and Liqiang Liu</em><br>
+    </div>
+
+    <hr class="card-divider">
+
+    <!-- Collectivism card -->
+    <div class="paper-card">
+      <img src="card_collectivism.png" alt="Historical map of centralized Chinese dynasties">
+      <div class="paper-card-body">
+        <p class="card-subtitle"><a href="Political_Power_and_Collectivism_Jiarui_Wang.pdf">Political Power and Collectivism: The Persistent Impact of Historical Centralized Political Regimes</a></p>
+        <p class="card-authors">with Yuting Chen and Liqiang Liu</p>
+        <div class="card-takeaway">Main takeaway: centralized political power breeds collectivism.</div>
         <span class="paper-links">
           <a href="#" class="abstract-toggle" data-target="abs-wp1">Abstract</a> |
           <a href="Political_Power_and_Collectivism_Jiarui_Wang.pdf">Paper</a>
         </span>
-      </p>
-      <div id="abs-wp1" class="abstract">
-        Collectivism profoundly influences economic behavior, institutional development, and social interactions. 
-        Yet the role of politics in its emergence has received little attention. This paper identifies a novel determinant of collectivism: exposure to centralized political power. 
-        Our identification strategy exploits variation in county distances to the historical capitals of centralized Chinese dynasties, 
-        using proximity to the dynasties’ initial territorial centroids as an instrument. Drawing on data from the 2005 China census, 
-        we find that individuals residing in counties closer to historical capitals of centralized regimes exhibit a stronger collectivist orientation than their cohort peers in more distant counties within the same province. 
-        This finding is robust to alternative measures of collectivism and exposure to centralized regimes, more conservative inference approaches, and the inclusion of additional covariates. 
-        We further show that the effect differs across regions and between the periods before and after the PRC's establishment in 1949, but not by demographic characteristics such as gender.
+        <div id="abs-wp1" class="abstract">
+          Collectivism profoundly influences economic behavior, institutional development, and social interactions. 
+          Yet the role of politics in its emergence has received little attention. This paper identifies a novel determinant of collectivism: exposure to centralized political power. 
+          Our identification strategy exploits variation in county distances to the historical capitals of centralized Chinese dynasties, 
+          using proximity to the dynasties’ initial territorial centroids as an instrument. Drawing on data from the 2005 China census, 
+          we find that individuals residing in counties closer to historical capitals of centralized regimes exhibit a stronger collectivist orientation than their cohort peers in more distant counties within the same province. 
+          This finding is robust to alternative measures of collectivism and exposure to centralized regimes, more conservative inference approaches, and the inclusion of additional covariates. 
+          We further show that the effect differs across regions and between the periods before and after the PRC's establishment in 1949, but not by demographic characteristics such as gender.
+        </div>
       </div>
-      
     </div>
     
-    <h2>Work in Progress</h2>
-    <div>        
+    <h2 style="margin-top: 60px;">Work in Progress</h2>
+    <div class="paper-list">        
       <p style="margin-bottom: 5px;">Generative AI and Perceived Competence Bias: Evidence from a Field Experiment 
         (<em>with <a href="https://sites.bu.edu/fisman/" target="_blank">Raymond Fisman</a></em>) </p>
       
@@ -197,10 +325,10 @@
          (<em>with <a href="https://yangjiaqi53.github.io" target="_blank" rel="noopener">Jiaqi Yang</a></em>)</p>
     </div>
     
-    <h2>Pre-doctoral Research</h2>
-    <div>
-     <p><a href="#" onclick="return false;">Do Markets Erode Trust? Evidence from a Laboratory Experiment</a>  <br>
-        <em>with Yefeng Chen, Yuli Ding, Yiwen Pan, Xianghua Wu</em><br>
+    <h2 style="margin-top: 60px;">Pre-doctoral Research</h2>
+    <div class="paper-list">
+     <p><a href="#" onclick="return false;" class="quiet-link">Do Markets Erode Trust? Evidence from a Laboratory Experiment</a>  <br>
+        <em class="coauthor-line">with Yefeng Chen, Yuli Ding, Yiwen Pan, Xianghua Wu</em><br>
         <!-- <span class="paper-links">
           <a href="#" class="abstract-toggle" data-target="abs-predoc">Abstract</a> |
           <a href="#">Paper</a>
