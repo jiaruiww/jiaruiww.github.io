@@ -4,11 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jiarui Wang</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=optional" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=optional"></noscript>
+  <link rel="preload" href="fonts/crimson-pro-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
   <style>
+    @font-face {
+      font-family: 'Crimson Pro';
+      font-style: italic;
+      font-weight: 400;
+      font-display: block;
+      src: url('fonts/crimson-pro-latin-400-italic.woff2') format('woff2'),
+           url('fonts/crimson-pro-latin-400-italic.woff') format('woff');
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -637,17 +643,17 @@
           });
 
           // 6) Hold on the finished flourish, then 7) enter the homepage
-          window.setTimeout(endIntro, swapDuration + flourishDuration + flourishStagger + 1300);
+          window.setTimeout(endIntro, swapDuration + flourishDuration + flourishStagger + 1000);
         }, swapStart);
       }
 
       function startWhenReady() {
         // Wait for Crimson Pro to load so the mind/world widths used for
-        // the swap are measured accurately — but never for long: if the
-        // font is slow, or the host is unreachable (some networks block
-        // fonts.googleapis.com entirely), a 400ms cap means the intro
-        // always starts almost immediately, just with the fallback serif
-        // instead of Crimson Pro if it hasn't arrived yet.
+        // the swap are measured accurately — but never for long: the font
+        // is self-hosted (a small local file, preloaded above), so it's
+        // essentially always ready almost instantly, but a 400ms cap is
+        // kept as a safety net just in case, falling back to Georgia/
+        // Palatino if it somehow hasn't arrived yet.
         var fontsPromise = (document.fonts && document.fonts.ready)
           ? document.fonts.ready
           : Promise.resolve();
