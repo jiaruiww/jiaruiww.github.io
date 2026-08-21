@@ -6,7 +6,8 @@
   <title>Jiarui Wang</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=swap"></noscript>
   <style>
     * {
       margin: 0;
@@ -254,7 +255,7 @@
       font-family: 'Crimson Pro', "Palatino Linotype", Palatino, "Times New Roman", serif;
       font-style: italic;
       font-weight: 400;
-      font-size: clamp(19px, 4.1vw, 39px);
+      font-size: clamp(18px, 3.8vw, 36px);
       letter-spacing: 0.3px;
       color: #3e2e23;
       opacity: 0;
@@ -320,8 +321,8 @@
     <div id="intro-phrase-row">
       <span id="intro-mind" class="intro-word">Understand the mind.</span><span id="intro-world" class="intro-word">Understand the world.</span>
       <svg id="intro-flourish" viewBox="0 0 48 26" xmlns="http://www.w3.org/2000/svg">
-        <path class="flourish-stroke" id="flourish-1" d="M4 20 Q 15 17.5 27 11" />
-        <path class="flourish-stroke" id="flourish-2" d="M7 24.5 Q 18 21.5 31 15" />
+        <path class="flourish-stroke" id="flourish-1" d="M2 21 Q 14 18 29 10" />
+        <path class="flourish-stroke" id="flourish-2" d="M5 25.5 Q 18 22 33 14" />
       </svg>
     </div>
   </div>
@@ -342,7 +343,7 @@
     <p style="margin-top: 30px; text-align: justify; hyphens: auto; font-size: 19.5px;">
       Welcome! I’m Jiarui. My primary research interests are behavioral and experimental economics, as well as neuroeconomics.
       I am particularly interested in 
-      how people think and make decisions, where people’s preferences come from, and what ultimately drives well-being and welfare.
+      how people think and make decisions, where individuals’ preferences come from, and what ultimately drives well-being and welfare.
       I also work on topics in development economics and political economy.
       <br>
        
@@ -619,6 +620,8 @@
           //    is animated alongside the stroke draw-in (rather than left
           //    to CSS alone) so the mark is fully invisible right up until
           //    this exact moment, with no earlier flash.
+          var flourishDuration = 380;
+          var flourishStagger = 170;
           [flourish1, flourish2].forEach(function(stroke, i) {
             if (!stroke || typeof stroke.getTotalLength !== 'function') return;
             var len = stroke.getTotalLength();
@@ -629,31 +632,38 @@
                 { strokeDashoffset: len, opacity: 0 },
                 { strokeDashoffset: 0, opacity: 1 }
               ],
-              { duration: 260, delay: swapDuration + i * 130, easing: 'ease-out', fill: 'forwards' }
+              { duration: flourishDuration, delay: swapDuration + i * flourishStagger, easing: 'ease-out', fill: 'forwards' }
             );
           });
 
           // 6) Hold on the finished flourish, then 7) enter the homepage
-          window.setTimeout(endIntro, swapDuration + 260 + 130 + 900);
+          window.setTimeout(endIntro, swapDuration + flourishDuration + flourishStagger + 900);
         }, swapStart);
       }
 
       function startWhenReady() {
-        // If the Font Loading API is available, wait for Crimson Pro
-        // to actually finish loading first — otherwise the mind/world
-        // widths get measured against the fallback font and the swap can
-        // land a few pixels off once the real font swaps in.
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(runIntroSequence).catch(runIntroSequence);
-        } else {
-          runIntroSequence();
-        }
+        // Wait for Crimson Pro to load so the mind/world widths used for
+        // the swap are measured accurately — but never for long: if the
+        // font is slow, or the host is unreachable (some networks block
+        // fonts.googleapis.com entirely), a 400ms cap means the intro
+        // always starts almost immediately, just with the fallback serif
+        // instead of Crimson Pro if it hasn't arrived yet.
+        var fontsPromise = (document.fonts && document.fonts.ready)
+          ? document.fonts.ready
+          : Promise.resolve();
+        var timeoutPromise = new Promise(function(resolve) {
+          window.setTimeout(resolve, 400);
+        });
+        Promise.race([fontsPromise, timeoutPromise])
+          .then(runIntroSequence)
+          .catch(runIntroSequence);
       }
 
-      if (document.readyState === 'complete') {
-        startWhenReady();
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startWhenReady);
       } else {
-        window.addEventListener('load', startWhenReady);
+        // DOM is already parsed (readyState is 'interactive' or 'complete')
+        startWhenReady();
       }
     })();
   </script>
