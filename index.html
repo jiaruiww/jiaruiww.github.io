@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jiarui Wang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -247,13 +250,27 @@
       gap: 0.4em;
     }
     .intro-word {
-      font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
+      font-family: 'Crimson Pro', "Palatino Linotype", Palatino, "Times New Roman", serif;
       font-style: italic;
-      font-size: clamp(18px, 4.3vw, 44px);
-      letter-spacing: 0.4px;
+      font-weight: 400;
+      font-size: clamp(19px, 4.1vw, 39px);
+      letter-spacing: 0.3px;
       color: #3e2e23;
       opacity: 0;
       transform-origin: 50% 65%;
+      will-change: transform, opacity;
+    }
+    #intro-mark {
+      position: absolute;
+      top: clamp(16px, 4vw, 32px);
+      right: clamp(16px, 4vw, 32px);
+      font-family: 'Avenir', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+      font-size: clamp(11px, 2vw, 13px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #6b4a30;
+      opacity: 0;
       will-change: transform, opacity;
     }
     #intro-rule {
@@ -276,6 +293,7 @@
 </head>
 <body>
   <div id="intro-overlay" aria-hidden="true">
+    <div id="intro-mark">Jiarui Wang</div>
     <div id="intro-phrase-row">
       <span id="intro-mind" class="intro-word">Understand the mind.</span><span id="intro-world" class="intro-word">Understand the world.</span>
     </div>
@@ -460,6 +478,7 @@
       var world = document.getElementById('intro-world');
       var row = document.getElementById('intro-phrase-row');
       var rule = document.getElementById('intro-rule');
+      var mark = document.getElementById('intro-mark');
 
       var canAnimate = overlay && mind && world && row && typeof mind.animate === 'function';
       var prefersReducedMotion = window.matchMedia &&
@@ -506,7 +525,18 @@
 
       document.body.style.overflow = 'hidden';
 
-      window.addEventListener('load', function() {
+      function runIntroSequence() {
+        // 0) The corner nameplate grounds the page immediately
+        if (mark) {
+          mark.animate(
+            [
+              { opacity: 0, transform: 'translateY(-6px)' },
+              { opacity: 1, transform: 'translateY(0px)' }
+            ],
+            { duration: 700, delay: 100, easing: 'ease-out', fill: 'forwards' }
+          );
+        }
+
         // 1) "Understand the mind." rises softly into view
         mind.animate(
           [
@@ -565,7 +595,25 @@
           // 6) Hold on the finished line, then 7) enter the homepage
           window.setTimeout(endIntro, swapDuration + ruleDuration + 700);
         }, 2900);
-      });
+      }
+
+      function startWhenReady() {
+        // If the Font Loading API is available, wait for Crimson Pro
+        // to actually finish loading first — otherwise the mind/world
+        // widths get measured against the fallback font and the swap can
+        // land a few pixels off once the real font swaps in.
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(runIntroSequence).catch(runIntroSequence);
+        } else {
+          runIntroSequence();
+        }
+      }
+
+      if (document.readyState === 'complete') {
+        startWhenReady();
+      } else {
+        window.addEventListener('load', startWhenReady);
+      }
     })();
   </script>
 </body>
