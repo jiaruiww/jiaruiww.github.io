@@ -227,9 +227,61 @@
         font-size: 19px;
       }
     }
+
+    /* ---------- Intro animation ---------- */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: #f4f0e8;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    #intro-phrase-row {
+      display: flex;
+      align-items: baseline;
+      white-space: nowrap;
+      gap: 0.4em;
+    }
+    .intro-word {
+      font-family: "Palatino Linotype", Palatino, "Times New Roman", serif;
+      font-style: italic;
+      font-size: clamp(18px, 4.3vw, 44px);
+      letter-spacing: 0.4px;
+      color: #3e2e23;
+      opacity: 0;
+      transform-origin: 50% 65%;
+      will-change: transform, opacity;
+    }
+    #intro-rule {
+      height: 1.5px;
+      background-color: #b08d57;
+      margin-top: 20px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      will-change: transform;
+    }
+    #intro-overlay.intro-fade-out {
+      transition: opacity 0.8s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
+  <noscript>
+    <style>#intro-overlay { display: none !important; }</style>
+  </noscript>
 </head>
 <body>
+  <div id="intro-overlay" aria-hidden="true">
+    <div id="intro-phrase-row">
+      <span id="intro-mind" class="intro-word">Understand the mind.</span><span id="intro-world" class="intro-word">Understand the world.</span>
+    </div>
+    <div id="intro-rule"></div>
+  </div>
+
   <img src="myphoto_v2.jpg" alt="Jiarui Wang's Profile Photo">
   <h1>Jiarui Wang</h1>
   <p class="center"><em>Ph.D. in Economics at Boston University</em></p>
@@ -396,6 +448,125 @@
         researchContent.classList.remove('active');
       });
     });
+  </script>
+
+  <script>
+    // ---------- Intro animation ----------
+    (function() {
+      var overlay = document.getElementById('intro-overlay');
+      if (!overlay) return;
+
+      var mind = document.getElementById('intro-mind');
+      var world = document.getElementById('intro-world');
+      var row = document.getElementById('intro-phrase-row');
+      var rule = document.getElementById('intro-rule');
+
+      var canAnimate = overlay && mind && world && row && typeof mind.animate === 'function';
+      var prefersReducedMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function endIntro() {
+        overlay.classList.add('intro-fade-out');
+        document.body.style.overflow = '';
+        window.setTimeout(function() {
+          overlay.style.display = 'none';
+        }, 850);
+      }
+
+      if (!canAnimate || prefersReducedMotion) {
+        // Skip straight to the homepage if animation isn't supported
+        // or the visitor prefers reduced motion.
+        overlay.style.display = 'none';
+        return;
+      }
+
+      // Builds a smooth elliptical path: dx is the horizontal travel,
+      // peakY/peakRotate/peakScale are the values reached at the midpoint
+      // of the arc (negative peakY arcs upward, positive arcs downward).
+      // The horizontal motion itself eases via cosine, so an outer
+      // 'linear' timing is used when playing these keyframes — layering
+      // a second easing on top would blunt the curve.
+      function buildOrbitKeyframes(dx, peakY, peakRotate, peakScale, steps) {
+        var frames = [];
+        for (var i = 0; i <= steps; i++) {
+          var t = i / steps;
+          var glide = 0.5 - 0.5 * Math.cos(Math.PI * t);
+          var lift = Math.sin(Math.PI * t);
+          var x = dx * glide;
+          var y = peakY * lift;
+          var rot = peakRotate * lift;
+          var scale = 1 + (peakScale - 1) * lift;
+          frames.push({
+            transform: 'translate(' + x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px) ' +
+              'rotate(' + rot.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')'
+          });
+        }
+        return frames;
+      }
+
+      document.body.style.overflow = 'hidden';
+
+      window.addEventListener('load', function() {
+        // 1) "Understand the mind." rises softly into view
+        mind.animate(
+          [
+            { opacity: 0, transform: 'translateY(10px)' },
+            { opacity: 1, transform: 'translateY(0px)' }
+          ],
+          { duration: 950, delay: 250, easing: 'ease-out', fill: 'forwards' }
+        );
+
+        // 2) "Understand the world." follows, on the same line
+        world.animate(
+          [
+            { opacity: 0, transform: 'translateY(10px)' },
+            { opacity: 1, transform: 'translateY(0px)' }
+          ],
+          { duration: 950, delay: 1300, easing: 'ease-out', fill: 'forwards' }
+        );
+
+        // 3) Hold, then 4) swap: the two phrases trade places along a
+        //    shared counter-clockwise orbit — "world" sweeps up and over,
+        //    "mind" glides under, each leaning gently into the turn.
+        window.setTimeout(function() {
+          var gapPx = parseFloat(getComputedStyle(row).columnGap) ||
+            parseFloat(getComputedStyle(row).gap) || 12;
+          var mindWidth = mind.offsetWidth;
+          var worldWidth = world.offsetWidth;
+          var dxWorld = -(mindWidth + gapPx);
+          var dxMind = worldWidth + gapPx;
+          var fontPx = parseFloat(getComputedStyle(world).fontSize) || 32;
+
+          var worldFrames = buildOrbitKeyframes(dxWorld, -fontPx * 1.25, -7, 1.035, 20);
+          var mindFrames = buildOrbitKeyframes(dxMind, fontPx * 0.5, 4, 1, 20);
+
+          var swapDuration = 1500;
+
+          world.animate(worldFrames, { duration: swapDuration, easing: 'linear', fill: 'forwards' });
+          mind.animate(mindFrames, { duration: swapDuration, easing: 'linear', fill: 'forwards' });
+
+          // Total width is constant either way round, so the rule can be
+          // sized now — it just stays hidden (scaleX(0)) until it draws in.
+          if (rule) {
+            rule.style.width = (mindWidth + worldWidth + gapPx) + 'px';
+          }
+
+          // 5) The instant the swap lands, a thin rule draws itself in
+          //    beneath the settled phrase — the same "hand-drawn" line
+          //    quality as the axes on the earlier indifference-curve intro.
+          var ruleDuration = 650;
+          if (rule) {
+            rule.animate(
+              [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+              { duration: ruleDuration, delay: swapDuration, easing: 'ease-out', fill: 'forwards' }
+            );
+          }
+
+          // 6) Hold on the finished line, then 7) enter the homepage
+          window.setTimeout(endIntro, swapDuration + ruleDuration + 700);
+        }, 2900);
+      });
+    })();
   </script>
 </body>
 </html>
