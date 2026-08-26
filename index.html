@@ -6,8 +6,8 @@
   <title>Jiarui Wang</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=optional" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=optional"></noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400&display=swap"></noscript>
   <style>
     * {
       margin: 0;
@@ -252,7 +252,7 @@
       position: relative;
     }
     .intro-word {
-      font-family: 'Crimson Pro', "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+      font-family: 'Crimson Pro', "Palatino Linotype", Palatino, "Times New Roman", serif;
       font-style: italic;
       font-weight: 400;
       font-size: clamp(18px, 3.8vw, 36px);
@@ -343,7 +343,7 @@
     <p style="margin-top: 30px; text-align: justify; hyphens: auto; font-size: 19.5px;">
       Welcome! I’m Jiarui. My primary research interests are behavioral and experimental economics, as well as neuroeconomics.
       I am particularly interested in 
-      how people think and make decisions, where individuals’ preferences come from, and what ultimately drives well-being and welfare.
+      how people think and make decisions, where their preferences come from, and what ultimately drives well-being and welfare.
       I also work on topics in development economics and political economy.
       <br>
        
@@ -361,8 +361,8 @@
         <span class="paper-links">
           <a href="#" class="abstract-toggle" data-target="abs-jmp">Abstract</a> |
           <a href="Job_Market_Paper_Jiarui_Wang.pdf">Paper</a> |
-          <a href="https://github.com/jiaruiww/jiaruiww.github.io/tree/main/oTree_code" target="_blank">oTree</a> |
-          <a href="Experimental_Materials.pdf">Experimental Materials</a> |
+          <!-- <a href="https://github.com/jiaruiww/jiaruiww.github.io/tree/main/oTree_code" target="_blank">oTree</a> |
+          <a href="Experimental_Materials.pdf">Experimental Materials</a> | -->
           <a href="Slides.pdf">Slides</a>
         </span>
         <div id="abs-jmp" class="abstract">
@@ -381,13 +381,29 @@
 
     <hr class="card-divider">
 
+    <!-- Creative Learning with AI card -->
+    <div class="paper-card">
+      <img src="card_ai_learning.png" alt="Student writing with AI study assistant on laptop">
+      <div class="paper-card-body">
+        <p class="card-subtitle">Creative Learning with AI: Evidence from a Classroom Field Experiment</p>
+        <p class="card-authors">with Raymond Fisman, Sarah Madsen-Hardy, Anna Panszczyk, and Max White</p>
+        <div class="card-takeaway">Main takeaway: AI assistance improves students' learning, while peer collaboration increases their enjoyment.</div>
+        <span class="paper-links">
+          <a href="#" onclick="return false;">Abstract</a> |
+          <a href="#" onclick="return false;">Paper</a>
+        </span>
+      </div>
+    </div>
+
+    <hr class="card-divider">
+
     <!-- Collectivism card -->
     <div class="paper-card">
       <img src="card_collectivism.png" alt="Historical map of centralized Chinese dynasties">
       <div class="paper-card-body">
         <p class="card-subtitle"><a href="Political_Power_and_Collectivism_Jiarui_Wang.pdf">Political Power and Collectivism: The Persistent Impact of Historical Centralized Political Regimes</a></p>
         <p class="card-authors">with Yuting Chen and Liqiang Liu</p>
-        <div class="card-takeaway">Main takeaway: centralized political power breeds collectivism.</div>
+        <div class="card-takeaway">Main takeaway: centralized political power breeds a collectivist mindset.</div>
         <span class="paper-links">
           <a href="#" class="abstract-toggle" data-target="abs-wp1">Abstract</a> |
           <a href="Political_Power_and_Collectivism_Jiarui_Wang.pdf">Paper</a>
@@ -403,12 +419,11 @@
         </div>
       </div>
     </div>
+
+    <hr class="card-divider">
     
     <h2 style="margin-top: 60px;">Work in Progress</h2>
     <div class="paper-list">        
-      <p style="margin-bottom: 5px;">Generative AI and Perceived Competence Bias: Evidence from a Field Experiment 
-        (<em>with <a href="https://sites.bu.edu/fisman/" target="_blank">Raymond Fisman</a></em>) </p>
-      
       <p style="margin-bottom: 5px;">Polarization, Corruption, and Redistribution Preferences   
         (<em>with <a href="https://www.matteo-ferroni.com" target="_blank">Matteo Ferroni</a>, 
           <a href="https://sites.bu.edu/fisman/" target="_blank">Raymond Fisman</a>, 
@@ -637,7 +652,7 @@
           });
 
           // 6) Hold on the finished flourish, then 7) enter the homepage
-          window.setTimeout(endIntro, swapDuration + flourishDuration + flourishStagger + 1300);
+          window.setTimeout(endIntro, swapDuration + flourishDuration + flourishStagger + 900);
         }, swapStart);
       }
 
